@@ -1,0 +1,1121 @@
+#site-header .top-bar,
+#site-header .navbar {
+    padding-top:    0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom:  0 !important;
+}
+
+/* 2. Make the brand link a true flex‐container */
+#site-header .navbar-brand {
+    display:      flex;
+    align-items:  center;  /* vertical centering */
+    padding:      0;       /* no extra around it */
+}
+
+/* 3. Only scale the logo itself */
+.navbar-logo {
+    height:      90px;  /* ← bump this up or down as you like */
+    width:       auto;
+    display:     block;
+    margin:      0;
+}
+
+.navbar-logo-user {
+    height:      50px;  /* ← bump this up or down as you like */
+    width:       auto;
+    display:     block;
+    margin-left:      20px; /* Adjust as needed */
+}
+    /* Smooth transition for nav links and Book Now button */
+.navbar .nav-link,
+.btn-book {
+    transition: color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Nav link hover: color shift + slight lift */
+.navbar .nav-link:hover {
+    color: #febb02;                /* Golden hover color */
+    transform: translateY(-2px);   /* Lift up 2px */
+}
+
+/* Active nav link: persistent golden underline */
+.navbar .nav-link.active {
+    position: relative;
+}
+.navbar .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -4px;
+    height: 2px;
+    background-color: #febb02;
+    border-radius: 1px;
+}
+
+/* Top-bar icon hover: scale up slightly */
+.top-bar .icon,
+.top-bar a img.icon {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.top-bar .icon:hover,
+.top-bar a img.icon:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
+
+/*-----------------------------------
+    Translucent Top Bar
+-----------------------------------*/
+.top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    padding: 0.5rem 2rem;
+    background-color: rgba(33, 37, 41, 0.6) !important;
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 1000;
+
+    /* typography */
+    font-family: 'Inter', sans-serif;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.875rem;       
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/*-----------------------------------
+    Translucent Navbar
+-----------------------------------*/
+.navbar {
+    position: absolute;
+    top: 40px;                  /* offset by top-bar height */
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    background-color: rgba(33, 37, 41, 0.5) !important;
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+
+    /* typography */
+    font-family: 'Inter', sans-serif;
+    color: rgba(255,255,255,0.9);
+}
+
+/* ensure links inherit */
+.top-bar a,
+.navbar a {
+    color: inherit !important;
+    text-decoration: none;
+}
+
+/* navbar brand styling */
+.navbar .navbar-brand .brand-text {
+    font-size: 1.5rem;          /* 24px */
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* navbar nav‐links */
+.navbar .nav-link {
+    font-size: 1rem;            /* 16px */
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8) !important;
+    transition: color 0.2s;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: #ff9f1c !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* icon sizing */
+.icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Enhanced Book Now Button */
+.btn-warning {
+    background: linear-gradient(135deg, #ff9f1c 0%, #febb02 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #2c3e50;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(255, 159, 28, 0.3);
+}
+
+.btn-warning::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-warning:hover::before {
+    left: 100%;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #febb02 0%, #ff9f1c 100%);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(255, 159, 28, 0.5);
+    color: #2c3e50;
+}
+
+.btn-warning:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(255, 159, 28, 0.4);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding-top: 120px; /* Add space for fixed header */
+}
+
+.hero-padding {
+  padding-top: 2rem; /* Additional padding for content */
+}
+
+/* Booking form section proper spacing */
+.booking-section-spacing {
+  margin-top: -80px; /* Adjusted overlap */
+  position: relative;
+  z-index: 4;
+  padding-bottom: 3rem;
+}
+
+.booking-card {
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+}
+
+/* Branch Selection Hero Styles */
+.branch-selector-hero {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.branch-quick-select h5 {
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.branch-buttons {
+  max-width: 100%;
+}
+
+.branch-btn {
+  border-radius: 15px;
+  padding: 12px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  min-width: 140px;
+}
+
+.branch-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.branch-btn.btn-warning {
+  background: linear-gradient(135deg, #ff9f1c 0%, #febb02 100%);
+  border-color: #ff9f1c;
+  color: white;
+}
+
+.branch-btn.btn-warning:hover {
+  background: linear-gradient(135deg, #febb02 0%, #ff9f1c 100%);
+  box-shadow: 0 8px 25px rgba(255, 159, 28, 0.4);
+}
+
+.branch-icon {
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
+
+/* Booking Form Enhancements */
+
+
+.booking-title {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.branch-selector {
+  background: rgba(248, 249, 250, 0.8);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.branch-info-display {
+  background: linear-gradient(135deg, rgba(255, 159, 28, 0.1) 0%, rgba(254, 187, 2, 0.1) 100%);
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 159, 28, 0.2);
+}
+
+.branch-details h5 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.branch-description {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.branch-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.branch-feature {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #666;
+  border: 1px solid rgba(255, 159, 28, 0.2);
+}
+
+.branch-stats {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Location Cards */
+.featured-locations {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.location-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.location-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.location-image-container {
+  position: relative;
+  overflow: hidden;
+  height: 250px;
+}
+
+.location-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.location-card:hover .location-image {
+  transform: scale(1.1);
+}
+
+.location-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.location-card:hover .location-overlay {
+  opacity: 1;
+}
+
+.location-details {
+  padding: 1.5rem;
+}
+
+.location-details h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #2c3e50;
+}
+
+.location-type {
+  color: #ff9f1c;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.location-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.location-amenities .amenity {
+  background: #f8f9fa;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #666;
+  border: 1px solid #e9ecef;
+}
+
+.location-price {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.location-price .price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff9f1c;
+}
+
+.location-price .per-night {
+  color: #6c757d;
+  margin-left: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.location-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.location-rating .stars {
+  color: #ffc107;
+  font-size: 1.1rem;
+}
+
+.location-rating .rating-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+
+/* Enhanced Why Choose Us Section */
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 159, 28, 0.05) 0%, rgba(254, 187, 2, 0.05) 100%);
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 159, 28, 0.1);
+}
+
+.feature-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 10px 30px rgba(255, 159, 28, 0.15);
+  border-color: rgba(255, 159, 28, 0.2);
+}
+
+
+
+
+
+/*-----------------------------------
+  Guest Reviews Section
+-----------------------------------*/
+.guest-reviews {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.guest-reviews .section-title,
+.guest-reviews .section-subtitle {
+  color: white;
+}
+
+.review-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  padding: 2rem;
+  height: 100%;
+  transition: transform 0.3s ease;
+  color: #2c3e50;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.review-rating .stars {
+  color: #ffc107;
+  font-size: 1.1rem;
+}
+
+.rating-score {
+  background: #ff9f1c;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.review-text {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.reviewer-info {
+  display: flex;
+  align-items: center;
+}
+
+.reviewer-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.reviewer-details h6 {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.reviewer-details span {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+
+/* Responsive Design Enhancements */
+@media (max-width: 992px) {
+  #hero {
+    padding-top: 100px;
+    height: 90vh;
+  }
+  
+  .hero-padding {
+    padding-top: 1rem;
+  }
+  
+  .booking-section-spacing {
+    margin-top: -60px;
+    padding: 0 1rem 2rem;
+  }
+  
+  .branch-buttons {
+    justify-content: center;
+  }
+  
+  .branch-btn {
+    min-width: 120px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .branch-stats {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #hero {
+    padding-top: 80px;
+    height: 85vh;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.2rem;
+    line-height: 1.3;
+  }
+  
+  .branch-selector-hero {
+    padding: 1.5rem;
+    margin: 1rem 0.5rem;
+  }
+  
+  .branch-btn {
+    min-width: 100px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .branch-icon {
+    font-size: 1rem;
+    margin-right: 5px;
+  }
+  
+  .booking-card {
+    margin: 0.5rem;
+    border-radius: 15px;
+    padding: 1.5rem !important;
+  }
+  
+  .branch-info-display {
+    margin: 0.5rem 0;
+    padding: 1rem;
+  }
+  
+  .branch-details,
+  .branch-stats {
+    text-align: center;
+  }
+  
+  .branch-features {
+    justify-content: center;
+  }
+  
+  .stat-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+  }
+  
+  .location-card {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #hero {
+    padding-top: 70px;
+    height: 80vh;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-content .lead {
+    font-size: 1rem;
+  }
+  
+  .branch-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .branch-btn {
+    min-width: 200px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .booking-section-spacing {
+    margin-top: -40px;
+    padding: 0 0.5rem 1.5rem;
+  }
+  
+  .booking-card {
+    padding: 1rem !important;
+  }
+  
+  .booking-title {
+    font-size: 1.25rem;
+  }
+  
+  .branch-selector {
+    padding: 1rem;
+  }
+  
+  .branch-info-display {
+    padding: 1rem;
+  }
+  
+  .branch-features {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+  }
+  
+  .branch-feature {
+    text-align: center;
+    min-width: 120px;
+  }
+  
+  .location-amenities {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  /* Quick booking form adjustments */
+  .row.g-3 {
+    gap: 0.75rem !important;
+  }
+  
+  .col-md-3, .col-md-2 {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Animation for branch selection */
+@keyframes branchSelect {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.branch-info-display.show {
+  animation: branchSelect 0.5s ease-out;
+}
+
+/* Loading states */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #ff9f1c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Member benefits highlight */
+.member-exclusive-notice {
+  background: linear-gradient(135deg, rgba(255, 159, 28, 0.1) 0%, rgba(254, 187, 2, 0.1) 100%);
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 159, 28, 0.2);
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+/* Enhanced hover effects for interactive elements */
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #ff9f1c;
+  box-shadow: 0 0 0 0.2rem rgba(255, 159, 28, 0.25);
+}
+
+/* Special effects for hero section */
+.hero-content {
+  animation: fadeInUp 1s ease-out;
+  position: relative;
+  z-index: 3;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure proper video positioning */
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#hero .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Fix form alignment issues */
+.row.g-3.align-items-center {
+  align-items: end !important;
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+  height: 48px;
+}
+
+.input-group-text {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-group .form-control {
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+}
+
+.btn.w-100 {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+.footer {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  font-family: 'Inter', sans-serif;
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ff9f1c, transparent);
+}
+
+/* Footer Brand */
+.footer-brand .footer-logo {
+  width: 40px;
+  height: auto;
+}
+
+.footer-brand .brand-text {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.footer-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* Footer Titles */
+.footer-title {
+  color: #ff9f1c;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.footer-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background-color: #ff9f1c;
+  border-radius: 1px;
+}
+
+/* Footer Links */
+.footer-links {
+  margin: 0;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ff9f1c;
+  padding-left: 5px;
+  text-decoration: none;
+}
+
+/* Social Links */
+.footer-social {
+  margin-top: 1rem;
+}
+
+.social-link {
+  display: inline-block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  opacity: 0.8;
+}
+
+.social-icon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+
+.social-link:hover .social-icon {
+  filter: brightness(0) saturate(100%) invert(64%) sepia(94%) saturate(1552%) hue-rotate(21deg) brightness(101%) contrast(101%);
+}
+
+/* Contact Information */
+.contact-info {
+  margin-top: 1rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.contact-icon {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+}
+
+/* Newsletter Signup */
+.newsletter-signup {
+  margin-top: 1.5rem;
+}
+
+.newsletter-signup h6 {
+  color: #ff9f1c;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-signup p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.newsletter-form .form-control {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.newsletter-form .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.newsletter-form .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ff9f1c;
+  box-shadow: 0 0 0 0.2rem rgba(255, 159, 28, 0.25);
+  color: #fff;
+}
+
+.newsletter-form .btn-warning {
+  background-color: #ff9f1c;
+  border-color: #ff9f1c;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.newsletter-form .btn-warning:hover {
+  background-color: #febb02;
+  border-color: #febb02;
+  transform: translateY(-1px);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  background-color: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+.footer-bottom-links {
+  margin-top: 0.5rem;
+}
+
+.footer-bottom-link {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom-link:hover {
+  color: #ff9f1c;
+  text-decoration: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    padding: 3rem 0 2rem;
+  }
+  
+  .footer-title {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .footer-link {
+    font-size: 0.85rem;
+  }
+  
+  .newsletter-form {
+    margin-top: 1rem;
+  }
+  
+  .footer-awards,
+  .payment-methods {
+    margin-top: 1.5rem;
+  }
+  
+  .award-badge,
+  .payment-icon {
+    margin: 0.25rem;
+  }
+  
+  .footer-bottom-links {
+    text-align: center;
+    margin-top: 1rem;
+  }
+}

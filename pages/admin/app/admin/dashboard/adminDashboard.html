@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="adminDashboard.css">
+</head>
+
+<body>
+    <div class="flex min-h-screen bg-gray-100">
+
+        <!-- Sidebar - Fixed Left -->
+        <div class="w-55 bg-[#e2ebfe] backdrop-blur-md bg-white/50 rounded-r-xl shadow-md px-6 py-4 space-y-6 min-h-screen ">
+            <section>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Admin</h2>
+                <nav>
+                    <ul class="space-y-2 text-gray-700 font-medium">
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../assests/dashboard.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="../dashboard/adminDashboard.html" class="block px-2 py-1 rounded hover:bg-gray-200">Dashboard</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../assests/courses.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Recent Activities</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../assests/MyClasses.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="../manageUsers/manage-user.html" class="block px-2 py-1 rounded hover:bg-gray-200">Manage Users</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../assests/reports.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Reports</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../assests/settings.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Setting</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../assests/logout.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded text-red-500 hover:bg-red-100">Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-1 min-h-screen bg-gray-100 ml-[220px] mr-[295px] overflow-y-auto">
+
+            <main class="flex-1 p-6 space-y-6">
+                <h1 class="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+
+
+                <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #e2ebfe;">
+                        <p>Total Workers</p>
+                        <strong class="text-xl">350</strong>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #fc9c9c;">
+                        <p>Total Tasks</p>
+                        <strong class="text-xl">40</strong>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #a7ffc0;">
+                        <p>Ongoing Tasks</p>
+                        <strong class="text-xl">40</strong>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #f9ffa8;">
+                        <p>Completed Tasks</p>
+                        <strong class="text-xl">15</strong>
+                    </div>
+
+                </section>
+
+
+                <section class="bg-white p-6 rounded-lg shadow" style="background-color: #e2ebfe;">
+                    <h2 class="text-xl font-semibold mb-4">User Management</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr style="background-color: #88b3ff;">
+                                    <th class="px-4 py-2">Task ID</th>
+                                    <th class="px-4 py-2">Name</th>
+                                    <th class="px-4 py-2">Email</th>
+                                    <th class="px-4 py-2">Role</th>
+                                    <th class="px-4 py-2">Status</th>
+                                    <th class="px-4 py-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white border-b">
+                                    <td class="px-4 py-2">101</td>
+                                    <td class="px-4 py-2">John Smith</td>
+                                    <td class="px-4 py-2">john&#64;gmail.com</td>
+                                    <td class="px-4 py-2">Developer</td>
+                                    <td class="px-4 py-2">
+                                        <span
+                                            class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Ongoing</span>
+                                    </td>
+                                    <td class=" py-1">
+                                        <button type="button"
+                                            class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-xs px-3 py-1.5 text-center me-2 mb-1">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <td class="px-4 py-2">101</td>
+                                    <td class="px-4 py-2">John Smith</td>
+                                    <td class="px-4 py-2">john&#64;gmail.com</td>
+                                    <td class="px-4 py-2">Developer</td>
+                                    <td class="px-4 py-2">
+                                        <span
+                                            class="bg-yellow-100 text-yellow-600 text-xs font-medium px-2 py-1 rounded">Completed</span>
+                                    </td>
+                                    <td class=" py-1">
+                                        <button type="button"
+                                            class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-xs px-3 py-1.5 text-center me-2 mb-1">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <td class="px-4 py-2">101</td>
+                                    <td class="px-4 py-2">John Smith</td>
+                                    <td class="px-4 py-2">john&#64;gmail.com</td>
+                                    <td class="px-4 py-2">Developer</td>
+                                    <td class="px-4 py-2">
+                                        <span
+                                            class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded">Assigned</span>
+                                    </td>
+                                    <td class=" py-1">
+                                        <button type="button"
+                                            class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-xs px-3 py-1.5 text-center me-2 mb-1">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+
+                <section class="bg-white p-6 rounded-lg shadow" id="activity" style="background-color: #e2ebfe;">
+                    <h2 class="text-xl font-semibold mb-4">Recent Activity</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <p class="text-gray-700">User John Smith updated permissions for user 102</p>
+                            <span class="text-gray-500 text-sm">2025-04-05 12:45 PM</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <p class="text-gray-700">User 103 requested a role change</p>
+                            <span class="text-gray-500 text-sm">2025-04-05 11:20 AM</span>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Details bar -->
+        <div class="w-75 bg-[#e2ebfe] shadow-md p-6 space-y-6 min-h-screen">
+            <section>
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="../../../assests/teacher.png" alt="TeacherImage" class="w-12 h-12 rounded-full">
+                    <div>
+                        <p class="text-gray-800 font-medium">Mr. Saman Kumara</p>
+                        <small class="text-gray-500">Developer</small>
+                    </div>
+                </div>
+                <h2 class="text-xl font-semibold mb-2">Details</h2>
+                <ul class="list-none list-inside text-gray-700 space-y-1">
+                    <li class="flex items-center space-x-2"><img src="../../../assests/id.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full"> ID: 1111</li>
+                    <li class="flex items-center space-x-2"><img src="../../../assests/name.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Name: Saman</li>
+                    <li class="flex items-center space-x-2"><img src="../../../assests/gmail.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Email: saman&#64;gmail.com</li>
+                    <li class="flex items-center space-x-2"><img src="../../../assests/smartphone.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Mobile: 08123456789</li>
+                    <li class="flex items-center space-x-2"><img src="../../../assests/schedule.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Registered Date: 2002-02-12</li>
+                </ul>
+            </section>
+        </div>
+
+
+    </div>
+
+
+    <script src="adminDashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

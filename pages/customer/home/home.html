@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Holiday Getaway</title>
+  <!-- Fonts & Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="sweetalert2.min.css">
+</head>
+
+<body>
+  <header id="site-header">
+    <!-- Top Bar -->
+    <div class="top-bar d-none d-lg-flex justify-content-between align-items-center">
+        <ul class="list-inline mb-0">
+        <li class="list-inline-item">
+            <img src="../../../assets/images/logo/phone-icon.png" alt="Phone" class="icon"> +94 77 678 6535
+        </li>
+        <li class="list-inline-item ms-4">
+            <img src="../../../assets/images/logo/email-icon.png" alt="Email" class="icon"> info@HolidayGetaway.com
+        </li>
+        </ul>
+        <ul class="list-inline mb-0">
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="icon"></a></li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-5">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="navbar-logo">
+        <span class="brand-text ms-2">Holiday Getaway</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
+        <ul class="navbar-nav me-3">
+            <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../rooms/rooms.html">Rooms</a></li>
+            <li class="nav-item"><a class="nav-link" href="../aboutUs/aboutUs.html">About Us</a></li>
+            
+        </ul>
+        <a href="#" class="me-3"><img src="../../../assets/images/logo/search.png" alt="Search" class="icon"></a>
+        <a href="../reservation/reservation.html" class="btn btn-warning px-4 py-2">Book Now</a>
+        <a href="../dashboard/dashboard.html"><img src="../../../assets/images/logo/user.png" alt="user" class="navbar-logo-user"></a>
+        <button class="btn btn-logout" onclick="logout()">
+          <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
+          Logout
+        </button>
+        </div>
+    </nav>
+  </header>
+
+   <!-- Hero Section with Background Video -->
+  <section id="hero" class="position-relative text-white d-flex align-items-center justify-content-center">
+    <video autoplay muted loop playsinline class="bg-video">
+      <source src="../../../assets/images/background/hero-bg.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+    <div class="container text-center hero-content hero-padding">
+      <h1>Experience Holiday Getaway Worldwide</h1>
+      <p class="lead">Premium accommodations across multiple destinations with consistent luxury and exceptional service</p>
+      
+      <!-- Branch Selection Call-to-Action -->
+      <div class="branch-selector-hero mt-4 mb-4">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="branch-quick-select">
+              <h5 class="text-white mb-3">Choose Your Destination</h5>
+              <div class="branch-buttons d-flex flex-wrap justify-content-center gap-3">
+                <button class="btn btn-outline-light branch-btn" data-branch="colombo">
+                  <span class="branch-icon">🏙️</span>
+                  <span>Colombo</span>
+                </button>
+                <button class="btn btn-outline-light branch-btn" data-branch="kandy">
+                  <span class="branch-icon">🏔️</span>
+                  <span>Kandy</span>
+                </button>
+                <button class="btn btn-outline-light branch-btn" data-branch="galle">
+                  <span class="branch-icon">🏖️</span>
+                  <span>Galle</span>
+                </button>
+                <button class="btn btn-outline-light branch-btn" data-branch="nuwara-eliya">
+                  <span class="branch-icon">🌿</span>
+                  <span>Nuwara Eliya</span>
+                </button>
+                <button class="btn btn-warning branch-btn" data-branch="all" id="viewAllBranches">
+                  <span class="branch-icon">🗺️</span>
+                  <span>View All Locations</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <a href="../reservation/reservation.html" class="btn btn-warning btn-lg px-5 py-3">Reserve Now</a>
+    </div>
+  </section>
+
+  <!-- Branch Selection and Booking Form -->
+  <br><br><br><br>
+  <section class="booking-form position-relative booking-section-spacing">
+    <div class="container">
+      <div class="card shadow-lg p-4 booking-card">
+        <!-- Branch Selection Header -->
+        <div class="branch-selection-header text-center mb-4">
+          <h4 class="booking-title">Find Your Perfect Stay</h4>
+          <p class="text-muted">Select your preferred Holiday Getaway location and check availability</p>
+        </div>
+
+        <!-- Branch Selector -->
+        <div class="branch-selector mb-4">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="branchSelect" class="form-label fw-bold">Choose Holiday Getaway Location</label>
+              <select class="form-select form-select-lg" id="branchSelect" onchange="updateBranchInfo()">
+                <option value="">Select a Holiday Getaway Location</option>
+                <option value="colombo">Holiday Getaway Colombo - Business District</option>
+                <option value="kandy">Holiday Getaway Kandy - Cultural Heritage</option>
+                <option value="galle">Holiday Getaway Galle - Coastal Paradise</option>
+                <option value="nuwara-eliya">Holiday Getaway Nuwara Eliya - Hill Country</option>
+                <option value="ella">Holiday Getaway Ella - Mountain Views</option>
+                <option value="sigiriya">Holiday Getaway Sigiriya - Ancient Wonders</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Branch Info Display -->
+        <div class="branch-info-display" id="branchInfoDisplay" style="display: none;">
+          <div class="row mb-4">
+            <div class="col-md-8">
+              <div class="branch-details">
+                <h5 class="branch-name" id="branchName"></h5>
+                <p class="branch-description" id="branchDescription"></p>
+                <div class="branch-features" id="branchFeatures"></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="branch-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Available Rooms:</span>
+                  <span class="stat-value" id="availableRooms">-</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Starting From:</span>
+                  <span class="stat-value text-warning" id="startingPrice">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+
+
+        <!-- Booking Form -->
+        <form class="row g-3 align-items-center" id="quickBookingForm">
+          <div class="col-md-3">
+            <label for="arrivalDate" class="form-label visually-hidden">Arrival Date</label>
+            <div class="input-group">
+              <span class="input-group-text"><img src="images/calendar.svg" alt="" class="icon"></span>
+              <input type="date" class="form-control" id="arrivalDate" placeholder="Arrival Date">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label for="departureDate" class="form-label visually-hidden">Departure Date</label>
+            <div class="input-group">
+              <span class="input-group-text"><img src="images/calendar.svg" alt="" class="icon"></span>
+              <input type="date" class="form-control" id="departureDate" placeholder="Departure Date">
+            </div>
+          </div>
+          <div class="col-md-2">
+            <select class="form-select" id="adults">
+              <option selected>Adults</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <select class="form-select" id="children">
+              <option selected>Children</option>
+              <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-warning w-100">Check Availability</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Holiday Getaway Locations Section -->
+  <section class="featured-locations py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Our Premium Locations</h2>
+        <p class="section-subtitle">Discover Holiday Getaway properties across Sri Lanka's most stunning destinations</p><br>
+      </div>
+      <div class="row g-4">
+        <!-- Colombo Location -->
+        <div class="col-lg-4 col-md-6">
+          <div class="location-card">
+            <div class="location-image-container">
+              <img src="../../../assets/images/locations/colombo.jpg" alt="Holiday Getaway Colombo" class="location-image">
+            </div>
+            <div class="location-details">
+              <h4>Holiday Getaway Colombo</h4>
+              <p class="location-type">Business & Shopping District</p>
+              <div class="location-amenities">
+                <span class="amenity">🏢 Business Center</span>
+                <span class="amenity">🛍️ Shopping Access</span>
+                <span class="amenity">✈️ Airport Shuttle</span>
+              </div>
+              <div class="location-price">
+                <span class="price">From $149</span>
+                <span class="per-night">/night</span>
+              </div>
+              <div class="location-rating">
+                <div class="stars">★★★★★</div>
+                <span class="rating-text">4.8 (245 reviews)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Galle Location -->
+        <div class="col-lg-4 col-md-6">
+          <div class="location-card">
+            <div class="location-image-container">
+              <img src="../../../assets/images/locations/galle.jpg" alt="Holiday Getaway Galle" class="location-image">
+            </div>
+            <div class="location-details">
+              <h4>Holiday Getaway Galle</h4>
+              <p class="location-type">Coastal Resort & Beach</p>
+              <div class="location-amenities">
+                <span class="amenity">🏖️ Private Beach</span>
+                <span class="amenity">🏄 Water Sports</span>
+                <span class="amenity">🌅 Ocean Views</span>
+              </div>
+              <div class="location-price">
+                <span class="price">From $199</span>
+                <span class="per-night">/night</span>
+              </div>
+              <div class="location-rating">
+                <div class="stars">★★★★★</div>
+                <span class="rating-text">4.9 (189 reviews)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kandy Location -->
+        <div class="col-lg-4 col-md-6">
+          <div class="location-card">
+            <div class="location-image-container">
+              <img src="../../../assets/images/locations/kandy.jpg" alt="Holiday Getaway Kandy" class="location-image">
+            </div>
+            <div class="location-details">
+              <h4>Holiday Getaway Kandy</h4>
+              <p class="location-type">Cultural Heritage & Lakes</p>
+              <div class="location-amenities">
+                <span class="amenity">🏛️ Temple Access</span>
+                <span class="amenity">🚤 Lake Views</span>
+                <span class="amenity">🎭 Cultural Shows</span>
+              </div>
+              <div class="location-price">
+                <span class="price">From $129</span>
+                <span class="per-night">/night</span>
+              </div>
+              <div class="location-rating">
+                <div class="stars">★★★★☆</div>
+                <span class="rating-text">4.7 (156 reviews)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nuwara Eliya Location -->
+        <div class="col-lg-4 col-md-6">
+          <div class="location-card">
+            <div class="location-image-container">
+              <img src="../../../assets/images/locations/nuwara-eliya.jpg" alt="Holiday Getaway Nuwara Eliya" class="location-image">
+            </div>
+            <div class="location-details">
+              <h4>Holiday Getaway Nuwara Eliya</h4>
+              <p class="location-type">Hill Country & Tea Estates</p>
+              <div class="location-amenities">
+                <span class="amenity">🍃 Tea Tours</span>
+                <span class="amenity">🏔️ Mountain Views</span>
+                <span class="amenity">🌡️ Cool Climate</span>
+              </div>
+              <div class="location-price">
+                <span class="price">From $109</span>
+                <span class="per-night">/night</span>
+              </div>
+              <div class="location-rating">
+                <div class="stars">★★★★☆</div>
+                <span class="rating-text">4.6 (134 reviews)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ella Location -->
+        <div class="col-lg-4 col-md-6">
+          <div class="location-card">
+            <div class="location-image-container">
+              <img src="../../../assets/images/locations/ella.jpg" alt="Holiday Getaway Ella" class="location-image">
+            </div>
+            <div class="location-details">
+              <h4>Holiday Getaway Ella</h4>
+              <p class="location-type">Mountain Adventure & Nature</p>
+              <div class="location-amenities">
+                <span class="amenity">🥾 Hiking Trails</span>
+                <span class="amenity">🚂 Train Rides</span>
+                <span class="amenity">🌄 Sunrise Views</span>
+              </div>
+              <div class="location-price">
+                <span class="price">From $119</span>
+                <span class="per-night">/night</span>
+              </div>
+              <div class="location-rating">
+                <div class="stars">★★★★★</div>
+                <span class="rating-text">4.8 (167 reviews)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sigiriya Location -->
+        <div class="col-lg-4 col-md-6">
+          <div class="location-card">
+            <div class="location-image-container">
+              <img src="../../../assets/images/locations/sigiriya.jpg" alt="Holiday Getaway Sigiriya" class="location-image">
+            </div>
+            <div class="location-details">
+              <h4>Holiday Getaway Sigiriya</h4>
+              <p class="location-type">Ancient Heritage & Wildlife</p>
+              <div class="location-amenities">
+                <span class="amenity">🏛️ Ancient Sites</span>
+                <span class="amenity">🦌 Safari Access</span>
+                <span class="amenity">🎨 Cave Paintings</span>
+              </div>
+              <div class="location-price">
+                <span class="price">From $139</span>
+                <span class="per-night">/night</span>
+              </div>
+              <div class="location-rating">
+                <div class="stars">★★★★☆</div>
+                <span class="rating-text">4.7 (198 reviews)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="../rooms/rooms.html" class="btn btn-warning btn-lg">Explore All</a>
+      </div>
+    </div>
+  </section>
+
+    <!-- Guest Reviews Section -->
+  <section class="guest-reviews py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title">What Our Guests Say</h2>
+        <p class="section-subtitle">Real reviews from real guests</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="review-card">
+            <div class="review-rating">
+              <div class="stars">★★★★★</div>
+              <span class="rating-score">9.5</span>
+            </div>
+            <p class="review-text">"Absolutely stunning hotel with exceptional service. The staff went above and beyond to make our honeymoon special. Highly recommended!"</p>
+            <div class="reviewer-info">
+              <img src="../../../assets/images/home/guest-1.jpg" alt="Sarah Johnson" class="reviewer-avatar">
+              <div class="reviewer-details">
+                <h6>Sarah Johnson</h6>
+                <span>Honeymoon Guest</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="review-card">
+            <div class="review-rating">
+              <div class="stars">★★★★★</div>
+              <span class="rating-score">9.2</span>
+            </div>
+            <p class="review-text">"Perfect location for business trips. The conference facilities are top-notch and the rooms are very comfortable. Will definitely return."</p>
+            <div class="reviewer-info">
+              <img src="../../../assets/images/home/guest-2.jpg" alt="Michael Chen" class="reviewer-avatar">
+              <div class="reviewer-details">
+                <h6>Michael Chen</h6>
+                <span>Business Traveler</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="review-card">
+            <div class="review-rating">
+              <div class="stars">★★★★★</div>
+              <span class="rating-score">9.8</span>
+            </div>
+            <p class="review-text">"Amazing family vacation! The kids loved the pool and the family rooms were spacious. Great value for money and wonderful memories."</p>
+            <div class="reviewer-info">
+              <img src="assets/images/home/guest-3.jpg" alt="Emma Rodriguez" class="reviewer-avatar">
+              <div class="reviewer-details">
+                <h6>Emma Rodriguez</h6>
+                <span>Family Guest</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section py-5 bg-warning">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h3 class="text-dark mb-2">Stay Connected with Holiday Getaway</h3>
+          <p class="text-dark mb-0">Subscribe to our newsletter for exclusive offers across all our locations and be the first to know about new properties and experiences</p>
+        </div>
+        <div class="col-lg-6">
+          <form class="newsletter-form d-flex gap-2 mt-3 mt-lg-0">
+            <input type="email" class="form-control" placeholder="Enter your email address" required>
+            <button type="submit" class="btn btn-dark px-4">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- Footer Section -->
+<footer class="footer bg-dark text-light py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Hotel Information -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="footer-brand mb-3">
+          <img src="../../../assets/images/background/logo.png" alt="Hotel Getaway" class="footer-logo mb-2">
+          <h5 class="brand-text">Holiday Getaway</h5>
+        </div>
+        <p class="footer-description">
+          Experience luxury and comfort at Holiday Getaway. Your perfect destination for unforgettable holidays and business stays.
+        </p>
+        <div class="footer-social mt-3">
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="social-icon"></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Quick Links</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Home</a></li>
+          <li><a href="#" class="footer-link">About Us</a></li>
+          <li><a href="#" class="footer-link">Rooms & Suites</a></li>
+          <li><a href="#" class="footer-link">Facilities</a></li>
+          <li><a href="#" class="footer-link">Gallery</a></li>
+          <li><a href="#" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Services</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Restaurant</a></li>
+          <li><a href="#" class="footer-link">Spa & Wellness</a></li>
+          <li><a href="#" class="footer-link">Conference Hall</a></li>
+          <li><a href="#" class="footer-link">Swimming Pool</a></li>
+          <li><a href="#" class="footer-link">Fitness Center</a></li>
+          <li><a href="#" class="footer-link">Room Service</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies & Support -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Policies</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link">Terms of Service</a></li>
+          <li><a href="#" class="footer-link">Cancellation Policy</a></li>
+          <li><a href="#" class="footer-link">COVID-19 Safety</a></li>
+          <li><a href="#" class="footer-link">Guest Reviews</a></li>
+          <li><a href="#" class="footer-link">Help Center</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Contact Info</h6>
+        <div class="contact-info">
+          <div class="contact-item mb-2">
+            <span>123 Resort Avenue, Hill Station, Country 12345</span>
+          </div>
+          <div class="contact-item mb-2">
+            <span>+94 77 678 6535</span>
+          </div>
+          <div class="contact-item mb-2">
+            <span>info@holidayGetaway.com</span>
+          </div>
+          <div class="contact-item mb-3">
+            <span>24/7 Reception</span>
+          </div>
+        </div>
+        
+        <!-- Newsletter Signup -->
+        <div class="newsletter-signup mt-4">
+          <h6 class="mb-2">Newsletter</h6>
+          <p class="small mb-2">Subscribe for special offers and updates</p>
+          <form class="newsletter-form">
+            <div class="input-group">
+              <input type="email" class="form-control form-control-sm" placeholder="Your email address" required>
+              <button class="btn btn-warning btn-sm" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+</footer>
+
+<!-- Footer Bottom -->
+<div class="footer-bottom bg-black text-light py-3">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0 small">&copy; <?php echo date('Y'); ?> Holiday Getaway. All rights reserved.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div class="footer-bottom-links">
+          <a href="#" class="footer-bottom-link me-3">Privacy</a>
+          <a href="#" class="footer-bottom-link me-3">Terms</a>
+          <a href="#" class="footer-bottom-link me-3">Cookies</a>
+          <a href="#" class="footer-bottom-link">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="home.js"></script>
+</body>
+</html>

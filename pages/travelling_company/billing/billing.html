@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Holiday Getaway</title>
+  <!-- Fonts & Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="billing.css">
+  <link rel="stylesheet" href="sweetalert2.min.css">
+</head>
+
+<body>
+  <header id="site-header">
+    <!-- Top Bar -->
+    <div class="top-bar d-none d-lg-flex justify-content-between align-items-center">
+        <ul class="list-inline mb-0">
+        <li class="list-inline-item">
+            <img src="../../../assets/images/logo/phone-icon.png" alt="Phone" class="icon"> +94 77 678 6535
+        </li>
+        <li class="list-inline-item ms-4">
+            <img src="../../../assets/images/logo/email-icon.png" alt="Email" class="icon"> info@HolidayGetaway.com
+        </li>
+        </ul>
+        <ul class="list-inline mb-0">
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="icon"></a></li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-5">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="navbar-logo">
+        <span class="brand-text ms-2">Holiday Getaway</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
+        <ul class="navbar-nav me-3">
+            <li class="nav-item"><a class="nav-link" href="../home/home.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../rooms/rooms.html">Rooms</a></li>
+            <li class="nav-item"><a class="nav-link" href="../aboutUs/aboutUs.html">About Us</a></li>
+        </ul>
+        <a href="#" class="me-3"><img src="../../../assets/images/logo/search.png" alt="Search" class="icon"></a>
+        <a href="../reservation/reservation.html" class="btn btn-warning px-4 py-2">Book Now</a>
+        <a href="../dashboard/dashboard.html"><img src="../../../assets/images/logo/user.png" alt="user" class="navbar-logo-user"></a>
+        <button class="btn btn-logout" onclick="logout()">
+          <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
+          Logout
+        </button>
+        </div>
+    </nav>
+  </header>
+
+
+
+<div class="billing-container mt-5 pt-5">
+  <!-- Background Video -->
+  <video autoplay muted loop class="bg-video">
+    <source src="../../../assets/images/background/hero-bg.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  
+  <!-- Dark Overlay -->
+  <div class="video-overlay"></div>
+  
+  <div class="container py-5 position-relative">
+    <div class="row">
+      <!-- Page Header -->
+      <div class="col-12 mb-4">
+        <div class="billing-header card shadow-lg border-0">
+          <div class="card-body p-4">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h2 class="billing-title mb-2">Billing History</h2>
+                <p class="billing-subtitle text-muted mb-0">View and manage your billing records and payment history</p>
+              </div>
+              <div class="col-md-4 text-md-end">
+                <div class="billing-summary">
+                  <div class="summary-item">
+                    <span class="summary-label">Total Paid:</span>
+                    <span class="summary-value text-success">$2,340.00</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Pending:</span>
+                    <span class="summary-value text-warning">$480.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="col-12 mb-4">
+        <div class="filter-section card shadow-lg border-0">
+          <div class="card-body p-4">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h5 class="filter-title mb-3">Filter Bills</h5>
+                <div class="filter-buttons">
+                  <button class="btn btn-filter active" data-filter="all" onclick="filterBills('all')">
+                    <span class="filter-icon">📋</span>
+                    <span class="filter-text">All Bills</span>
+                    <span class="filter-count">(6)</span>
+                  </button>
+                  <button class="btn btn-filter" data-filter="paid" onclick="filterBills('paid')">
+                    <span class="filter-icon">✅</span>
+                    <span class="filter-text">Paid</span>
+                    <span class="filter-count">(3)</span>
+                  </button>
+                  <button class="btn btn-filter" data-filter="unpaid" onclick="filterBills('unpaid')">
+                    <span class="filter-icon">⏳</span>
+                    <span class="filter-text">Unpaid</span>
+                    <span class="filter-count">(2)</span>
+                  </button>
+                  <button class="btn btn-filter" data-filter="no-show" onclick="filterBills('no-show')">
+                    <span class="filter-icon">❌</span>
+                    <span class="filter-text">No-Show</span>
+                    <span class="filter-count">(1)</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4 text-md-end">
+                <div class="date-filter">
+                  <label for="date-range" class="form-label">Date Range:</label>
+                  <select id="date-range" class="form-select" onchange="filterByDate(this.value)">
+                    <option value="all">All Time</option>
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 3 Months</option>
+                    <option value="365">Last Year</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Billing Table -->
+      <div class="col-12 mb-4">
+        <div class="billing-table-section card shadow-lg border-0">
+          <div class="card-header bg-transparent border-0 p-4">
+            <h4 class="section-title mb-0">Billing Records</h4>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table billing-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Reservation ID</th>
+                    <th>Room Type</th>
+                    <th>Stay Duration</th>
+                    <th>Services</th>
+                    <th>Total Cost</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Paid Bill 1 -->
+                  <tr class="bill-row" data-status="paid">
+                    <td>
+                      <div class="reservation-info">
+                        <strong class="reservation-id">HTL-2025-004</strong>
+                        <small class="reservation-date">May 15-18, 2025</small>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="room-info">
+                        <span class="room-type">Suite - Garden View</span>
+                        <small class="room-details">2 Adults</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="duration">3 Nights</span>
+                    </td>
+                    <td>
+                      <div class="services-list">
+                        <span class="service-item">Room Service: $45</span>
+                        <span class="service-item">Laundry: $25</span>
+                        <span class="service-item">Restaurant: $120</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="cost-breakdown">
+                        <strong class="total-cost">$840.00</strong>
+                        <small class="cost-details">Room: $650 + Services: $190</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="status-badge status-paid">Paid</span>
+                      <small class="payment-date">Paid on May 18, 2025</small>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="btn btn-outline-info btn-sm" onclick="viewInvoice('HTL-2025-004')">
+                          <span>View Invoice</span>
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="downloadReceipt('HTL-2025-004')">
+                          <span>Download</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Unpaid Bill 1 -->
+                  <tr class="bill-row" data-status="unpaid">
+                    <td>
+                      <div class="reservation-info">
+                        <strong class="reservation-id">HTL-2025-001</strong>
+                        <small class="reservation-date">June 15-18, 2025</small>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="room-info">
+                        <span class="room-type">Deluxe Room - Ocean View</span>
+                        <small class="room-details">2 Adults</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="duration">3 Nights</span>
+                    </td>
+                    <td>
+                      <div class="services-list">
+                        <span class="service-item">No additional services</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="cost-breakdown">
+                        <strong class="total-cost">$720.00</strong>
+                        <small class="cost-details">Room: $720</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="status-badge status-unpaid">Unpaid</span>
+                      <small class="payment-date">Due: June 18, 2025</small>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="btn btn-warning btn-sm" onclick="payBill('HTL-2025-001')">
+                          <span>Pay Now</span>
+                        </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="viewInvoice('HTL-2025-001')">
+                          <span>View</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Paid Bill 2 -->
+                  <tr class="bill-row" data-status="paid">
+                    <td>
+                      <div class="reservation-info">
+                        <strong class="reservation-id">HTL-2025-002</strong>
+                        <small class="reservation-date">July 22-25, 2025</small>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="room-info">
+                        <span class="room-type">Presidential Suite</span>
+                        <small class="room-details">4 Adults</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="duration">3 Nights</span>
+                    </td>
+                    <td>
+                      <div class="services-list">
+                        <span class="service-item">Room Service: $85</span>
+                        <span class="service-item">Spa: $200</span>
+                        <span class="service-item">Mini Bar: $65</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="cost-breakdown">
+                        <strong class="total-cost">$1,500.00</strong>
+                        <small class="cost-details">Room: $1,150 + Services: $350</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="status-badge status-paid">Paid</span>
+                      <small class="payment-date">Paid on July 25, 2025</small>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="btn btn-outline-info btn-sm" onclick="viewInvoice('HTL-2025-002')">
+                          <span>View Invoice</span>
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="downloadReceipt('HTL-2025-002')">
+                          <span>Download</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- No-Show Bill -->
+                  <tr class="bill-row" data-status="no-show">
+                    <td>
+                      <div class="reservation-info">
+                        <strong class="reservation-id">HTL-2025-006</strong>
+                        <small class="reservation-date">March 10-12, 2025</small>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="room-info">
+                        <span class="room-type">Standard Room</span>
+                        <small class="room-details">1 Adult</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="duration">2 Nights</span>
+                    </td>
+                    <td>
+                      <div class="services-list">
+                        <span class="service-item no-show-note">No services (No-Show)</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="cost-breakdown">
+                        <strong class="total-cost">$240.00</strong>
+                        <small class="cost-details">No-Show Charge: $240</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="status-badge status-no-show">No-Show</span>
+                      <small class="payment-date">Charged on March 11, 2025</small>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="btn btn-outline-info btn-sm" onclick="viewInvoice('HTL-2025-006')">
+                          <span>View Invoice</span>
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="downloadReceipt('HTL-2025-006')">
+                          <span>Download</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Unpaid Bill 2 -->
+                  <tr class="bill-row" data-status="unpaid">
+                    <td>
+                      <div class="reservation-info">
+                        <strong class="reservation-id">HTL-2025-003</strong>
+                        <small class="reservation-date">August 10-13, 2025</small>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="room-info">
+                        <span class="room-type">Standard Room</span>
+                        <small class="room-details">1 Adult</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="duration">3 Nights</span>
+                    </td>
+                    <td>
+                      <div class="services-list">
+                        <span class="service-item">Telephone: $15</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="cost-breakdown">
+                        <strong class="total-cost">$375.00</strong>
+                        <small class="cost-details">Room: $360 + Services: $15</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="status-badge status-unpaid">Unpaid</span>
+                      <small class="payment-date">Due: August 13, 2025</small>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="btn btn-warning btn-sm" onclick="payBill('HTL-2025-003')">
+                          <span>Pay Now</span>
+                        </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="viewInvoice('HTL-2025-003')">
+                          <span>View</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Paid Bill 3 -->
+                  <tr class="bill-row" data-status="paid">
+                    <td>
+                      <div class="reservation-info">
+                        <strong class="reservation-id">HTL-2025-007</strong>
+                        <small class="reservation-date">April 5-8, 2025</small>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="room-info">
+                        <span class="room-type">Deluxe Room</span>
+                        <small class="room-details">2 Adults</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="duration">3 Nights</span>
+                    </td>
+                    <td>
+                      <div class="services-list">
+                        <span class="service-item">Restaurant: $95</span>
+                        <span class="service-item">Parking: $30</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="cost-breakdown">
+                        <strong class="total-cost">$705.00</strong>
+                        <small class="cost-details">Room: $580 + Services: $125</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="status-badge status-paid">Paid</span>
+                      <small class="payment-date">Paid on April 8, 2025</small>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="btn btn-outline-info btn-sm" onclick="viewInvoice('HTL-2025-007')">
+                          <span>View Invoice</span>
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="downloadReceipt('HTL-2025-007')">
+                          <span>Download</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Billing Summary Stats -->
+      <div class="col-12 mb-4">
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <div class="stat-card card border-0 shadow-sm">
+              <div class="card-body text-center p-3">
+                <div class="stat-icon">💰</div>
+                <h4 class="stat-number">$4,380.00</h4>
+                <p class="stat-label">Total Billed</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="stat-card card border-0 shadow-sm">
+              <div class="card-body text-center p-3">
+                <div class="stat-icon">✅</div>
+                <h4 class="stat-number">$3,045.00</h4>
+                <p class="stat-label">Total Paid</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="stat-card card border-0 shadow-sm">
+              <div class="card-body text-center p-3">
+                <div class="stat-icon">⏳</div>
+                <h4 class="stat-number">$1,095.00</h4>
+                <p class="stat-label">Pending</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="stat-card card border-0 shadow-sm">
+              <div class="card-body text-center p-3">
+                <div class="stat-icon">❌</div>
+                <h4 class="stat-number">$240.00</h4>
+                <p class="stat-label">No-Show Charges</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Important Notes -->
+      <div class="col-12">
+        <div class="notes-section card shadow-lg border-0">
+          <div class="card-header bg-transparent border-0 p-4">
+            <h4 class="section-title mb-0">Important Notes</h4>
+          </div>
+          <div class="card-body p-4">
+            <div class="alert alert-warning mb-3">
+              <strong>⚠️ Note:</strong> No functional logic included - This is a UI demonstration only.
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="note-item mb-3">
+                  <h6 class="note-title">💳 Payment Options</h6>
+                  <p class="note-text">Bills can be paid using credit card or cash at checkout. Online payment processing would be integrated in the full system.</p>
+                </div>
+                <div class="note-item mb-3">
+                  <h6 class="note-title">🕐 No-Show Policy</h6>
+                  <p class="note-text">No-show customers are automatically charged for their reservation. Bills are generated daily at 7:00 PM.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="note-item mb-3">
+                  <h6 class="note-title">📊 Additional Services</h6>
+                  <p class="note-text">Optional charges include restaurant, room service, laundry, telephone, parking, and club facility access.</p>
+                </div>
+                <div class="note-item mb-3">
+                  <h6 class="note-title">🏢 Travel Company Bills</h6>
+                  <p class="note-text">Corporate bookings through travel companies are billed directly to the company account.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Footer Section -->
+<footer class="footer bg-dark text-light py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Hotel Information -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="footer-brand mb-3">
+          <img src="../../../assets/images/background/logo.png" alt="Hotel Getaway" class="footer-logo mb-2">
+          <h5 class="brand-text">Holiday Getaway</h5>
+        </div>
+        <p class="footer-description">
+          Experience luxury and comfort at Holiday Getaway. Your perfect destination for unforgettable holidays and business stays.
+        </p>
+        <div class="footer-social mt-3">
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="social-icon"></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Quick Links</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Home</a></li>
+          <li><a href="#" class="footer-link">About Us</a></li>
+          <li><a href="#" class="footer-link">Rooms & Suites</a></li>
+          <li><a href="#" class="footer-link">Facilities</a></li>
+          <li><a href="#" class="footer-link">Gallery</a></li>
+          <li><a href="#" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Services</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Restaurant</a></li>
+          <li><a href="#" class="footer-link">Spa & Wellness</a></li>
+          <li><a href="#" class="footer-link">Conference Hall</a></li>
+          <li><a href="#" class="footer-link">Swimming Pool</a></li>
+          <li><a href="#" class="footer-link">Fitness Center</a></li>
+          <li><a href="#" class="footer-link">Room Service</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies & Support -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Policies</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link">Terms of Service</a></li>
+          <li><a href="#" class="footer-link">Cancellation Policy</a></li>
+          <li><a href="#" class="footer-link">COVID-19 Safety</a></li>
+          <li><a href="#" class="footer-link">Guest Reviews</a></li>
+          <li><a href="#" class="footer-link">Help Center</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Contact Info</h6>
+        <div class="contact-info">
+          <div class="contact-item mb-2">
+            <span>123 Resort Avenue, Hill Station, Country 12345</span>
+          </div>
+          <div class="contact-item mb-2">
+            <span>+94 77 678 6535</span>
+          </div>
+          <div class="contact-item mb-2">
+            <span>info@holidayGetaway.com</span>
+          </div>
+          <div class="contact-item mb-3">
+            <span>24/7 Reception</span>
+          </div>
+        </div>
+        
+        <!-- Newsletter Signup -->
+        <div class="newsletter-signup mt-4">
+          <h6 class="mb-2">Newsletter</h6>
+          <p class="small mb-2">Subscribe for special offers and updates</p>
+          <form class="newsletter-form">
+            <div class="input-group">
+              <input type="email" class="form-control form-control-sm" placeholder="Your email address" required>
+              <button class="btn btn-warning btn-sm" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+</footer>
+
+<!-- Footer Bottom -->
+<div class="footer-bottom bg-black text-light py-3">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0 small">&copy; <?php echo date('Y'); ?> Holiday Getaway. All rights reserved.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div class="footer-bottom-links">
+          <a href="#" class="footer-bottom-link me-3">Privacy</a>
+          <a href="#" class="footer-bottom-link me-3">Terms</a>
+          <a href="#" class="footer-bottom-link me-3">Cookies</a>
+          <a href="#" class="footer-bottom-link">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="billing.js"></script>
+</body>
+</html>

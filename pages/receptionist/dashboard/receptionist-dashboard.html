@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Receptionist Dashboard - Holiday Getaway</title>
+  <!-- Fonts & Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="receptionist-dashboard.css">
+</head>
+
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-content">
+      <div class="nav-left">
+        <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="nav-logo">
+        <h4 class="dashboard-title">Receptionist Dashboard</h4>
+      </div>
+      <div class="nav-right">
+        <div class="receptionist-info">
+          <span class="receptionist-name">Sarah Fernando</span>
+          <span class="receptionist-role">Front Desk Receptionist</span>
+        </div>
+        <button class="btn btn-logout" onclick="logout()">
+          <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-container">
+    
+    <!-- Quick Actions Tabs -->
+    <div class="action-tabs mb-4">
+      <ul class="nav nav-pills" id="actionTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="reservations-tab" data-bs-toggle="pill" data-bs-target="#reservations" type="button" role="tab">
+            📅 Reservations
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="checkin-tab" data-bs-toggle="pill" data-bs-target="#checkin" type="button" role="tab">
+            🏨 Check-In
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="checkout-tab" data-bs-toggle="pill" data-bs-target="#checkout" type="button" role="tab">
+            🚪 Check-Out
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="search-tab" data-bs-toggle="pill" data-bs-target="#search" type="button" role="tab">
+            🔍 Search Guest
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="actionTabsContent">
+      
+      <!-- Reservations Tab -->
+      <div class="tab-pane fade show active" id="reservations" role="tabpanel">
+        <div class="row g-4">
+          
+          <!-- New Reservation Form -->
+          <div class="col-lg-6">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>📝 Make New Reservation</h5>
+              </div>
+              <div class="card-body">
+                <form id="newReservationForm">
+                  <div class="row g-3">
+                    <!-- Personal Details -->
+                    <div class="col-12">
+                      <h6 class="section-title">Personal Details</h6>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="firstName" class="form-label">First Name *</label>
+                      <input type="text" class="form-control" id="firstName" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="lastName" class="form-label">Last Name *</label>
+                      <input type="text" class="form-control" id="lastName" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="email" class="form-label">Email *</label>
+                      <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="phone" class="form-label">Phone *</label>
+                      <input type="tel" class="form-control" id="phone" required>
+                    </div>
+                    
+                    <!-- Reservation Details -->
+                    <div class="col-12 mt-4">
+                      <h6 class="section-title">Reservation Details</h6>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="branch" class="form-label">Branch *</label>
+                      <select class="form-select" id="branch" required>
+                        <option value="">Select Branch</option>
+                        <option value="colombo">Holiday Getaway Colombo</option>
+                        <option value="kandy">Holiday Getaway Kandy</option>
+                        <option value="galle">Holiday Getaway Galle</option>
+                        <option value="nuwara-eliya">Holiday Getaway Nuwara Eliya</option>
+                        <option value="ella">Holiday Getaway Ella</option>
+                        <option value="sigiriya">Holiday Getaway Sigiriya</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="roomType" class="form-label">Room Type *</label>
+                      <select class="form-select" id="roomType" required>
+                        <option value="">Select Room Type</option>
+                        <option value="standard">Standard Room</option>
+                        <option value="deluxe">Deluxe Room</option>
+                        <option value="suite">Suite</option>
+                        <option value="presidential">Presidential Suite</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="checkInDate" class="form-label">Check-in Date *</label>
+                      <input type="date" class="form-control" id="checkInDate" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="checkOutDate" class="form-label">Check-out Date *</label>
+                      <input type="date" class="form-control" id="checkOutDate" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="adults" class="form-label">Adults *</label>
+                      <select class="form-select" id="adults" required>
+                        <option value="">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="children" class="form-label">Children</label>
+                      <select class="form-select" id="children">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+                    </div>
+                    <div class="col-12">
+                      <label for="specialRequests" class="form-label">Special Requests</label>
+                      <textarea class="form-control" id="specialRequests" rows="3" placeholder="Any special requests or notes..."></textarea>
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary w-100">Make Reservation</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Reservations -->
+          <div class="col-lg-6">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>📋 Today's Reservations</h5>
+                <button class="btn btn-sm btn-outline-primary" onclick="refreshReservations()">Refresh</button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Guest</th>
+                        <th>Room</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="todaysReservationsTable">
+                      <!-- Populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Check-In Tab -->
+      <div class="tab-pane fade" id="checkin" role="tabpanel">
+        <div class="row g-4">
+          
+          <!-- Guest Search for Check-in -->
+          <div class="col-lg-6">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>🔍 Find Guest Reservation</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="searchMethod" class="form-label">Search By</label>
+                    <select class="form-select" id="searchMethod">
+                      <option value="confirmation">Confirmation Number</option>
+                      <option value="name">Guest Name</option>
+                      <option value="phone">Phone Number</option>
+                      <option value="email">Email</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="searchValue" class="form-label">Search Value</label>
+                    <input type="text" class="form-control" id="searchValue" placeholder="Enter search value...">
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" onclick="searchReservation()">Search Reservation</button>
+                  </div>
+                </div>
+                
+                <!-- Search Results -->
+                <div id="searchResults" class="mt-4" style="display: none;">
+                  <h6>Search Results</h6>
+                  <div id="reservationDetails" class="reservation-card">
+                    <!-- Populated by JavaScript -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Walk-in Check-in -->
+          <div class="col-lg-6">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>🚶 Walk-in Check-in</h5>
+              </div>
+              <div class="card-body">
+                <form id="walkinCheckinForm">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="walkinFirstName" class="form-label">First Name *</label>
+                      <input type="text" class="form-control" id="walkinFirstName" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="walkinLastName" class="form-label">Last Name *</label>
+                      <input type="text" class="form-control" id="walkinLastName" required>
+                    </div>
+                    <div class="col-12">
+                      <label for="walkinEmail" class="form-label">Email *</label>
+                      <input type="email" class="form-control" id="walkinEmail" required>
+                    </div>
+                    <div class="col-12">
+                      <label for="walkinPhone" class="form-label">Phone *</label>
+                      <input type="tel" class="form-control" id="walkinPhone" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="walkinBranch" class="form-label">Branch *</label>
+                      <select class="form-select" id="walkinBranch" required>
+                        <option value="">Select Branch</option>
+                        <option value="colombo">Holiday Getaway Colombo</option>
+                        <option value="kandy">Holiday Getaway Kandy</option>
+                        <option value="galle">Holiday Getaway Galle</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="walkinRoomType" class="form-label">Room Type *</label>
+                      <select class="form-select" id="walkinRoomType" required>
+                        <option value="">Select Room Type</option>
+                        <option value="standard">Standard Room</option>
+                        <option value="deluxe">Deluxe Room</option>
+                        <option value="suite">Suite</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="walkinNights" class="form-label">Number of Nights *</label>
+                      <input type="number" class="form-control" id="walkinNights" min="1" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="walkinGuests" class="form-label">Number of Guests *</label>
+                      <input type="number" class="form-control" id="walkinGuests" min="1" max="4" required>
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-success w-100">Check-in Walk-in Guest</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Check-ins -->
+          <div class="col-12">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>⏰ Pending Check-ins</h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Confirmation</th>
+                        <th>Guest Name</th>
+                        <th>Room Type</th>
+                        <th>Check-in Time</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pendingCheckinsTable">
+                      <!-- Populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Check-Out Tab -->
+      <div class="tab-pane fade" id="checkout" role="tabpanel">
+        <div class="row g-4">
+          
+          <!-- Current Guests -->
+          <div class="col-lg-8">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>🏨 Current Guests</h5>
+                <button class="btn btn-sm btn-outline-primary" onclick="refreshCurrentGuests()">Refresh</button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Room</th>
+                        <th>Guest Name</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Nights</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="currentGuestsTable">
+                      <!-- Populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Checkout -->
+          <div class="col-lg-4">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>⚡ Quick Check-out</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="checkoutRoom" class="form-label">Room Number</label>
+                    <input type="text" class="form-control" id="checkoutRoom" placeholder="Enter room number...">
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-warning w-100" onclick="quickCheckout()">Quick Check-out</button>
+                  </div>
+                </div>
+                
+                <!-- Guest Bill Summary -->
+                <div id="billSummary" class="mt-4" style="display: none;">
+                  <h6>Bill Summary</h6>
+                  <div class="bill-details">
+                    <!-- Populated by JavaScript -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Today's Checkouts -->
+            <div class="action-card mt-4">
+              <div class="card-header">
+                <h5>📅 Today's Check-outs</h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-sm">
+                    <thead>
+                      <tr>
+                        <th>Room</th>
+                        <th>Guest</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody id="todaysCheckoutsTable">
+                      <!-- Populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Search Guest Tab -->
+      <div class="tab-pane fade" id="search" role="tabpanel">
+        <div class="row g-4">
+          
+          <!-- Guest Search -->
+          <div class="col-lg-6">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>🔍 Search Guest</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="guestSearchType" class="form-label">Search By</label>
+                    <select class="form-select" id="guestSearchType">
+                      <option value="name">Guest Name</option>
+                      <option value="email">Email</option>
+                      <option value="phone">Phone Number</option>
+                      <option value="confirmation">Confirmation Number</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="guestSearchValue" class="form-label">Search Value</label>
+                    <input type="text" class="form-control" id="guestSearchValue" placeholder="Enter search value...">
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" onclick="searchGuest()">Search Guest</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guest Information -->
+          <div class="col-lg-6">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>👤 Guest Information</h5>
+              </div>
+              <div class="card-body">
+                <div id="guestInfo" class="guest-info">
+                  <p class="text-muted text-center">Search for a guest to view their information</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guest History -->
+          <div class="col-12">
+            <div class="action-card">
+              <div class="card-header">
+                <h5>📋 Reservation History</h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Confirmation</th>
+                        <th>Dates</th>
+                        <th>Branch</th>
+                        <th>Room Type</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="guestHistoryTable">
+                      <tr>
+                        <td colspan="7" class="text-center text-muted">Search for a guest to view their reservation history</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-content">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Processing...</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="receptionist-dashboard.js"></script>
+</body>
+</html>

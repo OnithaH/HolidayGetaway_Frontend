@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Holiday Getaway</title>
+  <!-- Fonts & Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="sweetalert2.min.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+  <header id="site-header">
+    <!-- Top Bar -->
+    <div class="top-bar d-none d-lg-flex justify-content-between align-items-center">
+        <ul class="list-inline mb-0">
+        <li class="list-inline-item">
+            <img src="../../../assets/images/logo/phone-icon.png" alt="Phone" class="icon"> +94 77 678 6535
+        </li>
+        <li class="list-inline-item ms-4">
+            <img src="../../../assets/images/logo/email-icon.png" alt="Email" class="icon"> info@HolidayGetaway.com
+        </li>
+        </ul>
+        <ul class="list-inline mb-0">
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="icon"></a></li>
+        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="icon"></a></li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-5">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="navbar-logo">
+        <span class="brand-text ms-2">Holiday Getaway</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
+        <ul class="navbar-nav me-3">
+            <li class="nav-item"><a class="nav-link" href="../home/home.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../rooms/rooms.html">Rooms</a></li>
+            <li class="nav-item"><a class="nav-link" href="../aboutUs/aboutUs.html">About Us</a></li>
+        </ul>
+        <a href="#" class="me-3"><img src="../../../assets/images/logo/search.png" alt="Search" class="icon"></a>
+        <a href="../dashboard/dashboard.html" class="btn btn-warning px-4 py-2">Book Now</a>
+        <a href="#"><img src="../../../assets/images/logo/user.png" alt="user" class="navbar-logo-user"></a>
+        <button class="btn btn-logout" onclick="logout()">
+          <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
+          Logout
+        </button>
+        </div>
+    </nav>
+  </header>
+
+
+
+<div class="dashboard-container mt-5 pt-5">
+  <!-- Background Video -->
+  <video autoplay muted loop class="bg-video">
+    <source src="../../../assets/images/background/hero-bg.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  
+  <!-- Dark Overlay -->
+  <div class="video-overlay"></div>
+  
+  <div class="container py-5 position-relative">
+    <div class="row">
+      <!-- Welcome Section -->
+      <div class="col-12 mb-4">
+        <div class="welcome-card card shadow-lg border-0">
+          <div class="card-body p-4">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h2 class="dashboard-title mb-2">Welcome back, John Doe!</h2>
+                <p class="dashboard-subtitle text-muted mb-0">Manage your reservations and bookings</p>
+              </div>
+              <div class="col-md-4 text-md-end">
+                <a href="../reservation/reservation.html" class="btn btn-warning px-4 py-2">
+                  <span class="btn-text">Make New Reservation</span>
+                  <span class="btn-icon ms-2">🏨</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="col-12 mb-4">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="stat-card card border-0 shadow-sm">
+              <div class="card-body text-center p-3">
+                <div class="stat-icon mb-2">🏨</div>
+                <h4 class="stat-number mb-1">3</h4>
+                <p class="stat-label mb-0">Active Reservations</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="stat-card card border-0 shadow-sm">
+              <div class="card-body text-center p-3">
+                <div class="stat-icon mb-2">📅</div>
+                <h4 class="stat-number mb-1">12</h4>
+                <p class="stat-label mb-0">Total Bookings</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="stat-card card border-0 shadow-sm">
+              <div class="card-body text-center p-3">
+                <div class="stat-icon mb-2">💰</div>
+                <h4 class="stat-number mb-1">$2,340</h4>
+                <p class="stat-label mb-0">Total Spent</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Reservations -->
+      <div class="col-12 mb-4">
+        <div class="reservations-section card shadow-lg border-0">
+          <div class="card-header bg-transparent border-0 p-4">
+            <h4 class="section-title mb-0">Current Reservations</h4>
+          </div>
+          <div class="card-body p-4">
+            <!-- Reservation 1 - Upcoming -->
+            <div class="reservation-block mb-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="reservation-info">
+                    <h5 class="reservation-title mb-2">Deluxe Room - Ocean View</h5>
+                    <div class="reservation-details">
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Check-in:</strong> June 15, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Check-out:</strong> June 18, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">👥</i>
+                        <strong>Guests:</strong> 2 Adults
+                      </span>
+                    </div>
+                    <div class="reservation-meta mt-2">
+                      <span class="reservation-id">Reservation ID: HTL-2025-001</span>
+                      <span class="status-badge status-confirmed ms-3">Confirmed</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                  <div class="action-buttons">
+                    <button class="btn btn-outline-primary btn-sm me-2 mb-2" onclick="changeReservation('HTL-2025-001')">
+                      <span>Change</span>
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm me-2 mb-2" onclick="cancelReservation('HTL-2025-001')">
+                      <span>Cancel</span>
+                    </button>
+                    <button class="btn btn-success btn-sm mb-2" onclick="checkIn('HTL-2025-001')">
+                      <span>Check-Out</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reservation 2 - Upcoming -->
+            <div class="reservation-block mb-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="reservation-info">
+                    <h5 class="reservation-title mb-2">Presidential Suite</h5>
+                    <div class="reservation-details">
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Check-in:</strong> July 22, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Check-out:</strong> July 25, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">👥</i>
+                        <strong>Guests:</strong> 4 Adults
+                      </span>
+                    </div>
+                    <div class="reservation-meta mt-2">
+                      <span class="reservation-id">Reservation ID: HTL-2025-002</span>
+                      <span class="status-badge status-confirmed ms-3">Confirmed</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                  <div class="action-buttons">
+                    <button class="btn btn-outline-primary btn-sm me-2 mb-2" onclick="changeReservation('HTL-2025-002')">
+                      <span>Change</span>
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm me-2 mb-2" onclick="cancelReservation('HTL-2025-002')">
+                      <span>Cancel</span>
+                    </button>
+                    <button class="btn btn-success btn-sm mb-2" onclick="checkIn('HTL-2025-002')">
+                      <span>Check-Out</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reservation 3 - Pending (No Credit Card) -->
+            <div class="reservation-block mb-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="reservation-info">
+                    <h5 class="reservation-title mb-2">Standard Room</h5>
+                    <div class="reservation-details">
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Check-in:</strong> August 10, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Check-out:</strong> August 13, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">👥</i>
+                        <strong>Guests:</strong> 1 Adult
+                      </span>
+                    </div>
+                    <div class="reservation-meta mt-2">
+                      <span class="reservation-id">Reservation ID: HTL-2025-003</span>
+                      <span class="status-badge status-pending ms-3">Pending (No Credit Card)</span>
+                    </div>
+                    <div class="warning-note mt-2">
+                      <small class="text-warning">⚠️ This reservation will be cancelled at 7 PM daily unless secured with a credit card</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                  <div class="action-buttons">
+                    <button class="btn btn-warning btn-sm me-2 mb-2" onclick="secureReservation('HTL-2025-003')">
+                      <span>Secure Now</span>
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm mb-2" onclick="cancelReservation('HTL-2025-003')">
+                      <span>Cancel</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Past Reservations -->
+      <div class="col-12 mb-4">
+        <div class="reservations-section card shadow-lg border-0">
+          <div class="card-header bg-transparent border-0 p-4">
+            <h4 class="section-title mb-0">Past Reservations</h4>
+          </div>
+          <div class="card-body p-4">
+            <!-- Past Reservation 1 - Completed -->
+            <div class="reservation-block mb-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="reservation-info">
+                    <h5 class="reservation-title mb-2">Suite - Garden View</h5>
+                    <div class="reservation-details">
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Stay:</strong> May 15-18, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">👥</i>
+                        <strong>Guests:</strong> 2 Adults
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">💰</i>
+                        <strong>Total:</strong> $840.00
+                      </span>
+                    </div>
+                    <div class="reservation-meta mt-2">
+                      <span class="reservation-id">Reservation ID: HTL-2025-004</span>
+                      <span class="status-badge status-completed ms-3">Completed</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                  <div class="action-buttons">
+                    <button class="btn btn-outline-info btn-sm me-2 mb-2" onclick="viewInvoice('HTL-2025-004')">
+                      <span>View Invoice</span>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm mb-2" onclick="rebookStay('HTL-2025-004')">
+                      <span>Book Again</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Past Reservation 2 - Cancelled -->
+            <div class="reservation-block mb-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="reservation-info">
+                    <h5 class="reservation-title mb-2">Deluxe Room</h5>
+                    <div class="reservation-details">
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Was for:</strong> April 20-23, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">👥</i>
+                        <strong>Guests:</strong> 3 Adults
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">💰</i>
+                        <strong>Refund:</strong> $540.00
+                      </span>
+                    </div>
+                    <div class="reservation-meta mt-2">
+                      <span class="reservation-id">Reservation ID: HTL-2025-005</span>
+                      <span class="status-badge status-cancelled ms-3">Cancelled</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                  <div class="action-buttons">
+                    <button class="btn btn-outline-secondary btn-sm mb-2" onclick="rebookStay('HTL-2025-005')">
+                      <span>Book Again</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Past Reservation 3 - No Show -->
+            <div class="reservation-block">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="reservation-info">
+                    <h5 class="reservation-title mb-2">Standard Room</h5>
+                    <div class="reservation-details">
+                      <span class="detail-item">
+                        <i class="detail-icon">📅</i>
+                        <strong>Was for:</strong> March 10-12, 2025
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">👥</i>
+                        <strong>Guests:</strong> 1 Adult
+                      </span>
+                      <span class="detail-item">
+                        <i class="detail-icon">💰</i>
+                        <strong>Charged:</strong> $240.00
+                      </span>
+                    </div>
+                    <div class="reservation-meta mt-2">
+                      <span class="reservation-id">Reservation ID: HTL-2025-006</span>
+                      <span class="status-badge status-no-show ms-3">No-Show</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                  <div class="action-buttons">
+                    <button class="btn btn-outline-info btn-sm me-2 mb-2" onclick="viewInvoice('HTL-2025-006')">
+                      <span>View Invoice</span>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm mb-2" onclick="rebookStay('HTL-2025-006')">
+                      <span>Book Again</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="col-12">
+        <div class="quick-actions-section card shadow-lg border-0">
+          <div class="card-header bg-transparent border-0 p-4">
+            <h4 class="section-title mb-0">Quick Actions</h4>
+          </div>
+          <div class="card-body p-4">
+            <div class="row">
+              <div class="col-md-3 col-sm-6 mb-3">
+                <a href="../reservation/reservation.html" class="quick-action-card">
+                  <div class="quick-action-icon">🏨</div>
+                  <h6 class="quick-action-title">New Reservation</h6>
+                  <p class="quick-action-desc">Book another stay</p>
+                </a>
+              </div>
+              <div class="col-md-3 col-sm-6 mb-3">
+                <a href="../billing/billing.html" class="quick-action-card">
+                  <div class="quick-action-icon">🧾</div>
+                  <h6 class="quick-action-title">View Bills</h6>
+                  <p class="quick-action-desc">Check billing history</p>
+                </a>
+              </div>
+              <div class="col-md-3 col-sm-6 mb-3">
+                <a href="suite_booking.php" class="quick-action-card">
+                  <div class="quick-action-icon">⚙️</div>
+                  <h6 class="quick-action-title">Settings</h6>
+                  <p class="quick-action-desc">Long-term stays</p>
+                </a>
+              </div>
+              <div class="col-md-3 col-sm-6 mb-3">
+                <a href="../aboutUs/aboutUs.html" class="quick-action-card" onclick="contactSupport()">
+                  <div class="quick-action-icon">📞</div>
+                  <h6 class="quick-action-title">Contact Support</h6>
+                  <p class="quick-action-desc">Get help & support</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Footer Section -->
+<footer class="footer bg-dark text-light py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Hotel Information -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="footer-brand mb-3">
+          <img src="../../../assets/images/background/logo.png" alt="Hotel Getaway" class="footer-logo mb-2">
+          <h5 class="brand-text">Holiday Getaway</h5>
+        </div>
+        <p class="footer-description">
+          Experience luxury and comfort at Holiday Getaway. Your perfect destination for unforgettable holidays and business stays.
+        </p>
+        <div class="footer-social mt-3">
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="social-icon"></a>
+          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="social-icon"></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Quick Links</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Home</a></li>
+          <li><a href="#" class="footer-link">About Us</a></li>
+          <li><a href="#" class="footer-link">Rooms & Suites</a></li>
+          <li><a href="#" class="footer-link">Facilities</a></li>
+          <li><a href="#" class="footer-link">Gallery</a></li>
+          <li><a href="#" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Services</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Restaurant</a></li>
+          <li><a href="#" class="footer-link">Spa & Wellness</a></li>
+          <li><a href="#" class="footer-link">Conference Hall</a></li>
+          <li><a href="#" class="footer-link">Swimming Pool</a></li>
+          <li><a href="#" class="footer-link">Fitness Center</a></li>
+          <li><a href="#" class="footer-link">Room Service</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies & Support -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Policies</h6>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link">Terms of Service</a></li>
+          <li><a href="#" class="footer-link">Cancellation Policy</a></li>
+          <li><a href="#" class="footer-link">COVID-19 Safety</a></li>
+          <li><a href="#" class="footer-link">Guest Reviews</a></li>
+          <li><a href="#" class="footer-link">Help Center</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h6 class="footer-title mb-3">Contact Info</h6>
+        <div class="contact-info">
+          <div class="contact-item mb-2">
+            <span>123 Resort Avenue, Hill Station, Country 12345</span>
+          </div>
+          <div class="contact-item mb-2">
+            <span>+94 77 678 6535</span>
+          </div>
+          <div class="contact-item mb-2">
+            <span>info@holidayGetaway.com</span>
+          </div>
+          <div class="contact-item mb-3">
+            <span>24/7 Reception</span>
+          </div>
+        </div>
+        
+        <!-- Newsletter Signup -->
+        <div class="newsletter-signup mt-4">
+          <h6 class="mb-2">Newsletter</h6>
+          <p class="small mb-2">Subscribe for special offers and updates</p>
+          <form class="newsletter-form">
+            <div class="input-group">
+              <input type="email" class="form-control form-control-sm" placeholder="Your email address" required>
+              <button class="btn btn-warning btn-sm" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+</footer>
+
+<!-- Footer Bottom -->
+<div class="footer-bottom bg-black text-light py-3">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0 small">&copy; <?php echo date('Y'); ?> Holiday Getaway. All rights reserved.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div class="footer-bottom-links">
+          <a href="#" class="footer-bottom-link me-3">Privacy</a>
+          <a href="#" class="footer-bottom-link me-3">Terms</a>
+          <a href="#" class="footer-bottom-link me-3">Cookies</a>
+          <a href="#" class="footer-bottom-link">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

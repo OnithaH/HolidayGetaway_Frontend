@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="manage-task.css">
+</head>
+
+<body>
+
+    <div class="flex min-h-screen bg-gray-100">
+
+        <!-- Sidebar - Fixed Left -->
+        <div
+            class="w-55 bg-[#e2ebfe] backdrop-blur-md bg-white/50 rounded-r-xl shadow-md px-6 py-4 space-y-6 min-h-screen ">
+            <section>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Admin</h2>
+                <nav>
+                    <ul class="space-y-2 text-gray-700 font-medium">
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/dashboard.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Dashboard</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/courses.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Recent Activities</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/quizzes.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Chat</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/exam.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Manage Tasks</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/MyClasses.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Manage Users</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/reports.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Reports</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/settings.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Setting</a>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <img src="../../../../assests/logout.png" alt="" class="w-6 h-6 rounded-full">
+                            <a href="#" class="block px-2 py-1 rounded text-red-500 hover:bg-red-100">Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-1 min-h-screen bg-gray-100 ml-[220px] mr-[295px] overflow-y-auto">
+
+            <main class="flex-1 p-6 space-y-6">
+                <h1 class="text-2xl font-bold text-gray-800">Tasks Manage</h1>
+
+
+                <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #e2ebfe;">
+                        <p>Total Workers</p>
+                        <strong class="text-xl">350</strong>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #fc9c9c;">
+                        <p>Total Tasks</p>
+                        <strong class="text-xl">40</strong>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #a7ffc0;">
+                        <p>Ongoing Tasks</p>
+                        <strong class="text-xl">40</strong>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow text-center" style="background-color: #f9ffa8;">
+                        <p>Completed Tasks</p>
+                        <strong class="text-xl">15</strong>
+                    </div>
+
+                </section>
+
+                <section class="bg-white p-6 rounded-lg shadow" style="background-color: #e2ebfe;">
+                    <div class="flex justify-end">
+                        <a href="">
+                            <img class="w-10 h-10 rounded-full" src="../../../../assests/add-file.gif" alt="">
+                        </a>
+                    </div>
+
+                    <div>
+                        <form class="max-w-md mx-auto">
+                            <div class="relative">
+                                <!-- Search Input -->
+                                <input type="search" id="default-search" class="block w-full p-2 ps-10 pr-10 text-sm text-gray-900 rounded-lg border border-white/30
+                            bg-white/30 backdrop-blur-md placeholder-gray-700 shadow-md
+                            focus:ring-blue-500 focus:border-blue-500" placeholder="Search Tasks Here..." required />
+
+                                <!-- Right-side image inside the input -->
+                                <div class="absolute inset-y-0 end-0 flex items-center pe-3">
+                                    <a href="#">
+                                        <img class="w-9 h-9 rounded-full object-cover"
+                                            src="../../../../assests/search (2).png" alt="Search Icon" />
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="max-w-1xl mx-auto">
+
+                        <figure
+                            class="mt-2 flex flex-col items-center justify-center p-8 text-center bg-white border border-gray-200 rounded-lg shadow-md">
+                            <figcaption class="flex items-center justify-center">
+                                <img class="rounded-full w-11 h-11"
+                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
+                                    alt="profile picture">
+                                <div class="ms-3 font-medium text-left">
+                                    <div>Saman Kumara</div>
+                                    <div class="text-sm text-gray-500">Developer</div>
+                                </div>
+                            </figcaption>
+                            <blockquote class="mb-0.5 text-gray-700 w-full">
+                                <span
+                                    class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded mb-1 inline-block">Assigned</span>
+                                <p class="my-1 text-justify">
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores tempora totam
+                                    voluptatum consequatur, exercitationem quidem laborum odit cupiditate sed eligendi.
+                                    Ipsa
+                                    tenetur repellendus, neque dignissimos repudiandae eligendi aliquam quod
+                                    perspiciatis!
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat sequi assumenda
+                                    quaerat
+                                    necessitatibus quo itaque, culpa nobis, porro animi doloremque, eum obcaecati. Hic
+                                    perspiciatis minus aliquid cupiditate? Ipsum, temporibus voluptatem.
+                                </p>
+                                <div class="flex justify-end space-x-2">
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/download.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/edit.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </figure>
+                        <figure
+                            class="mt-2 flex flex-col items-center justify-center p-8 text-center bg-white border border-gray-200 rounded-lg shadow-md">
+                            <figcaption class="flex items-center justify-center">
+                                <img class="rounded-full w-11 h-11"
+                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
+                                    alt="profile picture">
+                                <div class="ms-3 font-medium text-left">
+                                    <div>Saman Kumara</div>
+                                    <div class="text-sm text-gray-500">Developer</div>
+                                </div>
+                            </figcaption>
+                            <blockquote class="mb-0.5 text-gray-700 w-full">
+                                <span
+                                    class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded mb-1 inline-block">Assigned</span>
+                                <p class="my-1 text-justify">
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores tempora totam
+                                    voluptatum consequatur, exercitationem quidem laborum odit cupiditate sed eligendi.
+                                    Ipsa
+                                    tenetur repellendus, neque dignissimos repudiandae eligendi aliquam quod
+                                    perspiciatis!
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat sequi assumenda
+                                    quaerat
+                                    necessitatibus quo itaque, culpa nobis, porro animi doloremque, eum obcaecati. Hic
+                                    perspiciatis minus aliquid cupiditate? Ipsum, temporibus voluptatem.
+                                </p>
+                                <div class="flex justify-end space-x-2">
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/download.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/edit.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </figure>
+                        <figure
+                            class="mt-2 flex flex-col items-center justify-center p-8 text-center bg-white border border-gray-200 rounded-lg shadow-md">
+                            <figcaption class="flex items-center justify-center">
+                                <img class="rounded-full w-11 h-11"
+                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
+                                    alt="profile picture">
+                                <div class="ms-3 font-medium text-left">
+                                    <div>Saman Kumara</div>
+                                    <div class="text-sm text-gray-500">Developer</div>
+                                </div>
+                            </figcaption>
+                            <blockquote class="mb-0.5 text-gray-700 w-full">
+                                <span
+                                    class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded mb-1 inline-block">Assigned</span>
+                                <p class="my-1 text-justify">
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores tempora totam
+                                    voluptatum consequatur, exercitationem quidem laborum odit cupiditate sed eligendi.
+                                    Ipsa
+                                    tenetur repellendus, neque dignissimos repudiandae eligendi aliquam quod
+                                    perspiciatis!
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat sequi assumenda
+                                    quaerat
+                                    necessitatibus quo itaque, culpa nobis, porro animi doloremque, eum obcaecati. Hic
+                                    perspiciatis minus aliquid cupiditate? Ipsum, temporibus voluptatem.
+                                </p>
+                                <div class="flex justify-end space-x-2">
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/download.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/edit.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </figure>
+                        <figure
+                            class="mt-2 flex flex-col items-center justify-center p-8 text-center bg-white border border-gray-200 rounded-lg shadow-md">
+                            <figcaption class="flex items-center justify-center">
+                                <img class="rounded-full w-11 h-11"
+                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
+                                    alt="profile picture">
+                                <div class="ms-3 font-medium text-left">
+                                    <div>Saman Kumara</div>
+                                    <div class="text-sm text-gray-500">Developer</div>
+                                </div>
+                            </figcaption>
+                            <blockquote class="mb-0.5 text-gray-700 w-full">
+                                <span
+                                    class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded mb-1 inline-block">Assigned</span>
+                                <p class="my-1 text-justify">
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores tempora totam
+                                    voluptatum consequatur, exercitationem quidem laborum odit cupiditate sed eligendi.
+                                    Ipsa
+                                    tenetur repellendus, neque dignissimos repudiandae eligendi aliquam quod
+                                    perspiciatis!
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat sequi assumenda
+                                    quaerat
+                                    necessitatibus quo itaque, culpa nobis, porro animi doloremque, eum obcaecati. Hic
+                                    perspiciatis minus aliquid cupiditate? Ipsum, temporibus voluptatem.
+                                </p>
+                                <div class="flex justify-end space-x-2">
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/download.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/edit.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </figure>
+                        <figure
+                            class="mt-2 flex flex-col items-center justify-center p-8 text-center bg-white border border-gray-200 rounded-lg shadow-md">
+                            <figcaption class="flex items-center justify-center">
+                                <img class="rounded-full w-11 h-11"
+                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
+                                    alt="profile picture">
+                                <div class="ms-3 font-medium text-left">
+                                    <div>Saman Kumara</div>
+                                    <div class="text-sm text-gray-500">Developer</div>
+                                </div>
+                            </figcaption>
+                            <blockquote class="mb-0.5 text-gray-700 w-full">
+                                <span
+                                    class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded mb-1 inline-block">Assigned</span>
+                                <p class="my-1 text-justify">
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores tempora totam
+                                    voluptatum consequatur, exercitationem quidem laborum odit cupiditate sed eligendi.
+                                    Ipsa
+                                    tenetur repellendus, neque dignissimos repudiandae eligendi aliquam quod
+                                    perspiciatis!
+                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat sequi assumenda
+                                    quaerat
+                                    necessitatibus quo itaque, culpa nobis, porro animi doloremque, eum obcaecati. Hic
+                                    perspiciatis minus aliquid cupiditate? Ipsum, temporibus voluptatem.
+                                </p>
+                                <div class="flex justify-end space-x-2">
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/download.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="#">
+                                            <img src="../../../../assests/edit.gif" alt="Edit" class="w-7 h-7">
+                                        </a>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </figure>
+
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <!-- Details bar -->
+        <div class="w-75 bg-[#e2ebfe] shadow-md p-6 space-y-6 min-h-screen">
+            <section>
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="../../../../assests/teacher.png" alt="TeacherImage" class="w-12 h-12 rounded-full">
+                    <div>
+                        <p class="text-gray-800 font-medium">Mr. Saman Kumara</p>
+                        <small class="text-gray-500">Developer</small>
+                    </div>
+                </div>
+                <h2 class="text-xl font-semibold mb-2">Details</h2>
+                <ul class="list-none list-inside text-gray-700 space-y-1">
+                    <li class="flex items-center space-x-2"><img src="../../../../assests/id.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full"> ID: 1111</li>
+                    <li class="flex items-center space-x-2"><img src="../../../../assests/name.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Name: Saman</li>
+                    <li class="flex items-center space-x-2"><img src="../../../../assests/gmail.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Email: saman&#64;gmail.com</li>
+                    <li class="flex items-center space-x-2"><img src="../../../../assests/smartphone.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Mobile: 08123456789</li>
+                    <li class="flex items-center space-x-2"><img src="../../../../assests/schedule.png" alt=""
+                            class="w-4 h-4 m-1 rounded-full">Registered Date: 2002-02-12</li>
+                </ul>
+            </section>
+        </div>
+
+    </div>
+
+    <script src="manage-task.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manager Dashboard - Holiday Getaway</title>
+  <!-- Fonts & Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="manager-dashboard.css">
+</head>
+
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-content">
+      <div class="nav-left">
+        <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="nav-logo">
+        <h4 class="dashboard-title">Manager Dashboard</h4>
+      </div>
+      <div class="nav-right">
+        <div class="manager-info">
+          <span class="manager-name">John Silva</span>
+          <span class="manager-role">General Manager</span>
+        </div>
+        <button class="btn btn-logout" onclick="logout()">
+          <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-container">
+    
+    <!-- Date Range Selector -->
+    <div class="date-selector mb-4">
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" class="form-control" id="startDate">
+        </div>
+        <div class="col-md-3">
+          <label for="endDate" class="form-label">End Date</label>
+          <input type="date" class="form-control" id="endDate">
+        </div>
+        <div class="col-md-3">
+          <label for="branchFilter" class="form-label">Branch</label>
+          <select class="form-select" id="branchFilter">
+            <option value="all">All Branches</option>
+            <option value="colombo">Holiday Getaway Colombo</option>
+            <option value="kandy">Holiday Getaway Kandy</option>
+            <option value="galle">Holiday Getaway Galle</option>
+            <option value="nuwara-eliya">Holiday Getaway Nuwara Eliya</option>
+            <option value="ella">Holiday Getaway Ella</option>
+            <option value="sigiriya">Holiday Getaway Sigiriya</option>
+          </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button class="btn btn-primary w-100" onclick="generateReports()">Generate Reports</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Metrics Cards -->
+    <div class="metrics-section mb-4">
+      <div class="row g-3">
+        <div class="col-lg-3 col-md-6">
+          <div class="metric-card">
+            <div class="metric-icon">🏨</div>
+            <div class="metric-content">
+              <h3 class="metric-value" id="currentOccupancy">78%</h3>
+              <p class="metric-label">Current Occupancy</p>
+              <span class="metric-change positive">+5.2% from last week</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="metric-card">
+            <div class="metric-icon">💰</div>
+            <div class="metric-content">
+              <h3 class="metric-value" id="totalRevenue">$125,450</h3>
+              <p class="metric-label">Total Revenue</p>
+              <span class="metric-change positive">+12.8% from last month</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="metric-card">
+            <div class="metric-icon">📅</div>
+            <div class="metric-content">
+              <h3 class="metric-value" id="totalBookings">342</h3>
+              <p class="metric-label">Total Bookings</p>
+              <span class="metric-change positive">+8.3% from last month</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="metric-card">
+            <div class="metric-icon">⭐</div>
+            <div class="metric-content">
+              <h3 class="metric-value" id="avgRating">4.8</h3>
+              <p class="metric-label">Average Rating</p>
+              <span class="metric-change positive">+0.2 from last month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section mb-4">
+      <div class="row g-4">
+        <!-- Occupancy Chart -->
+        <div class="col-lg-8">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h5>Occupancy Trends</h5>
+              <div class="chart-controls">
+                <button class="btn btn-sm btn-outline-primary active" data-period="7d">7 Days</button>
+                <button class="btn btn-sm btn-outline-primary" data-period="30d">30 Days</button>
+                <button class="btn btn-sm btn-outline-primary" data-period="90d">90 Days</button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="occupancyChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <!-- Revenue Breakdown -->
+        <div class="col-lg-4">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h5>Revenue by Branch</h5>
+            </div>
+            <div class="chart-container">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Reports Section -->
+    <div class="reports-section">
+      <div class="row g-4">
+        
+        <!-- Occupancy Report -->
+        <div class="col-lg-6">
+          <div class="report-card">
+            <div class="report-header">
+              <h5>📊 Occupancy Report</h5>
+              <button class="btn btn-sm btn-outline-primary" onclick="exportReport('occupancy')">Export</button>
+            </div>
+            <div class="report-content">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Branch</th>
+                      <th>Occupied</th>
+                      <th>Available</th>
+                      <th>Rate %</th>
+                    </tr>
+                  </thead>
+                  <tbody id="occupancyTableBody">
+                    <!-- Data populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Report -->
+        <div class="col-lg-6">
+          <div class="report-card">
+            <div class="report-header">
+              <h5>💵 Financial Report</h5>
+              <button class="btn btn-sm btn-outline-primary" onclick="exportReport('financial')">Export</button>
+            </div>
+            <div class="report-content">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Branch</th>
+                      <th>Room Revenue</th>
+                      <th>Bookings</th>
+                      <th>Avg Rate</th>
+                      <th>Growth</th>
+                    </tr>
+                  </thead>
+                  <tbody id="financialTableBody">
+                    <!-- Data populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Future Projections -->
+        <div class="col-lg-6">
+          <div class="report-card">
+            <div class="report-header">
+              <h5>🔮 Future Projections</h5>
+              <button class="btn btn-sm btn-outline-primary" onclick="exportReport('projections')">Export</button>
+            </div>
+            <div class="report-content">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Projected Occupancy</th>
+                      <th>Estimated Revenue</th>
+                      <th>Confidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="projectionsTableBody">
+                    <!-- Data populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Bookings -->
+        <div class="col-lg-6">
+          <div class="report-card">
+            <div class="report-header">
+              <h5>📋 Recent Bookings</h5>
+              <button class="btn btn-sm btn-outline-primary" onclick="refreshBookings()">Refresh</button>
+            </div>
+            <div class="report-content">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Guest</th>
+                      <th>Branch</th>
+                      <th>Check-in</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bookingsTableBody">
+                    <!-- Data populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions mt-4">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <button class="btn btn-success w-100" onclick="generateFullReport()">
+            📄 Generate Full Report
+          </button>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-info w-100" onclick="viewAnalytics()">
+            📈 View Analytics
+          </button>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-warning w-100" onclick="manageBranches()">
+            🏢 Manage Branches
+          </button>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary w-100" onclick="viewReservations()">
+            📅 View Reservations
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-content">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Generating reports...</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="manager-dashboard.js"></script>
+</body>
+</html>
