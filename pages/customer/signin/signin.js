@@ -1,53 +1,38 @@
-// Sign In Form Submission (Local Validation Only)
-document.getElementById('signinForm').addEventListener('submit', function (e) {
+document.getElementById('signinForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 
   if (!email || !password) {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Please enter both email and password.',
-      icon: 'error',
-      confirmButtonText: 'Okay'
-    });
+    Swal.fire({ title: 'Error', text: 'Enter email and password', icon: 'error' });
     return;
   }
 
-  // Hardcoded credentials
-  const validEmail = 'user@gmail.com';
-  const validPassword = 'user123';
+  try {
+    const btn = document.querySelector('button[type="submit"]');
+    btn.innerHTML = 'Signing In...'; 
+    btn.disabled = true;
 
-  if (email === validEmail && password === validPassword) {
-    Swal.fire({
-      title: 'Sign In Successful!',
-      text: 'Redirecting to home page...',
-      icon: 'success',
-      confirmButtonText: 'Okay'
-    }).then(() => {
+    // Connects to Service 1
+    const res = await fetch('http://localhost:5000/api/customer/sign-in', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem('token', data.token || data.data.token);
+      localStorage.setItem('user', JSON.stringify(data.user || data.data.user));
       window.location.href = '../home/home.html';
-    });
-  } else {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Invalid email or password.',
-      icon: 'error',
-      confirmButtonText: 'Okay'
-    });
-  }
-});
-
-// Forgot Password Form submission (unchanged)
-document.getElementById('forgotPasswordForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  const email = document.getElementById('resetEmail').value;
-
-  if (email) {
-    alert('Password reset link sent to your email!');
-    bootstrap.Modal.getInstance(
-      document.getElementById('forgotPasswordModal')
-    ).hide();
+    } else {
+      throw new Error(data.message || 'Login failed');
+    }
+  } catch (err) {
+    Swal.fire({ title: 'Failed', text: err.message, icon: 'error' });
+    document.querySelector('button[type="submit"]').innerHTML = 'Sign In';
+    document.querySelector('button[type="submit"]').disabled = false;
   }
 });

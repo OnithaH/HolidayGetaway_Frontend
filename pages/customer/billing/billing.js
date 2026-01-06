@@ -113,10 +113,6 @@ function viewInvoice(reservationId) {
             </div>
             <div class="invoice-body">
                 <p>Invoice details would be displayed here...</p>
-                <div class="alert alert-info">
-                    <strong>Note:</strong> This is a UI demonstration. 
-                    In a full system, detailed invoice information would be fetched from the database.
-                </div>
             </div>
         </div>
     `);
@@ -160,9 +156,6 @@ function payBill(reservationId) {
                         <label class="form-label">CVV</label>
                         <input type="text" class="form-control" placeholder="123">
                     </div>
-                </div>
-                <div class="alert alert-warning">
-                    <strong>Note:</strong> This is a UI demonstration only. No actual payment processing occurs.
                 </div>
             </form>
         </div>

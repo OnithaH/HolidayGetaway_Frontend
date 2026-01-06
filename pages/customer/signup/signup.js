@@ -1,48 +1,49 @@
-function togglePassword(inputId) {
-  const input = document.getElementById(inputId);
-  const icon = input.nextElementSibling.querySelector('.eye-icon');
-  
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.src = '../images/eye-slash-icon.svg';
-  } else {
-    input.type = 'password';
-    icon.src = '../images/eye-icon.svg';
-  }
-}
-
-// Password strength checker
-document.getElementById('password').addEventListener('input', function() {
-  const password = this.value;
-  const indicator = document.getElementById('strengthIndicator');
-  let strength = 0;
-  
-  if (password.length >= 8) strength++;
-  if (/[a-z]/.test(password)) strength++;
-  if (/[A-Z]/.test(password)) strength++;
-  if (/[0-9]/.test(password)) strength++;
-  if (/[^A-Za-z0-9]/.test(password)) strength++;
-  
-  indicator.className = 'strength-indicator';
-  if (strength <= 2) indicator.classList.add('strength-weak');
-  else if (strength === 3) indicator.classList.add('strength-fair');
-  else if (strength === 4) indicator.classList.add('strength-good');
-  else indicator.classList.add('strength-strong');
-});
-
-// Form submission
-document.getElementById('signupForm').addEventListener('submit', function(e) {
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   
+  // 1. Get Values from HTML
+  const full_name = document.getElementById('full_name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const address = document.getElementById('address').value;
   const password = document.getElementById('password').value;
   const confirmPassword = document.getElementById('confirmPassword').value;
-  
+
+  // 2. Validate
   if (password !== confirmPassword) {
-    alert('Passwords do not match!');
+    Swal.fire({ title: 'Error', text: 'Passwords do not match', icon: 'error' });
     return;
   }
-  
-  // Here you would normally send the data to your backend
-  alert('Account created successfully! Please check your email for verification.');
-  window.location.href = '../signin/signin.html'; // Redirect to sign-in page
+
+  try {
+    const btn = document.querySelector('button[type="submit"]');
+    btn.innerHTML = 'Creating Account...';
+    btn.disabled = true;
+
+    // 3. Send to Service 1
+    const res = await fetch('http://localhost:5000/api/customer/sign-up', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        full_name,
+        email,
+        phone,
+        address,
+        password
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      Swal.fire({ title: 'Success', text: 'Account created! Please login.', icon: 'success' })
+      .then(() => window.location.href = '../signin/signin.html');
+    } else {
+      throw new Error(data.message || 'Signup failed');
+    }
+  } catch (err) {
+    Swal.fire({ title: 'Error', text: err.message, icon: 'error' });
+    document.querySelector('button[type="submit"]').innerHTML = 'Create Account';
+    document.querySelector('button[type="submit"]').disabled = false;
+  }
 });
