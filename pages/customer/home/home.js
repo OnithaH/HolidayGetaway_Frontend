@@ -5,7 +5,7 @@ const branchData = {
     features: ["🏢 Business Center", "🛍️ Shopping Access", "✈️ Airport Shuttle", "🌆 City Views", "🍽️ Rooftop Dining"],
     availableRooms: "28",
     startingPrice: "$149/night",
-    image: "assets/images/locations/colombo.jpg"
+    image: "../../../assets/images/locations/colombo.jpg" // Adjusted path for pages/customer/home
   },
   kandy: {
     name: "Holiday Getaway Kandy",
@@ -13,7 +13,7 @@ const branchData = {
     features: ["🏛️ Temple Access", "🚤 Lake Views", "🎭 Cultural Shows", "🌸 Royal Gardens", "🎨 Art Gallery"],
     availableRooms: "22",
     startingPrice: "$129/night",
-    image: "assets/images/locations/kandy.jpg"
+    image: "../../../assets/images/locations/kandy.jpg"
   },
   galle: {
     name: "Holiday Getaway Galle",
@@ -21,7 +21,7 @@ const branchData = {
     features: ["🏖️ Private Beach", "🏄 Water Sports", "🌅 Ocean Views", "🏰 Fort Access", "🐠 Diving Center"],
     availableRooms: "35",
     startingPrice: "$199/night",
-    image: "assets/images/locations/galle.jpg"
+    image: "../../../assets/images/locations/galle.jpg"
   },
   "nuwara-eliya": {
     name: "Holiday Getaway Nuwara Eliya",
@@ -29,7 +29,7 @@ const branchData = {
     features: ["🍃 Tea Tours", "🏔️ Mountain Views", "🌡️ Cool Climate", "🚂 Train Station", "🏌️ Golf Course"],
     availableRooms: "18",
     startingPrice: "$109/night",
-    image: "assets/images/locations/nuwara-eliya.jpg"
+    image: "../../../assets/images/locations/nuwara-eliya.jpg"
   },
   ella: {
     name: "Holiday Getaway Ella",
@@ -37,7 +37,7 @@ const branchData = {
     features: ["🥾 Hiking Trails", "🚂 Train Rides", "🌄 Sunrise Views", "🐒 Wildlife", "☕ Coffee Tours"],
     availableRooms: "15",
     startingPrice: "$119/night",
-    image: "assets/images/locations/ella.jpg"
+    image: "../../../assets/images/locations/ella.jpg"
   },
   sigiriya: {
     name: "Holiday Getaway Sigiriya",
@@ -45,7 +45,7 @@ const branchData = {
     features: ["🏛️ Ancient Sites", "🦌 Safari Access", "🎨 Cave Paintings", "🌳 Nature Walks", "🦅 Bird Watching"],
     availableRooms: "20",
     startingPrice: "$139/night",
-    image: "assets/images/locations/sigiriya.jpg"
+    image: "../../../assets/images/locations/sigiriya.jpg"
   }
 };
 
@@ -90,25 +90,36 @@ function updateBranchInfo() {
 
 // Handle hero branch button clicks
 document.addEventListener('DOMContentLoaded', function() {
+  // Check Login Status for Navbar (Optional Enhancement)
+  const user = localStorage.getItem('customerUser');
+  if(user) {
+      console.log("User is logged in");
+      // You could update UI here if needed
+  }
+
   // Set minimum dates for booking form
   const today = new Date().toISOString().split('T')[0];
-  document.getElementById('arrivalDate').min = today;
-  document.getElementById('departureDate').min = today;
-  
-  // Handle arrival date change
-  document.getElementById('arrivalDate').addEventListener('change', function() {
-    const arrivalDate = new Date(this.value);
-    const nextDay = new Date(arrivalDate);
-    nextDay.setDate(arrivalDate.getDate() + 1);
-    
-    const departureInput = document.getElementById('departureDate');
-    departureInput.min = nextDay.toISOString().split('T')[0];
-    
-    // Clear departure date if it's before new minimum
-    if (departureInput.value && new Date(departureInput.value) <= arrivalDate) {
-      departureInput.value = '';
-    }
-  });
+  const arrivalInput = document.getElementById('arrivalDate');
+  const departureInput = document.getElementById('departureDate');
+
+  if(arrivalInput && departureInput) {
+      arrivalInput.min = today;
+      departureInput.min = today;
+      
+      // Handle arrival date change
+      arrivalInput.addEventListener('change', function() {
+        const arrivalDate = new Date(this.value);
+        const nextDay = new Date(arrivalDate);
+        nextDay.setDate(arrivalDate.getDate() + 1);
+        
+        departureInput.min = nextDay.toISOString().split('T')[0];
+        
+        // Clear departure date if it's before new minimum
+        if (departureInput.value && new Date(departureInput.value) <= arrivalDate) {
+          departureInput.value = '';
+        }
+      });
+  }
   
   // Handle hero branch button clicks
   const branchButtons = document.querySelectorAll('.branch-btn[data-branch]');
@@ -123,13 +134,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       } else {
         // Select the branch and scroll to booking form
-        document.getElementById('branchSelect').value = branchValue;
-        updateBranchInfo();
-        
-        // Scroll to booking form
-        document.querySelector('.booking-form').scrollIntoView({
-          behavior: 'smooth'
-        });
+        const select = document.getElementById('branchSelect');
+        if(select) {
+            select.value = branchValue;
+            updateBranchInfo();
+            
+            // Scroll to booking form
+            document.querySelector('.booking-form').scrollIntoView({
+              behavior: 'smooth'
+            });
+        }
         
         // Add visual feedback
         this.style.transform = 'scale(0.95)';
@@ -141,49 +155,43 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   // Handle quick booking form submission
-  document.getElementById('quickBookingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const selectedBranch = document.getElementById('branchSelect').value;
-    const arrivalDate = document.getElementById('arrivalDate').value;
-    const departureDate = document.getElementById('departureDate').value;
-    const adults = document.getElementById('adults').value;
-    const children = document.getElementById('children').value;
-    
-    if (!selectedBranch) {
-      alert('Please select a Holiday Getaway location first.');
-      document.getElementById('branchSelect').focus();
-      return;
-    }
-    
-    if (!arrivalDate || !departureDate) {
-      alert('Please select both arrival and departure dates.');
-      return;
-    }
-    else{
-          Swal.fire({
-      title: 'Booking Unavailable',
-      text: 'The selected location is not available for booking at the moment.',
-      icon: 'error',
-      confirmButtonText: 'Okay'
-    });
-    }
-    
-    // Store booking parameters
-    const bookingParams = {
-      branch: selectedBranch,
-      arrival: arrivalDate,
-      departure: departureDate,
-      adults: adults !== 'Adults' ? adults : '2',
-      children: children !== 'Children' ? children : '0'
-    };
-    
-    sessionStorage.setItem('bookingParams', JSON.stringify(bookingParams));
-    
-    // Redirect to reservation page with parameters
-    const params = new URLSearchParams(bookingParams);
-   /// window.location.href = 'reservation.html?' + params.toString();
-  });
+  const bookingForm = document.getElementById('quickBookingForm');
+  if (bookingForm) {
+      bookingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const selectedBranch = document.getElementById('branchSelect').value;
+        const arrivalDate = document.getElementById('arrivalDate').value;
+        const departureDate = document.getElementById('departureDate').value;
+        const adults = document.getElementById('adults').value;
+        const children = document.getElementById('children').value;
+        
+        if (!selectedBranch) {
+          Swal.fire('Missing Info', 'Please select a location.', 'warning');
+          return;
+        }
+        
+        if (!arrivalDate || !departureDate) {
+          Swal.fire('Missing Dates', 'Please select arrival and departure dates.', 'warning');
+          return;
+        }
+        
+        // Store booking parameters
+        const bookingParams = {
+          branch: selectedBranch,
+          arrival: arrivalDate,
+          departure: departureDate,
+          adults: adults !== 'Adults' ? adults : '2',
+          children: children !== 'Children' ? children : '0'
+        };
+        
+        sessionStorage.setItem('bookingParams', JSON.stringify(bookingParams));
+        
+        // Redirect to ROOMS page first to pick a room type
+        // IMPORTANT: The path assumes this file is in pages/customer/home/
+        window.location.href = '../rooms/rooms.html'; 
+      });
+  }
   
   // Add smooth scrolling for all internal links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -197,26 +205,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       }
     });
-  });
-  
-  // Add loading states for location cards
-  const locationCards = document.querySelectorAll('.location-card');
-  locationCards.forEach(card => {
-    const bookButton = card.querySelector('.btn');
-    if (bookButton) {
-      bookButton.addEventListener('click', function(e) {
-        // Show loading state
-        const originalText = this.innerHTML;
-        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
-        this.disabled = true;
-        
-        // Restore after a short delay (in real app, this would be when page loads)
-        setTimeout(() => {
-          this.innerHTML = originalText;
-          this.disabled = false;
-        }, 1000);
-      });
-    }
   });
   
   // Newsletter form handling
@@ -235,30 +223,22 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Simulate subscription process
       setTimeout(() => {
-        alert(`Thank you for subscribing to Holiday Getaway updates! You'll receive exclusive offers across all our locations at ${email}`);
+        Swal.fire('Subscribed!', `Updates will be sent to ${email}`, 'success');
         this.reset();
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-      }, 2000);
+      }, 1500);
     });
   }
-  
-  // Add parallax effect to hero section (optional)
-  window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const hero = document.getElementById('hero');
-    const video = hero.querySelector('.bg-video');
-    
-    if (video && scrolled < hero.offsetHeight) {
-      video.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-  });
   
   // Initialize any saved branch selection
   const savedBranch = sessionStorage.getItem('selectedBranch');
   if (savedBranch) {
-    document.getElementById('branchSelect').value = savedBranch;
-    updateBranchInfo();
+    const select = document.getElementById('branchSelect');
+    if(select) {
+        select.value = savedBranch;
+        updateBranchInfo();
+    }
   }
   
   console.log('Holiday Getaway Chain home page initialized successfully!');
@@ -266,33 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Global functions for external access
 window.updateBranchInfo = updateBranchInfo;
-
-// Utility function to get selected branch
-function getSelectedBranch() {
-  return document.getElementById('branchSelect').value;
-}
-
-// Utility function to check availability (placeholder)
-function checkRoomAvailability(branch, dates) {
-  // This would connect to your backend API
-  console.log(`Checking availability for ${branch} from ${dates.arrival} to ${dates.departure}`);
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        available: true,
-        rooms: Math.floor(Math.random() * 20) + 5,
-        prices: {
-          standard: 89,
-          deluxe: 129,
-          suite: 199,
-          presidential: 359
-        }
-      });
-    }, 1000);
-  });
-}
-
-
 
 // Logout function
 function logout() {
@@ -302,28 +255,28 @@ function logout() {
     icon: 'question',
     showCancelButton: true,
     confirmButtonText: 'Yes, logout',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#e74c3c',
-    cancelButtonColor: '#6c757d'
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6'
   }).then((result) => {
     if (result.isConfirmed) {
-      // Simulate logout
+      // Clear Data
+      localStorage.removeItem('customerToken');
+      localStorage.removeItem('customerUser');
+      sessionStorage.clear();
+
       Swal.fire({
-        title: 'Logging out...',
-        timer: 1500,
+        title: 'Logged Out',
+        timer: 1000,
         showConfirmButton: false,
-        willClose: () => {
-          window.location.href = '../../../index.html';
-        }
+        icon: 'success'
+      }).then(() => {
+        window.location.href = '../../../index.html'; // Go back to Landing Page
       });
     }
   });
 }
 
-
 // Export for other pages
 window.HolidayGetawayChain = {
-  branchData,
-  getSelectedBranch,
-  checkRoomAvailability
+  branchData
 };

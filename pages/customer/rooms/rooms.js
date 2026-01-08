@@ -1,4 +1,15 @@
-// Room Type Data based on ER diagram
+// --- CONFIGURATION & MAPPING ---
+// Maps frontend branch keys to Backend Database IDs (Check your 'branch' table in MySQL!)
+const branchIdMap = {
+  "colombo": 1,
+  "kandy": 2,
+  "galle": 3,
+  "nuwara-eliya": 4,
+  "ella": 5,
+  "sigiriya": 6
+};
+
+// Room Type Data
 const roomTypes = {
   standard: {
     id: 1,
@@ -26,7 +37,7 @@ const roomTypes = {
   }
 };
 
-// Branch Data
+// Branch Data (Display Names)
 const branches = {
   colombo: "Holiday Getaway Colombo",
   kandy: "Holiday Getaway Kandy", 
@@ -36,7 +47,8 @@ const branches = {
   sigiriya: "Holiday Getaway Sigiriya"
 };
 
-// Room Data based on ER diagram structure
+// Room Data (Hardcoded Display Data)
+// Note: 'id' here should ideally match 'id' in your 'room' database table.
 const roomsData = [
   // Colombo Rooms
   {
@@ -238,9 +250,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Setup event listeners
 function setupEventListeners() {
   // Filter change listeners
-  document.getElementById('branchFilter').addEventListener('change', handleFilterChange);
-  document.getElementById('roomTypeFilter').addEventListener('change', handleFilterChange);
-  document.getElementById('priceFilter').addEventListener('change', handleFilterChange);
+  const branchFilter = document.getElementById('branchFilter');
+  const roomTypeFilter = document.getElementById('roomTypeFilter');
+  const priceFilter = document.getElementById('priceFilter');
+
+  if (branchFilter) branchFilter.addEventListener('change', handleFilterChange);
+  if (roomTypeFilter) roomTypeFilter.addEventListener('change', handleFilterChange);
+  if (priceFilter) priceFilter.addEventListener('change', handleFilterChange);
   
   // Newsletter form
   const newsletterForm = document.querySelector('.newsletter-form');
@@ -297,20 +313,22 @@ function filterRooms() {
     });
     
     displayRooms(filteredRooms);
-  }, 500);
+  }, 300); // Reduced delay for better UX
 }
 
 // Display rooms
 function displayRooms(rooms) {
   const container = document.getElementById('roomsContainer');
   
+  if (!container) return; // Guard clause
+
   if (rooms.length === 0) {
     container.innerHTML = `
       <div class="col-12">
         <div class="no-results">
           <h3>No rooms found</h3>
           <p>Try adjusting your filters to see more options.</p>
-          <button class="btn" onclick="clearFilters()">Clear Filters</button>
+          <button class="btn btn-primary mt-2" onclick="clearFilters()">Clear Filters</button>
         </div>
       </div>
     `;
@@ -325,45 +343,45 @@ function createRoomCard(room) {
   const roomType = roomTypes[room.room_type_id];
   const branchName = branches[room.branch_id];
   const statusClass = room.status === 'available' ? 'available' : 
-                     room.status === 'occupied' ? 'occupied' : 'maintenance';
+                      room.status === 'occupied' ? 'occupied' : 'maintenance';
   
   const isBookable = room.status === 'available';
   
   return `
-    <div class="col-lg-4 col-md-6">
-      <div class="room-card">
-        <div class="room-image-container">
-          <img src="${room.image}" alt="${roomType.type}" class="room-image">
-          <div class="room-type-badge">${roomType.type}</div>
-          <div class="room-status ${statusClass}">${room.status}</div>
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="room-card h-100 shadow-sm">
+        <div class="room-image-container position-relative">
+          <img src="${room.image}" alt="${roomType.type}" class="room-image w-100" style="height: 200px; object-fit: cover;">
+          <div class="room-type-badge position-absolute top-0 start-0 m-2 badge bg-primary">${roomType.type}</div>
+          <div class="room-status ${statusClass} position-absolute top-0 end-0 m-2 badge">${room.status.toUpperCase()}</div>
         </div>
         
-        <div class="room-details">
+        <div class="room-details p-3">
           <h4>${roomType.type}</h4>
-          <p class="room-branch">📍 ${branchName}</p>
-          <p class="room-description">${roomType.description}</p>
+          <p class="room-branch text-muted"><i class="fas fa-map-marker-alt"></i> ${branchName}</p>
+          <p class="room-description small text-secondary">${roomType.description}</p>
           
-          <div class="room-amenities">
-            ${room.amenities.map(amenity => `<span class="room-amenity">${amenity}</span>`).join('')}
+          <div class="room-amenities mb-3">
+            ${room.amenities.map(amenity => `<span class="badge bg-light text-dark me-1 mb-1 border">${amenity}</span>`).join('')}
           </div>
           
-          <div class="room-price-section">
+          <div class="d-flex justify-content-between align-items-center mt-auto">
             <div class="room-price">
-              <span class="price">${room.price_per_night}</span>
-              <span class="per-night">/night</span>
+              <span class="price h5 text-primary">$${room.price_per_night}</span>
+              <span class="per-night small text-muted">/night</span>
+              <div class="room-number small text-muted">Room ${room.room_number}</div>
             </div>
-            <div class="room-number">Room ${room.room_number}</div>
-          </div>
-          
-          <div class="room-actions">
-            <button class="btn btn-view" onclick="viewRoomDetails('${room.id}')">
-              View Details
-            </button>
-            <button class="btn btn-book ${!isBookable ? 'disabled' : ''}" 
-                    onclick="bookRoom('${room.id}')" 
-                    ${!isBookable ? 'disabled' : ''}>
-              ${isBookable ? 'Book Now' : 'Not Available'}
-            </button>
+            
+            <div class="room-actions d-flex gap-2">
+              <button class="btn btn-outline-info btn-sm" onclick="viewRoomDetails('${room.id}')">
+                Details
+              </button>
+              <button class="btn btn-primary btn-sm ${!isBookable ? 'disabled' : ''}" 
+                      onclick="bookRoom('${room.id}')" 
+                      ${!isBookable ? 'disabled' : ''}>
+                ${isBookable ? 'Book' : 'N/A'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -374,20 +392,26 @@ function createRoomCard(room) {
 // Show loading state
 function showLoading() {
   const container = document.getElementById('roomsContainer');
-  container.innerHTML = `
-    <div class="col-12">
-      <div class="loading-state">
-        <div class="loading-spinner"></div>
+  if(container) {
+    container.innerHTML = `
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  }
 }
 
 // Clear all filters
 function clearFilters() {
-  document.getElementById('branchFilter').value = '';
-  document.getElementById('roomTypeFilter').value = '';
-  document.getElementById('priceFilter').value = '';
+  const branch = document.getElementById('branchFilter');
+  const type = document.getElementById('roomTypeFilter');
+  const price = document.getElementById('priceFilter');
+
+  if(branch) branch.value = '';
+  if(type) type.value = '';
+  if(price) price.value = '';
   
   currentFilters = { branch: '', roomType: '', price: '' };
   displayRooms(roomsData);
@@ -407,13 +431,13 @@ function viewRoomDetails(roomId) {
       <div class="text-start">
         <p><strong>Location:</strong> ${branchName}</p>
         <p><strong>Room Number:</strong> ${room.room_number}</p>
-        <p><strong>Price:</strong> ${room.price_per_night}/night</p>
-        <p><strong>Status:</strong> <span class="badge bg-${room.status === 'available' ? 'success' : room.status === 'occupied' ? 'danger' : 'warning'}">${room.status}</span></p>
-        <p><strong>Description:</strong> ${roomType.description}</p>
+        <p><strong>Price:</strong> $${room.price_per_night}/night</p>
+        <p><strong>Status:</strong> <span class="badge bg-${room.status === 'available' ? 'success' : room.status === 'occupied' ? 'danger' : 'warning'}">${room.status.toUpperCase()}</span></p>
+        <p class="mt-2"><strong>Description:</strong><br>${roomType.description}</p>
         <div class="mt-3">
           <strong>Amenities:</strong>
           <div class="d-flex flex-wrap gap-1 mt-2">
-            ${room.amenities.map(amenity => `<span class="badge bg-light text-dark">${amenity}</span>`).join('')}
+            ${room.amenities.map(amenity => `<span class="badge bg-light text-dark border">${amenity}</span>`).join('')}
           </div>
         </div>
       </div>
@@ -435,15 +459,15 @@ function viewRoomDetails(roomId) {
   });
 }
 
-// Book room
+// --- BOOKING LOGIC (CONNECTED TO BACKEND IDS) ---
 function bookRoom(roomId) {
+  // 1. Find Room Data
   const room = roomsData.find(r => r.id == roomId);
   if (!room || room.status !== 'available') {
     Swal.fire({
-      title: 'Booking Unavailable',
-      text: 'This room is not available for booking at the moment.',
+      title: 'Unavailable',
+      text: 'This room is not available for booking.',
       icon: 'error',
-      confirmButtonText: 'Okay',
       confirmButtonColor: '#ff9f1c'
     });
     return;
@@ -451,37 +475,44 @@ function bookRoom(roomId) {
   
   const roomType = roomTypes[room.room_type_id];
   const branchName = branches[room.branch_id];
-  
+
+  // 2. Map Frontend String ID to Backend Integer ID
+  // This ensures the backend receives "1" instead of "colombo"
+  const realBranchId = branchIdMap[room.branch_id] || 1; 
+  // Ensure Room ID is an integer
+  const realRoomId = parseInt(room.id); 
+
   Swal.fire({
     title: 'Book Room',
     html: `
       <div class="text-start">
         <h5>${roomType.type} - Room ${room.room_number}</h5>
         <p><strong>Location:</strong> ${branchName}</p>
-        <p><strong>Price:</strong> ${room.price_per_night}/night</p>
+        <p class="h4 text-primary mt-2">$${room.price_per_night}<small class="text-muted">/night</small></p>
         <hr>
-        <p>You will be redirected to the reservation page to complete your booking.</p>
+        <p class="small text-muted">Proceed to reservation to select dates.</p>
       </div>
     `,
-    icon: 'question',
+    icon: 'info',
     showCancelButton: true,
-    confirmButtonText: 'Continue to Booking',
+    confirmButtonText: 'Proceed',
     cancelButtonText: 'Cancel',
     confirmButtonColor: '#ff9f1c',
     cancelButtonColor: '#6c757d'
   }).then((result) => {
     if (result.isConfirmed) {
-      // Store room info for reservation page
+      // 3. Save Data for Reservation Page
+      // This object structure is exactly what reservation.js expects
       sessionStorage.setItem('selectedRoom', JSON.stringify({
-        roomId: room.id,
+        roomId: realRoomId,       // Integer ID for DB
         roomNumber: room.room_number,
-        roomType: roomType.type,
-        branch: room.branch_id,
+        branchId: realBranchId,   // Integer ID for DB
         branchName: branchName,
+        roomType: roomType.type,
         price: room.price_per_night
       }));
       
-      // Redirect to reservation page
+      // 4. Redirect
       window.location.href = '../reservation/reservation.html';
     }
   });
@@ -491,60 +522,62 @@ function bookRoom(roomId) {
 function handleNewsletterSubmit(e) {
   e.preventDefault();
   
-  const email = e.target.querySelector('input[type="email"]').value;
+  const emailInput = e.target.querySelector('input[type="email"]');
+  const email = emailInput.value;
   const submitBtn = e.target.querySelector('button[type="submit"]');
-  
-  // Show loading state
   const originalText = submitBtn.textContent;
+  
   submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Subscribing...';
   submitBtn.disabled = true;
   
-  // Simulate subscription process
   setTimeout(() => {
     Swal.fire({
-      title: 'Successfully Subscribed!',
-      text: `Thank you for subscribing to Holiday Getaway updates! You'll receive exclusive offers at ${email}`,
+      title: 'Subscribed!',
+      text: `We'll send updates to ${email}`,
       icon: 'success',
-      confirmButtonText: 'Great!',
-      confirmButtonColor: '#ff9f1c'
+      confirmButtonColor: '#ff9f1c',
+      timer: 2000,
+      showConfirmButton: false
     });
     
     e.target.reset();
-    submitBtn.textContent = originalText;
+    submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
-  }, 2000);
+  }, 1500);
 }
-
 
 // Logout function
 function logout() {
   Swal.fire({
     title: 'Logout',
-    text: 'Are you sure you want to logout?',
-    icon: 'question',
+    text: 'Are you sure?',
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonText: 'Yes, logout',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#e74c3c',
-    cancelButtonColor: '#6c757d'
+    confirmButtonText: 'Yes, Logout',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6'
   }).then((result) => {
     if (result.isConfirmed) {
-      // Simulate logout
+      localStorage.removeItem('customerToken');
+      localStorage.removeItem('customerUser');
+      
       Swal.fire({
-        title: 'Logging out...',
-        timer: 1500,
+        title: 'Logged Out',
+        timer: 1000,
         showConfirmButton: false,
-        willClose: () => {
-          window.location.href = '../../../index.html';
-        }
+        icon: 'success'
+      }).then(() => {
+        window.location.href = '../../../index.html';
       });
     }
   });
 }
+
 // Export for global access
 window.filterRooms = filterRooms;
 window.clearFilters = clearFilters;
 window.viewRoomDetails = viewRoomDetails;
 window.bookRoom = bookRoom;
+window.logout = logout;
 
 console.log('Holiday Getaway Rooms page initialized successfully!');

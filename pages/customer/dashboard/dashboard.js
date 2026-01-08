@@ -1,77 +1,94 @@
-// Reservation management functions (non-functional for UI demo)
-function changeReservation(reservationId) {
-  alert(`Change reservation functionality would be implemented here.\nReservation ID: ${reservationId}\n\nThis would redirect to a form to modify dates, room type, or guest count.`);
-}
-
-function cancelReservation(reservationId) {
-  if (confirm(`Are you sure you want to cancel reservation ${reservationId}?\n\nCancellation may be subject to fees depending on your booking terms.`)) {
-    alert(`Reservation ${reservationId} would be cancelled.\n\nIn a real application, this would:\n- Update the reservation status\n- Process any applicable refunds\n- Send confirmation email`);
-  }
-}
-
-function checkIn(reservationId) {
-  alert(`Check-in functionality would be implemented here.\nReservation ID: ${reservationId}\n\nThis would:\n- Verify reservation details\n- Assign room number\n- Generate room key\n- Update reservation status`);
-}
-
-function secureReservation(reservationId) {
-  alert(`Secure reservation functionality would redirect to payment page.\nReservation ID: ${reservationId}\n\nThis would:\n- Collect credit card information\n- Process payment authorization\n- Update reservation status to confirmed`);
-}
-
-function viewInvoice(reservationId) {
-  alert(`Invoice viewer would be implemented here.\nReservation ID: ${reservationId}\n\nThis would display detailed billing information including:\n- Room charges\n- Additional services\n- Taxes and fees\n- Payment history`);
-}
-
-function rebookStay(reservationId) {
-  alert(`Rebook functionality would be implemented here.\nOriginal Reservation ID: ${reservationId}\n\nThis would:\n- Pre-fill reservation form with previous details\n- Allow date and room modifications\n- Create new reservation`);
-}
-
-function contactSupport() {
-  alert(`Contact Support options:\n\n📞 Phone: +94 77 678 6535\n📧 Email: info@onitha.com\n💬 Live Chat: Available 24/7\n\nIn a real application, this would open:\n- Live chat widget\n- Support ticket system\n- Contact form`);
-}
-
-// Initialize dashboard
-document.addEventListener('DOMContentLoaded', function() {
-  // Add any initialization code here
-  console.log('Customer Dashboard loaded successfully');
-  
-  // Simulate real-time updates for demonstration
-  // In a real application, this would connect to your backend API
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('customerToken');
+    if (!token) {
+        window.location.href = '../signin/signin.html';
+        return;
+    }
+    
+    fetchReservations(token);
 });
 
-// Logout function
-function logout() {
-  Swal.fire({
-    title: 'Logout',
-    text: 'Are you sure you want to logout?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, logout',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#e74c3c',
-    cancelButtonColor: '#6c757d'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Simulate logout
-      Swal.fire({
-        title: 'Logging out...',
-        timer: 1500,
-        showConfirmButton: false,
-        willClose: () => {
-          window.location.href = '../../../index.html';
+async function fetchReservations(token) {
+    try {
+        const response = await fetch('http://localhost:5000/api/customer/reservations/my', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const result = await response.json();
+        
+        // Backend returns { data: [...] }
+        if (response.ok && result.data) {
+            renderTable(result.data);
         }
-      });
+    } catch (error) {
+        console.error('Fetch error:', error);
     }
-  });
 }
 
-// Auto-refresh functionality (for demo purposes)
-function simulateDataRefresh() {
-  // In a real application, this would fetch latest reservation data
-  console.log('Refreshing reservation data...');
+function renderTable(reservations) {
+    const tbody = document.querySelector('table tbody');
+    tbody.innerHTML = ''; // Clear fake data
+
+    reservations.forEach(res => {
+        // Format Date
+        const checkIn = new Date(res.check_in_date).toLocaleDateString();
+        const checkOut = new Date(res.check_out_date).toLocaleDateString();
+        
+        // Status Color
+        let statusColor = 'bg-secondary';
+        if (res.reservation_status === 'Confirmed') statusColor = 'bg-success';
+        if (res.reservation_status === 'Cancelled') statusColor = 'bg-danger';
+        if (res.reservation_status === 'Pending') statusColor = 'bg-warning text-dark';
+
+        const row = `
+            <tr>
+                <td>#${res.id}</td>
+                <td>${res.branch ? res.branch.name : 'Main Branch'}</td>
+                <td>${checkIn}</td>
+                <td>${checkOut}</td>
+                <td>${res.number_of_occupants}</td>
+                <td><span class="badge ${statusColor}">${res.reservation_status}</span></td>
+                <td>
+                    ${res.reservation_status !== 'Cancelled' ? 
+                        `<button class="btn btn-sm btn-danger" onclick="cancelBooking(${res.id})">Cancel</button>` : 
+                        '<span class="text-muted">Cancelled</span>'
+                    }
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
 }
 
+// Global function for the Cancel button
+window.cancelBooking = async function(id) {
+    const token = localStorage.getItem('customerToken');
+    
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes, cancel it!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/customer/reservation/${id}/cancel`, {
+                    method: 'PATCH', // Note: PATCH not DELETE
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
 
-
-
-// Set up periodic refresh (commented out for demo)
-// setInterval(simulateDataRefresh, 300000); // Refresh every 5 minutes
+                if (response.ok) {
+                    Swal.fire('Cancelled!', 'Your reservation has been cancelled.', 'success');
+                    fetchReservations(token); // Refresh table
+                } else {
+                    Swal.fire('Error', 'Could not cancel reservation.', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    });
+};
