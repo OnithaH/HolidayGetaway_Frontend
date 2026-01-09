@@ -111,18 +111,20 @@
                   </select>
                 </div>
 
-                <!-- Stay Details -->
-                <div class="col-md-4 mb-3">
-                  <label for="guests" class="form-label">Number of Guests *</label>
-                  <select class="form-select" id="guests" name="guests" required>
-                    <option value="">Select Guests</option>
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                    <option value="5">5+ Guests</option>
-                  </select>
-                </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="guests" class="form-label">Number of Guests (Per Room)</label>
+                    <select class="form-select" id="guests" name="guests">
+                      <option value="1">1 Guest</option>
+                      <option value="2">2 Guests</option>
+                      <option value="3">3 Guests</option>
+                      <option value="4">4 Guests</option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-md-4 mb-3">
+                    <label for="numberOfRooms" class="form-label">Number of Rooms *</label>
+                    <input type="number" class="form-control" id="numberOfRooms" name="numberOfRooms" min="1" value="1" required>
+                  </div>
 
                 <div class="col-md-4 mb-3">
                   <label for="checkinDate" class="form-label">Check-in Date *</label>
