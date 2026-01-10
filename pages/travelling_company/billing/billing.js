@@ -70,7 +70,7 @@ function renderBills(bills) {
                 <td>-</td>
                 <td>
                     <div class="cost-breakdown">
-                        <strong class="total-cost">$${bill.amount || '0.00'}</strong>
+                        <strong class="total-cost">$${bill.total_amount || '0.00'}</strong>
                     </div>
                 </td>
                 <td>
@@ -100,7 +100,7 @@ function updateStats(bills) {
     let pending = 0;
 
     bills.forEach(b => {
-        const amt = parseFloat(b.amount || 0);
+        const amt = parseFloat(b.total_amount || 0);
         total += amt;
         if (b.payment_status === 'Paid') paid += amt;
         else pending += amt;

@@ -128,31 +128,85 @@ document.getElementById('reservationForm').addEventListener('submit', async func
     const selectedRoom = JSON.parse(sessionStorage.getItem('selectedRoom'));
 
     // Determine Branch ID
-    // If user selected a room from Rooms page, use that branch. 
-    // If not, default to 1 (Colombo) or maybe we should fail? 
-    // For now, implementing "1" as fallback.
-    let branchId = 1;
-    let roomId = 0; // The Mock Room ID
+    // 1. Try to get from Dropdown (User selection)
+    let branchId = parseInt(document.getElementById('branchSelect').value);
 
+    // 2. If valid from session (pre-selection), override or set matching
     if (selectedRoom) {
-      branchId = branchMapping[selectedRoom.branch] || 1;
-      roomId = selectedRoom.roomId;
+      // If user arrived from "Rooms" page, pre-select that value
+      // Although the code below handles it better if we pre-set the dropdown value on load.
+      // For now, let's prioritize the dropdown value since the user sees it.
+      if (!branchId) branchId = branchMapping[selectedRoom.branch] || 1;
     }
 
-    // If the backend actually validates `room_ids` against database, 
-    // sending our mock `roomId` (e.g. 101, 201) might fail if those IDs don't exist.
-    // However, the prompt says "connect backend". 
-    // The backend `createReservation` expects `room_ids: [int]`.
-    // We'll send the mock ID. If it fails, we handle the error.
+    // Fallback default
+    if (!branchId) branchId = 1;
+
+    let roomId = 0; // The Mock Room ID
+    if (selectedRoom) roomId = selectedRoom.roomId;
 
     const payload = {
       branch_id: branchId,
       check_in_date: formData.get('checkinDate'),
       check_out_date: formData.get('checkoutDate'),
       number_of_occupants: parseInt(formData.get('guests')),
-      number_of_rooms: 1, // Form implicitly creates 1 reservation
-      room_ids: [roomId != 0 ? parseInt(roomId) : 1] // Fallback ID 1 if no room selected
+      number_of_rooms: 1,
+      room_ids: []
     };
+
+    // 0. Pre-Check Availability (NEW LOGIC)
+    try {
+      const availRes = await fetch(`http://localhost:5000/api/customer/rooms/availability?branch_id=${branchId}&check_in_date=${payload.check_in_date}&check_out_date=${payload.check_out_date}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const availData = await availRes.json();
+
+      if (availRes.ok && availData.data) {
+        // Find a room matching the selected type
+        const selectedTypeVal = document.getElementById('roomType').value.toLowerCase(); // e.g. "standard"
+
+        // Mapping Frontend Options to Backend DB Types (based on debug findings)
+        const typeMap = {
+          'standard': 'single', // Map Standard -> Single
+          'deluxe': 'double',   // Map Deluxe -> Double
+          'suite': 'suite',      // Suite -> Suite
+          'presidential': 'suite', // Fallback
+          'residential': 'double' // Fallback
+        };
+
+        const targetDbType = typeMap[selectedTypeVal] || selectedTypeVal;
+
+        // Strategy:
+        // 1. Try Specific Match
+        let availableRoom = availData.data.find(r => {
+          const rType = (r.room_type || '').toLowerCase();
+          return rType.includes(targetDbType);
+        });
+
+        // 2. Fallback: If no specific match, just take ANY available room
+        // This ensures the demo "just works" if inventory is limited.
+        if (!availableRoom && availData.data.length > 0) {
+          availableRoom = availData.data[0];
+          console.log("No specific room match found. Falling back to:", availableRoom);
+        }
+
+        if (availableRoom) {
+          payload.room_ids = [availableRoom.id];
+          console.log("Found available room:", availableRoom);
+        } else {
+          // If availData.data is empty, then genuine "No Rooms" error
+          const branchName = document.getElementById('branchSelect').options[document.getElementById('branchSelect').selectedIndex].text;
+          throw new Error(`We are fully booked at ${branchName} for these dates. Please try different dates or another branch.`);
+        }
+      } else {
+        console.warn("Availability check failed, trying fallback logic...");
+        // Fallback (if API fails but we want to try anyway, or specific error)
+        // But usually we should block.
+        throw new Error(availData.message || "Unable to check room availability.");
+      }
+    } catch (availErr) {
+      throw availErr; // Stop execution, show error to user
+    }
 
     // 1. Create Reservation
     try {

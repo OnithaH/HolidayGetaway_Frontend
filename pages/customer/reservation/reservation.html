@@ -1,397 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Holiday Getaway</title>
-  <!-- Fonts & Bootstrap -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="reservation.css">
-  <link rel="stylesheet" href="sweetalert2.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Holiday Getaway</title>
+    <!-- Fonts & Bootstrap -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="reservation.css">
+
 </head>
 
 <body>
-  <header id="site-header">
-    <!-- Top Bar -->
-    <div class="top-bar d-none d-lg-flex justify-content-between align-items-center">
-        <ul class="list-inline mb-0">
-        <li class="list-inline-item">
-            <img src="../../../assets/images/logo/phone-icon.png" alt="Phone" class="icon"> +94 77 678 6535
-        </li>
-        <li class="list-inline-item ms-4">
-            <img src="../../../assets/images/logo/email-icon.png" alt="Email" class="icon"> info@HolidayGetaway.com
-        </li>
-        </ul>
-        <ul class="list-inline mb-0">
-        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="icon"></a></li>
-        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="icon"></a></li>
-        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="icon"></a></li>
-        <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="icon"></a></li>
-        </ul>
+    <header id="site-header">
+        <!-- Top Bar -->
+        <div class="top-bar d-none d-lg-flex justify-content-between align-items-center">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <img src="../../../assets/images/logo/phone-icon.png" alt="Phone" class="icon"> +94 77 678 6535
+                </li>
+                <li class="list-inline-item ms-4">
+                    <img src="../../../assets/images/logo/email-icon.png" alt="Email" class="icon">
+                    info@HolidayGetaway.com
+                </li>
+            </ul>
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/facebook.png"
+                            alt="Facebook" class="icon"></a></li>
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/twitter.png"
+                            alt="Twitter" class="icon"></a></li>
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/google-plus.png"
+                            alt="Google+" class="icon"></a></li>
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/linkedin.png"
+                            alt="LinkedIn" class="icon"></a></li>
+            </ul>
+        </div>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark px-5">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="navbar-logo">
+                <span class="brand-text ms-2">Holiday Getaway</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item"><a class="nav-link" href="../home/home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../rooms/rooms.html">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../aboutUs/aboutUs.html">About Us</a></li>
+                </ul>
+                <a href="#" class="me-3"><img src="../../../assets/images/logo/search.png" alt="Search"
+                        class="icon"></a>
+                <a href="../dashboard/dashboard.html" class="btn btn-warning px-4 py-2">Book Now</a>
+                <a href="../profile/profile.html"><img src="../../../assets/images/logo/user.png" alt="user"
+                        class="navbar-logo-user"></a>
+                <button class="btn btn-logout" onclick="logout()">
+                    <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="reservation-container mt-5 pt-5">
+        <!-- Background Video -->
+        <video autoplay muted loop class="bg-video">
+            <source src="../../../assets/images/background/hero-bg.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- Dark Overlay -->
+        <div class="video-overlay"></div>
+
+        <div class="container py-5 position-relative">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="reservation-card card shadow-lg border-0">
+                        <div class="card-body p-5">
+                            <!-- Header -->
+                            <div class="text-center mb-4">
+                                <img src="../../../assets/images/background/logo.png" alt="Hotel Getaway"
+                                    class="reservation-logo mb-3">
+                                <h2 class="reservation-title">Make Your Reservation</h2>
+                                <p class="reservation-subtitle text-muted">Book your perfect stay with us</p>
+                            </div>
+
+                            <!-- Reservation Form -->
+                            <form id="reservationForm" class="reservation-form">
+                                <div class="row">
+                                    <!-- Personal Information -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fullName" class="form-label">Full Name *</label>
+                                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="branchSelect" class="form-label">Select Hotel Branch *</label>
+                                        <select class="form-select" id="branchSelect" name="branchSelect" required>
+                                            <option value="">Choose Branch...</option>
+                                            <option value="1">Downtown Hotel (Cityville)</option>
+                                            <option value="2">Airport Hotel</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="roomType" class="form-label">Room Type *</label>
+                                        <select class="form-select" id="roomType" name="roomType" required>
+                                            <option value="">Select Room Type</option>
+                                            <option value="standard">Standard Room - $120/night</option>
+                                            <option value="deluxe">Deluxe Room - $180/night</option>
+                                            <option value="suite">Suite - $280/night</option>
+                                            <option value="presidential">Presidential Suite - $450/night</option>
+                                            <option value="residential">Residential Suite - Weekly/Monthly</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Stay Details -->
+                                    <div class="col-md-4 mb-3">
+                                        <label for="guests" class="form-label">Number of Guests *</label>
+                                        <select class="form-select" id="guests" name="guests" required>
+                                            <option value="">Select Guests</option>
+                                            <option value="1">1 Guest</option>
+                                            <option value="2">2 Guests</option>
+                                            <option value="3">3 Guests</option>
+                                            <option value="4">4 Guests</option>
+                                            <option value="5">5+ Guests</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="checkinDate" class="form-label">Check-in Date *</label>
+                                        <input type="date" class="form-control" id="checkinDate" name="checkinDate"
+                                            required>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="checkoutDate" class="form-label">Check-out Date *</label>
+                                        <input type="date" class="form-control" id="checkoutDate" name="checkoutDate"
+                                            required>
+                                    </div>
+
+                                    <!-- Special Requests -->
+                                    <div class="col-12 mb-4">
+                                        <label for="specialRequests" class="form-label">Special Requests</label>
+                                        <textarea class="form-control" id="specialRequests" name="specialRequests"
+                                            rows="3"
+                                            placeholder="Any special requirements or preferences..."></textarea>
+                                    </div>
+
+                                    <!-- Payment Options -->
+                                    <div class="col-12 mb-4">
+                                        <h5 class="payment-section-title mb-3">Payment Options</h5>
+
+                                        <div class="payment-options">
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="radio" id="withCreditCard"
+                                                    name="paymentOption" value="creditCard" checked>
+                                                <label class="form-check-label" for="withCreditCard">
+                                                    <strong>Secure with Credit Card</strong>
+                                                    <small class="d-block text-muted">Guarantee your reservation</small>
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="radio" id="withoutCreditCard"
+                                                    name="paymentOption" value="noCreditCard">
+                                                <label class="form-check-label" for="withoutCreditCard">
+                                                    <strong>Book without Credit Card</strong>
+                                                    <small class="d-block text-warning">⚠️ Reservation will be cancelled
+                                                        at 7 PM daily if not secured</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Credit Card Details (Hidden by default) -->
+                                    <div class="col-12 mb-4" id="creditCardSection">
+                                        <div class="credit-card-section p-4 border rounded">
+                                            <h6 class="mb-3">Credit Card Information</h6>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="cardNumber" class="form-label">Card Number</label>
+                                                    <input type="text" class="form-control" id="cardNumber"
+                                                        name="cardNumber" placeholder="1234 5678 9012 3456">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="cardName" class="form-label">Cardholder Name</label>
+                                                    <input type="text" class="form-control" id="cardName"
+                                                        name="cardName" placeholder="Name on Card">
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="expiryMonth" class="form-label">Expiry Month</label>
+                                                    <select class="form-select" id="expiryMonth" name="expiryMonth">
+                                                        <option value="">MM</option>
+                                                        <option value="01">01</option>
+                                                        <option value="02">02</option>
+                                                        <option value="03">03</option>
+                                                        <option value="04">04</option>
+                                                        <option value="05">05</option>
+                                                        <option value="06">06</option>
+                                                        <option value="07">07</option>
+                                                        <option value="08">08</option>
+                                                        <option value="09">09</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="expiryYear" class="form-label">Expiry Year</label>
+                                                    <select class="form-select" id="expiryYear" name="expiryYear">
+                                                        <option value="">YYYY</option>
+                                                        <option value="2025">2025</option>
+                                                        <option value="2026">2026</option>
+                                                        <option value="2027">2027</option>
+                                                        <option value="2028">2028</option>
+                                                        <option value="2029">2029</option>
+                                                        <option value="2030">2030</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="cvv" class="form-label">CVV</label>
+                                                    <input type="text" class="form-control" id="cvv" name="cvv"
+                                                        placeholder="123" maxlength="4">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Terms and Conditions -->
+                                    <div class="col-12 mb-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="termsAccepted"
+                                                name="termsAccepted" required>
+                                            <label class="form-check-label" for="termsAccepted">
+                                                I agree to the <a href="#" class="text-warning">Terms and Conditions</a>
+                                                and <a href="#" class="text-warning">Privacy Policy</a>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-warning w-100 py-3 mb-3">
+                                            <span class="btn-text">Submit Reservation</span>
+                                            <span class="btn-icon ms-2">🏨</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Additional Info -->
+                            <div class="additional-info mt-4 pt-3 border-top">
+                                <div class="row text-center">
+                                    <div class="col-md-4">
+                                        <div class="info-item">
+                                            <img src="../../../assets/images/logo/phone-icon.png" alt="Phone"
+                                                class="info-icon mb-2">
+                                            <p class="mb-1"><strong>Need Help?</strong></p>
+                                            <p class="text-muted small">Call: +94 77 678 6535</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="info-item">
+                                            <img src="../../../assets/images/logo/email-icon.png" alt="Email"
+                                                class="info-icon mb-2">
+                                            <p class="mb-1"><strong>Email Support</strong></p>
+                                            <p class="text-muted small">info@holidayGetaway.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="info-item">
+                                            <p class="mb-1"><strong>Cancellation</strong></p>
+                                            <p class="text-muted small">Free cancellation up to 24 hours</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark px-5">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="navbar-logo">
-        <span class="brand-text ms-2">Holiday Getaway</span>
-        </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
-        <ul class="navbar-nav me-3">
-            <li class="nav-item"><a class="nav-link" href="../home/home.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="../rooms/rooms.html">Rooms</a></li>
-            <li class="nav-item"><a class="nav-link" href="../aboutUs/aboutUs.html">About Us</a></li>
-        </ul>
-        <a href="#" class="me-3"><img src="../../../assets/images/logo/search.png" alt="Search" class="icon"></a>
-        <a href="../dashboard/dashboard.html" class="btn btn-warning px-4 py-2">Book Now</a>
-        <a href="../dashboard/dashboard.html"><img src="../../../assets/images/logo/user.png" alt="user" class="navbar-logo-user"></a>
-        <button class="btn btn-logout" onclick="logout()">
-          <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
-          Logout
-        </button>
-        </div>
-    </nav>
-  </header>
 
-  
-<div class="reservation-container mt-5 pt-5">
-  <!-- Background Video -->
-  <video autoplay muted loop class="bg-video">
-    <source src="../../../assets/images/background/hero-bg.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  
-  <!-- Dark Overlay -->
-  <div class="video-overlay"></div>
-  
-  <div class="container py-5 position-relative">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 col-md-10">
-        <div class="reservation-card card shadow-lg border-0">
-          <div class="card-body p-5">
-            <!-- Header -->
-            <div class="text-center mb-4">
-              <img src="../../../assets/images/background/logo.png" alt="Hotel Getaway" class="reservation-logo mb-3">
-              <h2 class="reservation-title">Make Your Reservation</h2>
-              <p class="reservation-subtitle text-muted">Book your perfect stay with us</p>
-            </div>
 
-            <!-- Reservation Form -->
-            <form id="reservationForm" class="reservation-form">
-              <div class="row">
-                <!-- Personal Information -->
-                <div class="col-md-6 mb-3">
-                  <label for="fullName" class="form-label">Full Name *</label>
-                  <input type="text" class="form-control" id="fullName" name="fullName" required>
+
+
+
+
+
+
+
+
+    <!-- Footer Section -->
+    <footer class="footer bg-dark text-light py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Hotel Information -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="footer-brand mb-3">
+                        <img src="../../../assets/images/background/logo.png" alt="Hotel Getaway"
+                            class="footer-logo mb-2">
+                        <h5 class="brand-text">Holiday Getaway</h5>
+                    </div>
+                    <p class="footer-description">
+                        Experience luxury and comfort at Holiday Getaway. Your perfect destination for unforgettable
+                        holidays and business stays.
+                    </p>
+                    <div class="footer-social mt-3">
+                        <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/facebook.png"
+                                alt="Facebook" class="social-icon"></a>
+                        <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/twitter.png"
+                                alt="Twitter" class="social-icon"></a>
+                        <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/google-plus.png"
+                                alt="Google+" class="social-icon"></a>
+                        <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/linkedin.png"
+                                alt="LinkedIn" class="social-icon"></a>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                  <label for="email" class="form-label">Email Address *</label>
-                  <input type="email" class="form-control" id="email" name="email" required>
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title mb-3">Quick Links</h6>
+                    <ul class="footer-links list-unstyled">
+                        <li><a href="#" class="footer-link">Home</a></li>
+                        <li><a href="#" class="footer-link">About Us</a></li>
+                        <li><a href="#" class="footer-link">Rooms & Suites</a></li>
+                        <li><a href="#" class="footer-link">Facilities</a></li>
+                        <li><a href="#" class="footer-link">Gallery</a></li>
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                    </ul>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                  <label for="phone" class="form-label">Phone Number *</label>
-                  <input type="tel" class="form-control" id="phone" name="phone" required>
+                <!-- Services -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title mb-3">Services</h6>
+                    <ul class="footer-links list-unstyled">
+                        <li><a href="#" class="footer-link">Restaurant</a></li>
+                        <li><a href="#" class="footer-link">Spa & Wellness</a></li>
+                        <li><a href="#" class="footer-link">Conference Hall</a></li>
+                        <li><a href="#" class="footer-link">Swimming Pool</a></li>
+                        <li><a href="#" class="footer-link">Fitness Center</a></li>
+                        <li><a href="#" class="footer-link">Room Service</a></li>
+                    </ul>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                  <label for="roomType" class="form-label">Room Type *</label>
-                  <select class="form-select" id="roomType" name="roomType" required>
-                    <option value="">Select Room Type</option>
-                    <option value="standard">Standard Room - $120/night</option>
-                    <option value="deluxe">Deluxe Room - $180/night</option>
-                    <option value="suite">Suite - $280/night</option>
-                    <option value="presidential">Presidential Suite - $450/night</option>
-                    <option value="residential">Residential Suite - Weekly/Monthly</option>
-                  </select>
+                <!-- Policies & Support -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title mb-3">Policies</h6>
+                    <ul class="footer-links list-unstyled">
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
+                        <li><a href="#" class="footer-link">Cancellation Policy</a></li>
+                        <li><a href="#" class="footer-link">COVID-19 Safety</a></li>
+                        <li><a href="#" class="footer-link">Guest Reviews</a></li>
+                        <li><a href="#" class="footer-link">Help Center</a></li>
+                    </ul>
                 </div>
 
-                <!-- Stay Details -->
-                <div class="col-md-4 mb-3">
-                  <label for="guests" class="form-label">Number of Guests *</label>
-                  <select class="form-select" id="guests" name="guests" required>
-                    <option value="">Select Guests</option>
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                    <option value="5">5+ Guests</option>
-                  </select>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <label for="checkinDate" class="form-label">Check-in Date *</label>
-                  <input type="date" class="form-control" id="checkinDate" name="checkinDate" required>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <label for="checkoutDate" class="form-label">Check-out Date *</label>
-                  <input type="date" class="form-control" id="checkoutDate" name="checkoutDate" required>
-                </div>
-
-                <!-- Special Requests -->
-                <div class="col-12 mb-4">
-                  <label for="specialRequests" class="form-label">Special Requests</label>
-                  <textarea class="form-control" id="specialRequests" name="specialRequests" rows="3" placeholder="Any special requirements or preferences..."></textarea>
-                </div>
-
-                <!-- Payment Options -->
-                <div class="col-12 mb-4">
-                  <h5 class="payment-section-title mb-3">Payment Options</h5>
-                  
-                  <div class="payment-options">
-                    <div class="form-check mb-3">
-                      <input class="form-check-input" type="radio" id="withCreditCard" name="paymentOption" value="creditCard" checked>
-                      <label class="form-check-label" for="withCreditCard">
-                        <strong>Secure with Credit Card</strong>
-                        <small class="d-block text-muted">Guarantee your reservation</small>
-                      </label>
+                <!-- Contact Information -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="footer-title mb-3">Contact Info</h6>
+                    <div class="contact-info">
+                        <div class="contact-item mb-2">
+                            <span>123 Resort Avenue, Hill Station, Country 12345</span>
+                        </div>
+                        <div class="contact-item mb-2">
+                            <span>+94 77 678 6535</span>
+                        </div>
+                        <div class="contact-item mb-2">
+                            <span>info@holidayGetaway.com</span>
+                        </div>
+                        <div class="contact-item mb-3">
+                            <span>24/7 Reception</span>
+                        </div>
                     </div>
 
-                    <div class="form-check mb-3">
-                      <input class="form-check-input" type="radio" id="withoutCreditCard" name="paymentOption" value="noCreditCard">
-                      <label class="form-check-label" for="withoutCreditCard">
-                        <strong>Book without Credit Card</strong>
-                        <small class="d-block text-warning">⚠️ Reservation will be cancelled at 7 PM daily if not secured</small>
-                      </label>
+                    <!-- Newsletter Signup -->
+                    <div class="newsletter-signup mt-4">
+                        <h6 class="mb-2">Newsletter</h6>
+                        <p class="small mb-2">Subscribe for special offers and updates</p>
+                        <form class="newsletter-form">
+                            <div class="input-group">
+                                <input type="email" class="form-control form-control-sm"
+                                    placeholder="Your email address" required>
+                                <button class="btn btn-warning btn-sm" type="submit">Subscribe</button>
+                            </div>
+                        </form>
                     </div>
-                  </div>
                 </div>
+            </div>
 
-                <!-- Credit Card Details (Hidden by default) -->
-                <div class="col-12 mb-4" id="creditCardSection">
-                  <div class="credit-card-section p-4 border rounded">
-                    <h6 class="mb-3">Credit Card Information</h6>
-                    <div class="row">
-                      <div class="col-md-6 mb-3">
-                        <label for="cardNumber" class="form-label">Card Number</label>
-                        <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <label for="cardName" class="form-label">Cardholder Name</label>
-                        <input type="text" class="form-control" id="cardName" name="cardName" placeholder="Name on Card">
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="expiryMonth" class="form-label">Expiry Month</label>
-                        <select class="form-select" id="expiryMonth" name="expiryMonth">
-                          <option value="">MM</option>
-                          <option value="01">01</option>
-                          <option value="02">02</option>
-                          <option value="03">03</option>
-                          <option value="04">04</option>
-                          <option value="05">05</option>
-                          <option value="06">06</option>
-                          <option value="07">07</option>
-                          <option value="08">08</option>
-                          <option value="09">09</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                        </select>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="expiryYear" class="form-label">Expiry Year</label>
-                        <select class="form-select" id="expiryYear" name="expiryYear">
-                          <option value="">YYYY</option>
-                          <option value="2025">2025</option>
-                          <option value="2026">2026</option>
-                          <option value="2027">2027</option>
-                          <option value="2028">2028</option>
-                          <option value="2029">2029</option>
-                          <option value="2030">2030</option>
-                        </select>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="cvv" class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" maxlength="4">
-                      </div>
+    </footer>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom bg-black text-light py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 small">&copy;
+                        <?php echo date('Y'); ?> Holiday Getaway. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="footer-bottom-links">
+                        <a href="#" class="footer-bottom-link me-3">Privacy</a>
+                        <a href="#" class="footer-bottom-link me-3">Terms</a>
+                        <a href="#" class="footer-bottom-link me-3">Cookies</a>
+                        <a href="#" class="footer-bottom-link">Sitemap</a>
                     </div>
-                  </div>
                 </div>
-
-                <!-- Terms and Conditions -->
-                <div class="col-12 mb-4">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="termsAccepted" name="termsAccepted" required>
-                    <label class="form-check-label" for="termsAccepted">
-                      I agree to the <a href="#" class="text-warning">Terms and Conditions</a> and <a href="#" class="text-warning">Privacy Policy</a>
-                    </label>
-                  </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="col-12">
-                  <button type="submit" class="btn btn-warning w-100 py-3 mb-3">
-                    <span class="btn-text">Submit Reservation</span>
-                    <span class="btn-icon ms-2">🏨</span>
-                  </button>
-                </div>
-              </div>
-            </form>
-
-            <!-- Additional Info -->
-            <div class="additional-info mt-4 pt-3 border-top">
-              <div class="row text-center">
-                <div class="col-md-4">
-                  <div class="info-item">
-                    <img src="../../../assets/images/logo/phone-icon.png" alt="Phone" class="info-icon mb-2">
-                    <p class="mb-1"><strong>Need Help?</strong></p>
-                    <p class="text-muted small">Call: +94 77 678 6535</p>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="info-item">
-                    <img src="../../../assets/images/logo/email-icon.png" alt="Email" class="info-icon mb-2">
-                    <p class="mb-1"><strong>Email Support</strong></p>
-                    <p class="text-muted small">info@holidayGetaway.com</p>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="info-item">
-                    <p class="mb-1"><strong>Cancellation</strong></p>
-                    <p class="text-muted small">Free cancellation up to 24 hours</p>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<!-- Footer Section -->
-<footer class="footer bg-dark text-light py-5">
-  <div class="container">
-    <div class="row">
-      <!-- Hotel Information -->
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="footer-brand mb-3">
-          <img src="../../../assets/images/background/logo.png" alt="Hotel Getaway" class="footer-logo mb-2">
-          <h5 class="brand-text">Holiday Getaway</h5>
-        </div>
-        <p class="footer-description">
-          Experience luxury and comfort at Holiday Getaway. Your perfect destination for unforgettable holidays and business stays.
-        </p>
-        <div class="footer-social mt-3">
-          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/facebook.png" alt="Facebook" class="social-icon"></a>
-          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/twitter.png" alt="Twitter" class="social-icon"></a>
-          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/google-plus.png" alt="Google+" class="social-icon"></a>
-          <a href="#" class="social-link me-3"><img src="../../../assets/images/logo/linkedin.png" alt="LinkedIn" class="social-icon"></a>
-        </div>
-      </div>
-
-      <!-- Quick Links -->
-      <div class="col-lg-2 col-md-6 mb-4">
-        <h6 class="footer-title mb-3">Quick Links</h6>
-        <ul class="footer-links list-unstyled">
-          <li><a href="#" class="footer-link">Home</a></li>
-          <li><a href="#" class="footer-link">About Us</a></li>
-          <li><a href="#" class="footer-link">Rooms & Suites</a></li>
-          <li><a href="#" class="footer-link">Facilities</a></li>
-          <li><a href="#" class="footer-link">Gallery</a></li>
-          <li><a href="#" class="footer-link">Contact Us</a></li>
-        </ul>
-      </div>
-
-      <!-- Services -->
-      <div class="col-lg-2 col-md-6 mb-4">
-        <h6 class="footer-title mb-3">Services</h6>
-        <ul class="footer-links list-unstyled">
-          <li><a href="#" class="footer-link">Restaurant</a></li>
-          <li><a href="#" class="footer-link">Spa & Wellness</a></li>
-          <li><a href="#" class="footer-link">Conference Hall</a></li>
-          <li><a href="#" class="footer-link">Swimming Pool</a></li>
-          <li><a href="#" class="footer-link">Fitness Center</a></li>
-          <li><a href="#" class="footer-link">Room Service</a></li>
-        </ul>
-      </div>
-
-      <!-- Policies & Support -->
-      <div class="col-lg-2 col-md-6 mb-4">
-        <h6 class="footer-title mb-3">Policies</h6>
-        <ul class="footer-links list-unstyled">
-          <li><a href="#" class="footer-link">Privacy Policy</a></li>
-          <li><a href="#" class="footer-link">Terms of Service</a></li>
-          <li><a href="#" class="footer-link">Cancellation Policy</a></li>
-          <li><a href="#" class="footer-link">COVID-19 Safety</a></li>
-          <li><a href="#" class="footer-link">Guest Reviews</a></li>
-          <li><a href="#" class="footer-link">Help Center</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact Information -->
-      <div class="col-lg-3 col-md-6 mb-4">
-        <h6 class="footer-title mb-3">Contact Info</h6>
-        <div class="contact-info">
-          <div class="contact-item mb-2">
-            <span>123 Resort Avenue, Hill Station, Country 12345</span>
-          </div>
-          <div class="contact-item mb-2">
-            <span>+94 77 678 6535</span>
-          </div>
-          <div class="contact-item mb-2">
-            <span>info@holidayGetaway.com</span>
-          </div>
-          <div class="contact-item mb-3">
-            <span>24/7 Reception</span>
-          </div>
-        </div>
-        
-        <!-- Newsletter Signup -->
-        <div class="newsletter-signup mt-4">
-          <h6 class="mb-2">Newsletter</h6>
-          <p class="small mb-2">Subscribe for special offers and updates</p>
-          <form class="newsletter-form">
-            <div class="input-group">
-              <input type="email" class="form-control form-control-sm" placeholder="Your email address" required>
-              <button class="btn btn-warning btn-sm" type="submit">Subscribe</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-</footer>
-
-<!-- Footer Bottom -->
-<div class="footer-bottom bg-black text-light py-3">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <p class="mb-0 small">&copy; <?php echo date('Y'); ?> Holiday Getaway. All rights reserved.</p>
-      </div>
-      <div class="col-md-6 text-md-end">
-        <div class="footer-bottom-links">
-          <a href="#" class="footer-bottom-link me-3">Privacy</a>
-          <a href="#" class="footer-bottom-link me-3">Terms</a>
-          <a href="#" class="footer-bottom-link me-3">Cookies</a>
-          <a href="#" class="footer-bottom-link">Sitemap</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="reservation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="reservation.js"></script>
 
 </body>
+
 </html>

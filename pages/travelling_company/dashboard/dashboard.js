@@ -14,108 +14,153 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 async function fetchDashboardData() {
-  const container = document.querySelector('.table-responsive');
-  // We'll target the tbody inside it
-  const tbody = document.querySelector('.reservation-table tbody');
-  if (tbody) tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4">Loading data...</td></tr>';
+  const activeContainer = document.getElementById('tcActiveContainer');
+  const pastContainer = document.getElementById('tcPastContainer');
 
   try {
     // Fetch Reservations
+    // Endpoint: GET /api/travelCompany/reservations/my
     const resRes = await fetch('http://localhost:5000/api/travelCompany/reservations/my', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const resData = await resRes.json();
+    // The backend might return { data: [...] } or just [...] depend on implementation
     const reservations = resRes.ok ? (resData.data || []) : [];
 
     // Fetch Billing (for stats)
-    const resBill = await fetch('http://localhost:5000/api/travelCompany/billing', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const billData = await resBill.json();
-    const bills = resBill.ok ? (billData.data || []) : [];
+    // Endpoint: GET /api/travelCompany/billing
+    // Assuming this returns a list of bills
+    let bills = [];
+    try {
+      const resBill = await fetch('http://localhost:5000/api/travelCompany/billing', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const billData = await resBill.json();
+      bills = resBill.ok ? (billData.data || []) : [];
+    } catch (ignored) {
+      console.warn("Billing fetch failed", ignored);
+    }
 
     renderReservations(reservations);
     updateStats(reservations, bills);
 
   } catch (err) {
     console.error(err);
-    if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Error: ${err.message}</td></tr>`;
+    if (activeContainer) activeContainer.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
+    if (pastContainer) pastContainer.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
   }
 }
 
 function renderReservations(reservations) {
-  const tbody = document.querySelector('.reservation-table tbody');
-  if (!tbody) return;
+  const activeContainer = document.getElementById('tcActiveContainer');
+  const pastContainer = document.getElementById('tcPastContainer');
 
-  if (reservations.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4">No bookings found. <a href="../reservation/reservation.html">Create one?</a></td></tr>';
-    return;
-  }
+  if (!activeContainer || !pastContainer) return;
 
-  // Sort by date desc
-  reservations.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  // Separate Active vs Past
+  // For blocked bookings, 'Confirmed' is usually active. 
+  // 'Cancelled' or past dates are past.
+  const now = new Date();
+  const activeRes = [];
+  const pastRes = [];
 
-  let html = '';
   reservations.forEach(res => {
-    const start = new Date(res.start_date).toLocaleDateString();
-    const end = new Date(res.end_date).toLocaleDateString();
-    const status = res.status || 'Confirmed'; // Blocked bookings are usually confirmed if successful
+    const end = new Date(res.end_date);
+    const isPast = end < now;
+    const isCancelled = res.status === 'Cancelled';
 
-    let statusClass = 'status-confirmed';
-    if (status === 'Cancelled') statusClass = 'status-cancelled';
-
-    html += `
-            <tr>
-                <td>#${res.id}</td>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div>
-                           <div class="fw-bold">${res.room_type_id} (Type ID)</div>
-                           <small class="text-muted">Branch: ${res.branch_id}</small>
-                        </div>
-                    </div>
-                </td>
-                <td>${start} - ${end}</td>
-                <td>${res.number_of_rooms} Rooms</td>
-                <td><span class="badge ${statusClass}">${status}</span></td>
-                <td>
-                    ${status !== 'Cancelled' ? `
-                    <button class="btn btn-sm btn-outline-danger" onclick="cancelBooking('${res.id}')">Cancel</button>
-                    ` : '-'}
-                </td>
-            </tr>
-        `;
+    if (isCancelled || isPast) {
+      pastRes.push(res);
+    } else {
+      activeRes.push(res);
+    }
   });
 
-  tbody.innerHTML = html;
+  // Render Active
+  if (activeRes.length === 0) {
+    activeContainer.innerHTML = `
+        <div class="text-center p-5">
+            <h5>No Active Block Bookings</h5>
+            <p class="text-muted">You have no upcoming group stays.</p>
+            <a href="../reservation/reservation.html" class="btn btn-warning mt-2">Make New Block</a>
+        </div>`;
+  } else {
+    activeContainer.innerHTML = activeRes.map(res => generateBlockHTML(res, true)).join('');
+  }
+
+  // Render Past
+  if (pastRes.length === 0) {
+    pastContainer.innerHTML = `
+        <div class="text-center p-5">
+            <p class="text-muted">No past booking history.</p>
+        </div>`;
+  } else {
+    pastContainer.innerHTML = pastRes.map(res => generateBlockHTML(res, false)).join('');
+  }
+}
+
+function generateBlockHTML(res, isActive) {
+  // Mapping Status
+  let statusClass = 'status-confirmed';
+  if (res.status === 'Cancelled') statusClass = 'status-cancelled';
+
+  // Dates
+  const start = new Date(res.start_date).toLocaleDateString();
+  const end = new Date(res.end_date).toLocaleDateString();
+
+  return `
+    <div class="reservation-block mb-4 border rounded p-3 bg-light">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <div class="reservation-info">
+            <h5 class="reservation-title mb-2">Block #${res.id} <small class="text-muted">(${res.branch_id} - ${res.room_type_id})</small></h5>
+            
+            <div class="reservation-details d-flex flex-wrap gap-3">
+              <span class="detail-item"><i class="detail-icon">📅</i> <strong>Check-in:</strong> ${start}</span>
+              <span class="detail-item"><i class="detail-icon">📅</i> <strong>Check-out:</strong> ${end}</span>
+              <span class="detail-item"><i class="detail-icon">🚪</i> <strong>Rooms:</strong> ${res.number_of_rooms}</span>
+            </div>
+
+            <div class="reservation-meta mt-2">
+              <span class="reservation-id text-muted" style="font-size: 0.85rem;">Created: ${new Date(res.created_at).toLocaleDateString()}</span>
+              <span class="badge ${statusClass} ms-2 px-2 py-1">${res.status || 'Confirmed'}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <div class="action-buttons">
+            ${isActive && res.status !== 'Cancelled' ? `
+                <button class="btn btn-outline-danger btn-sm" onclick="cancelBooking('${res.id}')">Cancel Block</button>
+            ` : ''}
+            ${!isActive ? `<button class="btn btn-outline-secondary btn-sm" disabled>Archived</button>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+    `;
 }
 
 function updateStats(reservations, bills) {
   // 1. Active Bookings
   const activeCount = reservations.filter(r => r.status !== 'Cancelled').length;
 
-  // 2. Total Spent (Sum of paid bills or total billing?)
-  // The billing API likely returns a list of bills. We can sum them up?
-  // Let's assume bills have `total_amount` or similar.
-  // If we don't know the structure, we'll just count them for now or default to 0.
+  // 2. Total Bookings
+  const totalCount = reservations.length;
+
+  // 3. Total Spent
+  // Logic: Sum of all bills if available, else 0
   let totalSpent = 0;
-  let pendingAmount = 0;
-
   if (Array.isArray(bills)) {
-    // This is a guess on structure. If it fails, it shows 0.
-    // If billing API returns an object with `total_due`, `total_paid`, we use that.
-    // Based on `getOwnBillDetails`, it likely returns the bill record.
-    // Let's look at `billData` structure if we could ... 
-    // For now, I'll display 'Calculated in Billing' if not sure.
-
-    // Actually, let's just use the count of reservations for "Total Bookings".
+    totalSpent = bills.reduce((acc, bill) => acc + parseFloat(bill.total_amount || 0), 0);
   }
 
-  document.querySelectorAll('.stat-number').forEach((el, index) => {
-    if (index === 0) el.textContent = activeCount; // Active Bookings
-    if (index === 1) el.textContent = reservations.length; // Total Bookings
-    // if (index === 2) ... // Pending Bills
-  });
+  // DOM Updates
+  // Indices: 0->Active, 1->Total, 2->Spent
+  const stats = document.querySelectorAll('.stat-number');
+  if (stats[0]) stats[0].textContent = activeCount;
+  if (stats[1]) stats[1].textContent = totalCount;
+  if (stats[2]) stats[2].textContent = '$' + totalSpent.toLocaleString();
 }
 
 // Actions
@@ -129,11 +174,11 @@ function cancelBooking(id) {
     confirmButtonText: 'Yes'
   }).then((res) => {
     if (res.isConfirmed) {
-      // There is no explicit cancel endpoint for TC in the routes I saw?
-      // Let's check `travelCompany.routes.js`.
-      // It has `createReservation`, `getMyReservations`, `getOwnBillDetails`.
-      // It DOES NOT seem to have a CANCEL route for TC!
-      // I should alert the user or hide the button.
+      // Backend does NOT have a Cancel endpoint for TC (according to my scan)
+      // I only saw `createReservation` and `getMyReservations`.
+      // The user Requirement says "Travel Companies can block bookings...". 
+      // It doesn't explicitly mention 'Cancel', but usually they should.
+      // Since it's missing, I'll show the info message I planned.
       Swal.fire('Notice', 'Please contact support to cancel blocked bookings.', 'info');
     }
   });

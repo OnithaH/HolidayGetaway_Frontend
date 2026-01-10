@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Invoice | Holiday Getaway</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-logo {
+            max-height: 60px;
+        }
+
+        .invoice-header {
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .invoice-title {
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .table-head {
+            background-color: #f8f9fa;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            .invoice-container {
+                box-shadow: none;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container invoice-container">
+        <!-- Header -->
+        <div class="row invoice-header align-items-center">
+            <div class="col-6">
+                <img src="../../../assets/images/background/logo.png" alt="Haliday Getaway" class="brand-logo mb-2">
+                <h4 class="mb-0">Holiday Getaway</h4>
+                <small class="text-muted">123 Resort Avenue, Hill Station</small>
+            </div>
+            <div class="col-6">
+                <h1 class="invoice-title">INVOICE</h1>
+                <div class="text-end">
+                    <p class="mb-0"><strong>Invoice Date:</strong> <span id="invoiceDate">...</span></p>
+                    <p class="mb-0"><strong>Invoice ID:</strong> #<span id="invoiceId">...</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bill To -->
+        <div class="row mb-5">
+            <div class="col-6">
+                <h5 class="text-uppercase text-muted small fw-bold">Bill To:</h5>
+                <h4 id="customerName">Loading...</h4>
+                <p class="mb-0" id="customerAddress">...</p>
+                <p class="mb-0" id="customerEmail">...</p>
+            </div>
+            <div class="col-6 text-end">
+                <h5 class="text-uppercase text-muted small fw-bold">Reservation Info:</h5>
+                <p class="mb-0"><strong>Reservation ID:</strong> <span id="reservationId">...</span></p>
+                <p class="mb-0"><strong>Check-In:</strong> <span id="checkInDate">...</span></p>
+                <p class="mb-0"><strong>Check-Out:</strong> <span id="checkOutDate">...</span></p>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered">
+                <thead class="table-head">
+                    <tr>
+                        <th>Description</th>
+                        <th class="text-end" style="width: 150px;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceItems">
+                    <!-- Populated by JS -->
+                    <tr>
+                        <td colspan="2" class="text-center p-3">Loading details...</td>
+                    </tr>
+                </tbody>
+                <tfoot class="bg-light">
+                    <tr>
+                        <td class="text-end fw-bold">Subtotal</td>
+                        <td class="text-end" id="subTotal">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-end fw-bold">Tax (10%)</td>
+                        <td class="text-end" id="taxAmount">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-end fw-bold text-uppercase fs-5">Total Due</td>
+                        <td class="text-end fw-bold fs-5 text-warning" id="totalAmount">$0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Payment Status -->
+        <div class="row mb-4">
+            <div class="col-12 text-end">
+                <span class="badge bg-success fs-6 px-3 py-2" id="paymentStatus">PAID</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-muted border-top pt-4">
+            <p class="mb-1">Thank you for staying with us!</p>
+            <small>For questions, contact info@holidayGetaway.com or +94 77 678 6535</small>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-4 text-center no-print">
+            <button class="btn btn-primary px-4 me-2" onclick="window.print()">Print Invoice</button>
+            <button class="btn btn-outline-secondary" onclick="window.close()">Close Window</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="invoice.js"></script>
+</body>
+
+</html>

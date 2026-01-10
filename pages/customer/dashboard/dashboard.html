@@ -53,7 +53,8 @@
         </ul>
         <a href="#" class="me-3"><img src="../../../assets/images/logo/search.png" alt="Search" class="icon"></a>
         <a href="../dashboard/dashboard.html" class="btn btn-warning px-4 py-2">Book Now</a>
-        <a href="#"><img src="../../../assets/images/logo/user.png" alt="user" class="navbar-logo-user"></a>
+        <a href="../profile/profile.html"><img src="../../../assets/images/logo/user.png" alt="user"
+            class="navbar-logo-user"></a>
         <button class="btn btn-logout" onclick="logout()">
           <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
           Logout
@@ -99,7 +100,7 @@
         <!-- Quick Stats -->
         <div class="col-12 mb-4">
           <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <div class="stat-card card border-0 shadow-sm">
                 <div class="card-body text-center p-3">
                   <div class="stat-icon mb-2">🏨</div>
@@ -108,7 +109,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <div class="stat-card card border-0 shadow-sm">
                 <div class="card-body text-center p-3">
                   <div class="stat-icon mb-2">📅</div>
@@ -117,12 +118,21 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <div class="stat-card card border-0 shadow-sm">
                 <div class="card-body text-center p-3">
                   <div class="stat-icon mb-2">💰</div>
                   <h4 class="stat-number mb-1" id="totalSpentStat">$0.00</h4>
                   <p class="stat-label mb-0">Total Spent</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stat-card card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                  <div class="stat-icon mb-2">⏳</div>
+                  <h4 class="stat-number mb-1" id="totalPendingStat">$0.00</h4>
+                  <p class="stat-label mb-0">Pending Charges</p>
                 </div>
               </div>
             </div>

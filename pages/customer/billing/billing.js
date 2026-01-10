@@ -126,12 +126,12 @@ function renderBills(bills) {
                 <td>
                     <div class="action-buttons">
                         ${status !== 'Paid' ? `
-                        <button class="btn btn-warning btn-sm" onclick="alert('Payment integration pending')">
+                        <button class="btn btn-warning btn-sm" onclick="handlePayment('${bill.reservation_id}', '${amount}')">
                           <span>Pay Now</span>
                         </button>` : ''}
-                        <button class="btn btn-outline-info btn-sm" onclick="alert('Invoice generation pending')">
+                        <a href="../invoice/invoice.html?id=${bill.reservation_id}" target="_blank" class="btn btn-outline-info btn-sm">
                           <span>View Invoice</span>
-                        </button>
+                        </a>
                     </div>
                 </td>
             </tr>
@@ -205,4 +205,84 @@ function logout() {
     });
 }
 window.logout = logout;
+
+async function handlePayment(reservationId, amount) {
+    const { value: formValues } = await Swal.fire({
+        title: 'Secure Payment',
+        html: `
+            <div class="text-start">
+                <p>Paying <strong>$${amount}</strong> for Reservation #${reservationId}</p>
+                <div class="mb-3">
+                    <label class="form-label">Card Number</label>
+                    <input id="swal-card" class="form-control" placeholder="1234 5678 1234 5678" maxlength="19">
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Expiry (MM/YY)</label>
+                        <div class="input-group">
+                            <input id="swal-mm" class="form-control" placeholder="MM" maxlength="2">
+                            <input id="swal-yy" class="form-control" placeholder="YY" maxlength="2">
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label class="form-label">CVV</label>
+                        <input id="swal-cvv" class="form-control" placeholder="123" maxlength="3" type="password">
+                    </div>
+                </div>
+            </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Pay Now',
+        preConfirm: () => {
+            return {
+                cardNumber: document.getElementById('swal-card').value,
+                cardExpMonth: document.getElementById('swal-mm').value,
+                cardExpYear: document.getElementById('swal-yy').value,
+                cvnCode: document.getElementById('swal-cvv').value,
+                cardType: 'VISA' // Defaulting for demo
+            };
+        }
+    });
+
+    if (formValues) {
+        // Basic Validation
+        if (!formValues.cardNumber || !formValues.cardExpMonth || !formValues.cardExpYear || !formValues.cvnCode) {
+            Swal.fire('Error', 'Please fill in all card details', 'error');
+            return;
+        }
+
+        // Show Loading
+        Swal.fire({ title: 'Processing Payment...', didOpen: () => { Swal.showLoading() } });
+
+        try {
+            const payload = {
+                reservationId: parseInt(reservationId),
+                ...formValues
+            };
+
+            const res = await fetch('http://localhost:5000/api/customer/reservation/payment-details', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const json = await res.json();
+
+            if (res.ok) {
+                Swal.fire('Success', 'Payment confirmed! Thank you.', 'success').then(() => {
+                    fetchBills(); // Reload table
+                });
+            } else {
+                Swal.fire('Payment Failed', json.message || 'Unknown error', 'error');
+            }
+        } catch (err) {
+            console.error(err);
+            Swal.fire('Error', 'Network error processing payment', 'error');
+        }
+    }
+}
 

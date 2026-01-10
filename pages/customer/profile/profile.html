@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Profile | Holiday Getaway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../customer/dashboard/dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+
+<body>
+    <header id="site-header">
+        <!-- Top Bar -->
+        <div class="top-bar d-none d-lg-flex justify-content-between align-items-center">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <img src="../../../assets/images/logo/phone-icon.png" alt="Phone" class="icon"> +94 77 678 6535
+                </li>
+                <li class="list-inline-item ms-4">
+                    <img src="../../../assets/images/logo/email-icon.png" alt="Email" class="icon">
+                    info@HolidayGetaway.com
+                </li>
+            </ul>
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/facebook.png"
+                            alt="Facebook" class="icon"></a></li>
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/twitter.png"
+                            alt="Twitter" class="icon"></a></li>
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/google-plus.png"
+                            alt="Google+" class="icon"></a></li>
+                <li class="list-inline-item"><a href="#"><img src="../../../assets/images/logo/linkedin.png"
+                            alt="LinkedIn" class="icon"></a></li>
+            </ul>
+        </div>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark px-5">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="../../../assets/images/background/logo.png" alt="Holiday Getaway" class="navbar-logo">
+                <span class="brand-text ms-2">Holiday Getaway</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../rooms/rooms.html">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../aboutUs/aboutUs.html">About Us</a></li>
+
+                </ul>
+                <a href="#" class="me-3"><img src="../../../assets/images/logo/search.png" alt="Search"
+                        class="icon"></a>
+                <a href="../reservation/reservation.html" class="btn btn-warning px-4 py-2">Book Now</a>
+                <a href="../dashboard/dashboard.html"><img src="../../../assets/images/logo/user.png" alt="user"
+                        class="navbar-logo-user"></a>
+                <button class="btn btn-logout" onclick="logout()">
+                    <img src="../../../assets/images/logo/logout.png" alt="Logout" class="logout-icon">
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Background Video -->
+    <video autoplay muted loop class="bg-video">
+        <source src="../../../assets/images/background/hero-bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Dark Overlay -->
+    <div class="video-overlay"></div>
+
+    <div class="container py-5" style="margin-top: 150px;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-warning text-dark p-4">
+                        <h4 class="mb-0">My Profile</h4>
+                    </div>
+                    <div class="card-body p-5">
+                        <form id="profileForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" readonly disabled>
+                                    <small class="text-muted">Email cannot be changed.</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Address</label>
+                                    <textarea class="form-control" id="address" rows="3"></textarea>
+                                </div>
+
+                                <hr class="my-4">
+                                <h5 class="mb-3">Security</h5>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">New Password (Optional)</label>
+                                    <input type="password" class="form-control" id="password"
+                                        placeholder="Leave blank to keep current">
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end mt-4">
+                                <a href="../dashboard/dashboard.html" class="btn btn-outline-secondary me-3">Cancel</a>
+                                <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="profile.js"></script>
+</body>
+
+</html>

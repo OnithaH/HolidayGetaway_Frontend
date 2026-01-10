@@ -60,9 +60,30 @@ function renderReservations(reservations) {
   reservations.sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
 
   reservations.forEach(res => {
-    if (['Pending', 'Confirmed'].includes(res.reservation_status)) {
+    // Logic: Date-Based Classification
+    const status = (res.reservation_status || 'Pending').toLowerCase();
+
+    // Check Date
+    const checkoutDate = new Date(res.check_out_date);
+    const now = new Date();
+    // Compare dates only
+    now.setHours(0, 0, 0, 0);
+    checkoutDate.setHours(0, 0, 0, 0);
+    const isFuture = checkoutDate >= now;
+
+    // Status Check
+    // We EXCLUDE 'no-show' from strictly ended, because if date is Future, it's just a backend quirk.
+    const isStrictlyEnded = ['cancelled', 'completed'].includes(status);
+
+    // Rule: ACtive if FUTURE DATE and NOT Strictly Ended (Cancelled/Completed)
+    if (isFuture && !isStrictlyEnded) {
       activeReservations.push(res);
-    } else {
+    }
+    // Fallback: Also show as active if explicitly Pending/Confirmed/Paid and not ended
+    else if (['pending', 'confirmed', 'paid'].includes(status) && !isStrictlyEnded) {
+      activeReservations.push(res);
+    }
+    else {
       pastReservations.push(res);
     }
   });
@@ -119,6 +140,10 @@ function generateReservationHTML(res, isActive) {
     }
   }
 
+  // Invoice Button Logic: Show if Paid/Completed/No-Show
+  const showInvoice = ['Paid', 'Completed', 'No-Show', 'No_show'].includes(res.payment_status) ||
+    ['Completed', 'No-Show', 'No_show'].includes(statusText);
+
   return `
         <div class="reservation-block mb-4 border rounded p-3 bg-light">
           <div class="row align-items-center">
@@ -148,7 +173,12 @@ function generateReservationHTML(res, isActive) {
                         <button class="btn btn-success btn-sm" onclick="completeReservation('${res.id}')">Check-Out</button>
                     ` : ''}
                 ` : ''}
-                ${!isActive ? `<button class="btn btn-outline-secondary btn-sm" disabled>Archived</button>` : ''}
+                
+                ${showInvoice ? `
+                    <a href="../invoice/invoice.html?id=${res.id}" target="_blank" class="btn btn-outline-primary btn-sm ms-2">View Invoice</a>
+                ` : ''}
+
+                ${!isActive && !showInvoice ? `<button class="btn btn-outline-secondary btn-sm" disabled>Archived</button>` : ''}
               </div>
             </div>
           </div>
@@ -185,47 +215,72 @@ function updateStats(reservations, bills) {
   }
 
   // 2. Fallback: If Billing API returned nothing (backend issue), calculate from Reservations
-  if (totalSpent === 0 && reservations.length > 0) {
-    console.log('Billing API empty or 0. Calculating from Reservations...');
+  // Note: We also calculate 'Pending' for the dashboard now.
+  let pendingAmount = 0;
 
+  if (reservations.length > 0) {
     reservations.forEach(res => {
-      // Only count Completed, No-Show, or Confirmed (if paid)
-      // For Total Spent, usually we count what is ALREADY paid. 
-      // Assuming 'Confirmed' means deposit paid, 'Completed' means fully paid.
-      const status = res.reservation_status;
-      if (['Completed', 'Confirmed', 'No-Show', 'No_show'].includes(status)) {
+      // Calculate Duration & Cost Estimate
+      const start = new Date(res.check_in_date);
+      const end = new Date(res.check_out_date);
+      const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) || 1;
 
-        // Calculate Duration
-        const start = new Date(res.check_in_date);
-        const end = new Date(res.check_out_date);
-        const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) || 1;
-
-        // Determine Price
-        let pricePerNight = 150; // Default fallback
-        if (res.bookedrooms && res.bookedrooms.length > 0) {
-          const type = res.bookedrooms[0].room?.roomtype?.type_name;
-          if (type && ROOM_PRICES[type]) {
-            pricePerNight = ROOM_PRICES[type];
-          }
+      let pricePerNight = 120;
+      if (res.bookedrooms && res.bookedrooms.length > 0) {
+        const type = res.bookedrooms[0].room?.roomtype?.type_name;
+        if (type && ROOM_PRICES[type]) {
+          pricePerNight = ROOM_PRICES[type];
         }
+      }
+      const cost = nights * pricePerNight * (res.number_of_rooms || 1);
 
-        const cost = nights * pricePerNight * (res.number_of_rooms || 1);
-        totalSpent += cost;
+      // Add to Total Spent if Paid
+      if (res.payment_status === 'Paid') {
+        // Already handled by bills logic if bills exist, but for fallback:
+        if (totalSpent === 0 && (!bills || bills.length === 0)) {
+          totalSpent += cost;
+        }
+      }
+
+      // Add to Pending if not Paid
+      // Include Unpaid Bills + Confirmed Reservations that are unpaid
+      const isPaid = res.payment_status === 'Paid';
+      const isCancelled = res.reservation_status === 'Cancelled';
+
+      if (!isPaid && !isCancelled) {
+        pendingAmount += cost;
       }
     });
   }
 
+  // If we have real bills, use pending from bills
+  if (bills && bills.length > 0) {
+    pendingAmount = bills.reduce((sum, bill) => {
+      const status = (bill.status || 'Unpaid').toString();
+      const amt = parseFloat(bill.total_amount || 0);
+      if (status.toLowerCase() !== 'paid') return sum + amt;
+      return sum;
+    }, 0);
+  }
+
   // Update DOM
   const stats = document.querySelectorAll('.stat-number');
+  // Note: We changed layout to 4 cols, so indexing might shift if we used index. ID is safer.
   if (stats.length >= 2) {
     stats[0].textContent = activeCount;
     stats[1].textContent = totalCount;
   }
 
-  // Update Total Spent (ID we added)
+  // Update Total Spent
   const spentEl = document.getElementById('totalSpentStat');
   if (spentEl) {
     spentEl.textContent = '$' + totalSpent.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // Update Pending
+  const pendingEl = document.getElementById('totalPendingStat');
+  if (pendingEl) {
+    pendingEl.textContent = '$' + pendingAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 }
 
