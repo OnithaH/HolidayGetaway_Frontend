@@ -16,126 +16,216 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 async function fetchReservations() {
-  const container = document.querySelector('.reservations-section .card-body');
-  container.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-warning" role="status"></div><p>Loading reservations...</p></div>';
+  const currentContainer = document.getElementById('currentReservationsContainer');
+  const pastContainer = document.getElementById('pastReservationsContainer');
+
+  // Loading States
+  if (currentContainer) currentContainer.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-warning" role="status"></div><p>Loading active reservations...</p></div>';
+  if (pastContainer) pastContainer.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-warning" role="status"></div><p>Loading past reservations...</p></div>';
 
   try {
-    const res = await fetch('http://localhost:5000/api/customer/reservations/my', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+    // 1. Fetch Reservations
+    const resReservations = await fetch('http://localhost:5000/api/customer/reservations/my', {
+      headers: { 'Authorization': `Bearer ${token}` }
     });
+    const reservationsData = await resReservations.json();
+    const reservations = resReservations.ok ? (reservationsData.data || []) : [];
 
-    if (!res.ok) throw new Error('Failed to fetch reservations');
+    // 2. Fetch Billing (For Total Spent Stats)
+    const resBilling = await fetch('http://localhost:5000/api/customer/billing', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const billingData = await resBilling.json();
+    const bills = resBilling.ok ? (billingData.data || []) : [];
 
-    const json = await res.json();
-    const reservations = json.data || [];
-
+    // 3. Render
     renderReservations(reservations);
-    updateStats(reservations);
+    updateStats(reservations, bills);
 
   } catch (err) {
     console.error(err);
-    container.innerHTML = `<div class="alert alert-danger">Error loading reservations: ${err.message}</div>`;
+    if (currentContainer) currentContainer.innerHTML = `<div class="alert alert-danger">Error loading data: ${err.message}</div>`;
+    if (pastContainer) pastContainer.innerHTML = `<div class="alert alert-danger">Error loading data: ${err.message}</div>`;
   }
 }
 
 function renderReservations(reservations) {
-  const container = document.querySelector('.reservations-section .card-body');
+  const currentContainer = document.getElementById('currentReservationsContainer');
+  const pastContainer = document.getElementById('pastReservationsContainer');
 
-  if (reservations.length === 0) {
-    container.innerHTML = `
-            <div class="text-center p-5">
-                <div class="mb-3" style="font-size: 3rem;">📭</div>
-                <h5>No Reservations Found</h5>
-                <p class="text-muted">You haven't made any reservations yet.</p>
-                <a href="../rooms/rooms.html" class="btn btn-warning mt-2">Book a Room</a>
-            </div>
-        `;
-    return;
-  }
-
-  let html = '';
+  const activeReservations = [];
+  const pastReservations = [];
 
   // Sort by date (newest first)
   reservations.sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
 
   reservations.forEach(res => {
-    // Determine status style
-    let statusClass = 'status-pending';
-    let statusText = res.reservation_status || 'Pending';
+    if (['Pending', 'Confirmed'].includes(res.reservation_status)) {
+      activeReservations.push(res);
+    } else {
+      pastReservations.push(res);
+    }
+  });
 
-    if (statusText === 'Confirmed') statusClass = 'status-confirmed';
-    else if (statusText === 'Cancelled') statusClass = 'status-cancelled';
-    else if (statusText === 'Completed') statusClass = 'status-completed';
+  // Render Active
+  if (currentContainer) {
+    if (activeReservations.length === 0) {
+      currentContainer.innerHTML = `
+        <div class="text-center p-5">
+            <div class="mb-3" style="font-size: 3rem;">📭</div>
+            <h5>No Active Reservations</h5>
+            <p class="text-muted">You have no upcoming trips.</p>
+            <a href="../rooms/rooms.html" class="btn btn-warning mt-2">Book a Room</a>
+        </div>`;
+    } else {
+      currentContainer.innerHTML = activeReservations.map(res => generateReservationHTML(res, true)).join('');
+    }
+  }
 
-    // Format dates
-    const checkIn = new Date(res.check_in_date).toLocaleDateString();
-    const checkOut = new Date(res.check_out_date).toLocaleDateString();
+  // Render Past
+  if (pastContainer) {
+    if (pastReservations.length === 0) {
+      pastContainer.innerHTML = `
+        <div class="text-center p-5">
+            <p class="text-muted">No past reservation history.</p>
+        </div>`;
+    } else {
+      pastContainer.innerHTML = pastReservations.map(res => generateReservationHTML(res, false)).join('');
+    }
+  }
+}
 
-    html += `
-            <div class="reservation-block mb-4">
-              <div class="row align-items-center">
-                <div class="col-md-8">
-                  <div class="reservation-info">
-                    <h5 class="reservation-title mb-2">Reservation #${res.id}</h5>
-                    <div class="reservation-details">
-                      <span class="detail-item">
-                        <i class="detail-icon">📅</i>
-                        <strong>Check-in:</strong> ${checkIn}
-                      </span>
-                      <span class="detail-item">
-                        <i class="detail-icon">📅</i>
-                        <strong>Check-out:</strong> ${checkOut}
-                      </span>
-                      <span class="detail-item">
-                        <i class="detail-icon">👥</i>
-                        <strong>Guests:</strong> ${res.number_of_occupants}
-                      </span>
-                      <span class="detail-item">
-                        <i class="detail-icon">🏨</i>
-                        <strong>Rooms:</strong> ${res.number_of_rooms}
-                      </span>
-                    </div>
-                    <div class="reservation-meta mt-2">
-                      <span class="reservation-id">Booked on: ${new Date(res.created_at || Date.now()).toLocaleDateString()}</span>
-                      <span class="status-badge ${statusClass} ms-3">${statusText}</span>
-                    </div>
-                  </div>
+function generateReservationHTML(res, isActive) {
+  let statusClass = 'status-pending';
+  let statusText = res.reservation_status || 'Pending';
+
+  if (statusText === 'Confirmed') statusClass = 'status-confirmed';
+  else if (statusText === 'Cancelled') statusClass = 'status-cancelled text-danger border-danger';
+  else if (statusText === 'Completed') statusClass = 'status-completed text-success border-success';
+  else if (statusText === 'No_show') statusClass = 'status-cancelled bg-dark text-white';
+
+  const checkIn = new Date(res.check_in_date).toLocaleDateString();
+  const checkOut = new Date(res.check_out_date).toLocaleDateString();
+
+  // Branch Name Helper (Assuming included in response or Fallback)
+  const branchName = res.branch ? res.branch.name : `Branch #${res.branch_id || '?'}`;
+
+  // Room Types helper
+  let roomSummary = `${res.number_of_rooms} Room(s)`;
+  if (res.bookedrooms && res.bookedrooms.length > 0) {
+    // Try to get type from first room
+    if (res.bookedrooms[0].room && res.bookedrooms[0].room.roomtype) {
+      roomSummary = `${res.number_of_rooms} x ${res.bookedrooms[0].room.roomtype.type_name}`;
+    }
+  }
+
+  return `
+        <div class="reservation-block mb-4 border rounded p-3 bg-light">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <div class="reservation-info">
+                <h5 class="reservation-title mb-2">Reservation #${res.id} <small class="text-muted fs-6">(${branchName})</small></h5>
+                
+                <div class="reservation-details d-flex flex-wrap gap-3">
+                  <span class="detail-item"><i class="detail-icon">📅</i> <strong>Check-in:</strong> ${checkIn}</span>
+                  <span class="detail-item"><i class="detail-icon">📅</i> <strong>Check-out:</strong> ${checkOut}</span>
+                  <span class="detail-item"><i class="detail-icon">👥</i> <strong>Guests:</strong> ${res.number_of_occupants}</span>
+                  <span class="detail-item"><i class="detail-icon">🏨</i> <strong>${roomSummary}</strong></span>
                 </div>
-                <div class="col-md-4 text-md-end">
-                  <div class="action-buttons">
-                    ${statusText === 'Pending' || statusText === 'Confirmed' ? `
-                        <button class="btn btn-outline-danger btn-sm me-2 mb-2" onclick="cancelReservation('${res.id}')">
-                          <span>Cancel</span>
-                        </button>
-                    ` : ''}
-                    ${statusText === 'Confirmed' ? `
-                        <button class="btn btn-success btn-sm mb-2" onclick="completeReservation('${res.id}')">
-                          <span>Complete/Check-out</span>
-                        </button>
-                    ` : ''}
-                  </div>
+
+                <div class="reservation-meta mt-2">
+                  <span class="reservation-id text-muted" style="font-size: 0.85rem;">Booked on: ${new Date(res.created_at || Date.now()).toLocaleDateString()}</span>
+                  <span class="status-badge ${statusClass} ms-2 px-2 py-1 rounded border" style="font-size: 0.85rem;">${statusText}</span>
                 </div>
               </div>
             </div>
-        `;
-  });
-
-  container.innerHTML = html;
+            
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <div class="action-buttons">
+                ${isActive && statusText !== 'Cancelled' ? `
+                    <button class="btn btn-outline-danger btn-sm me-2" onclick="cancelReservation('${res.id}')">Cancel</button>
+                    ${statusText === 'Confirmed' ? `
+                        <button class="btn btn-success btn-sm" onclick="completeReservation('${res.id}')">Check-Out</button>
+                    ` : ''}
+                ` : ''}
+                ${!isActive ? `<button class="btn btn-outline-secondary btn-sm" disabled>Archived</button>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+    `;
 }
 
-function updateStats(reservations) {
+// Price Map (Frontend Estimates based on Mock Data)
+const ROOM_PRICES = {
+  'Deluxe Room': 240,
+  'Deluxe Room - Ocean View': 240,
+  'Presidential Suite': 500,
+  'Standard Room': 120,
+  'Suite': 280,
+  'Suite - Garden View': 280,
+  'Residential Suite': 200
+};
+
+function updateStats(reservations, bills) {
   const activeCount = reservations.filter(r => ['Pending', 'Confirmed'].includes(r.reservation_status)).length;
   const totalCount = reservations.length;
 
-  // Update DOM if elements exist
+  let totalSpent = 0;
+
+  // 1. Try Real Billing API First
+  if (bills && Array.isArray(bills) && bills.length > 0) {
+    console.log('Billing Data Received:', bills);
+    totalSpent = bills.reduce((sum, bill) => {
+      const status = (bill.status || 'Unpaid').toString();
+      const amt = parseFloat(bill.total_amount || 0);
+      if (status.toLowerCase() === 'paid') return sum + amt;
+      return sum;
+    }, 0);
+  }
+
+  // 2. Fallback: If Billing API returned nothing (backend issue), calculate from Reservations
+  if (totalSpent === 0 && reservations.length > 0) {
+    console.log('Billing API empty or 0. Calculating from Reservations...');
+
+    reservations.forEach(res => {
+      // Only count Completed, No-Show, or Confirmed (if paid)
+      // For Total Spent, usually we count what is ALREADY paid. 
+      // Assuming 'Confirmed' means deposit paid, 'Completed' means fully paid.
+      const status = res.reservation_status;
+      if (['Completed', 'Confirmed', 'No-Show', 'No_show'].includes(status)) {
+
+        // Calculate Duration
+        const start = new Date(res.check_in_date);
+        const end = new Date(res.check_out_date);
+        const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) || 1;
+
+        // Determine Price
+        let pricePerNight = 150; // Default fallback
+        if (res.bookedrooms && res.bookedrooms.length > 0) {
+          const type = res.bookedrooms[0].room?.roomtype?.type_name;
+          if (type && ROOM_PRICES[type]) {
+            pricePerNight = ROOM_PRICES[type];
+          }
+        }
+
+        const cost = nights * pricePerNight * (res.number_of_rooms || 1);
+        totalSpent += cost;
+      }
+    });
+  }
+
+  // Update DOM
   const stats = document.querySelectorAll('.stat-number');
   if (stats.length >= 2) {
     stats[0].textContent = activeCount;
     stats[1].textContent = totalCount;
-    // Total spent is harder without billing data in this API response
-    // stats[2].textContent = '...'; 
+  }
+
+  // Update Total Spent (ID we added)
+  const spentEl = document.getElementById('totalSpentStat');
+  if (spentEl) {
+    spentEl.textContent = '$' + totalSpent.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 }
 

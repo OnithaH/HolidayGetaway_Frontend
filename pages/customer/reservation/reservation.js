@@ -155,64 +155,67 @@ document.getElementById('reservationForm').addEventListener('submit', async func
     };
 
     // 1. Create Reservation
-    const resCalls = await fetch('http://localhost:5000/api/customer/reservations', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await resCalls.json();
-
-    if (!resCalls.ok) {
-      throw new Error(data.message || 'Reservation failed.');
-    }
-
-    const reservationId = data.data ? data.data.id : null;
-    // Note: Backend might return object in `data`. Adjust if needed.
-    // Looking at controller: `res.status(...).json({data: reservationResult.data ?? reservationResult})`
-
-    // 2. Handle Payment if Credit Card
-    if (paymentOption === 'creditCard' && reservationId) {
-      const paymentPayload = {
-        reservationId: reservationId,
-        cardType: 'VISA', // Simplified, or detect from number
-        cardNumber: formData.get('cardNumber').replace(/\s/g, ''),
-        cardExpMonth: formData.get('expiryMonth'),
-        cardExpYear: formData.get('expiryYear'),
-        cvnCode: formData.get('cvv')
-      };
-
-      const payRes = await fetch('http://localhost:5000/api/customer/reservation/payment-details', {
+    try {
+      const resCalls = await fetch('http://localhost:5000/api/customer/reservations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(paymentPayload)
+        body: JSON.stringify(payload)
       });
 
-      if (!payRes.ok) {
-        // Reservation made but payment failed? 
-        // We warn the user but success the booking?
-        // Or throw?
-        const payData = await payRes.json();
-        console.warn("Payment failed:", payData);
-        Swal.fire({
-          title: 'Reservation Created, but Payment Failed',
-          text: 'Your reservation ID is ' + reservationId + ', but adding payment details failed: ' + (payData.message || 'Unknown error'),
-          icon: 'warning'
-        }).then(() => window.location.href = '../dashboard/dashboard.html');
-        return;
+      const data = await resCalls.json();
+
+      if (!resCalls.ok) {
+        // Specific handling for "Some rooms do not exist" to aid user debugging
+        if (data.message && data.message.includes("rooms do not exist")) {
+          throw new Error("Backend Data Error: The selected Room ID (" + roomId + ") does not exist in the database. Please contact the administrator to seed the 'Room' table.");
+        }
+        throw new Error(data.message || 'Reservation failed.');
       }
+
+      const reservationId = data.data ? data.data.id : null;
+
+      // 2. Handle Payment if Credit Card
+      if (paymentOption === 'creditCard' && reservationId) {
+        const paymentPayload = {
+          reservationId: reservationId,
+          cardType: 'VISA',
+          cardNumber: formData.get('cardNumber').replace(/\s/g, ''),
+          cardExpMonth: formData.get('expiryMonth'),
+          cardExpYear: formData.get('expiryYear'),
+          cvnCode: formData.get('cvv')
+        };
+
+        const payRes = await fetch('http://localhost:5000/api/customer/reservation/payment-details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(paymentPayload)
+        });
+
+        if (!payRes.ok) {
+          const payData = await payRes.json();
+          console.warn("Payment failed:", payData);
+          Swal.fire({
+            title: 'Reservation Created, but Payment Failed',
+            text: 'Reservation #' + reservationId + ' created. Payment failed: ' + (payData.message || 'Unknown error'),
+            icon: 'warning'
+          }).then(() => window.location.href = '../dashboard/dashboard.html');
+          return;
+        }
+      }
+    } catch (apiError) {
+      throw apiError; // Re-throw to outer catch
     }
 
     // Success!
     let msg = 'Reservation confirmed!';
     if (paymentOption === 'noCreditCard') {
-      msg += ' Please note: Reservations without credit card are cancelled daily at 7 PM.';
+      msg += ' Note: Unpaid reservations are cancelled daily at 7 PM (Backend Policy).';
     }
 
     Swal.fire({

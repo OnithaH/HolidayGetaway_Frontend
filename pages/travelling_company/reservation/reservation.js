@@ -64,13 +64,19 @@ document.getElementById('reservationForm').addEventListener('submit', async func
 
     const roomTypeStr = formData.get('roomType');
     const roomTypeId = roomTypeMapping[roomTypeStr] || 1;
+    const numRooms = parseInt(formData.get('numberOfRooms') || 1);
+
+    // Enforce Requirement #8: Travel companies block 3 or more rooms.
+    if (numRooms < 3) {
+      throw new Error("Travel Companies must book a minimum of 3 rooms to qualify for discounted rates.");
+    }
 
     const payload = {
       branchId: branchId,
       roomTypeId: roomTypeId,
       startDate: formData.get('checkinDate'),
       endDate: formData.get('checkoutDate'),
-      numberOfRooms: parseInt(formData.get('numberOfRooms') || 1)
+      numberOfRooms: numRooms
     };
 
     const res = await fetch('http://localhost:5000/api/travelCompany/reservations', {
@@ -98,7 +104,11 @@ document.getElementById('reservationForm').addEventListener('submit', async func
 
   } catch (err) {
     console.error(err);
-    Swal.fire({ title: 'Error', text: err.message, icon: 'error' });
+    Swal.fire({
+      title: 'Validation Error',
+      text: err.message,
+      icon: 'error'
+    });
   } finally {
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;

@@ -8,15 +8,17 @@ const roomTypes = {
   },
   deluxe: {
     id: 2,
-    type: "Deluxe Room", 
+    type: "Deluxe Room",
     description: "Spacious rooms with enhanced comfort and premium amenities",
     base_price: 129
   },
   suite: {
     id: 3,
-    type: "Suite",
-    description: "Luxurious suites with separate living area and exclusive services",
-    base_price: 199
+    type: "Residential Suite", // Changed to meet Req #9
+    description: "Luxurious suites available for weekly or monthly stays",
+    base_price: 199,
+    weekly_price: 1200, // Concept for Residential Suite
+    monthly_price: 4500
   },
   presidential: {
     id: 4,
@@ -29,7 +31,7 @@ const roomTypes = {
 // Branch Data
 const branches = {
   colombo: "Holiday Getaway Colombo",
-  kandy: "Holiday Getaway Kandy", 
+  kandy: "Holiday Getaway Kandy",
   galle: "Holiday Getaway Galle",
   "nuwara-eliya": "Holiday Getaway Nuwara Eliya",
   ella: "Holiday Getaway Ella",
@@ -37,10 +39,11 @@ const branches = {
 };
 
 // Room Data based on ER diagram structure
+// NOTE: Using IDs 1-6 to try and match potential Backend Auto-Increment IDs
 const roomsData = [
   // Colombo Rooms
   {
-    id: 101,
+    id: 1, // Changed from 101 to 1
     room_number: "101",
     branch_id: "colombo",
     room_type_id: "standard",
@@ -50,8 +53,8 @@ const roomsData = [
     amenities: ["🛏️ King Bed", "📺 Smart TV", "🌐 WiFi", "☕ Coffee Maker", "❄️ AC"]
   },
   {
-    id: 201,
-    room_number: "201", 
+    id: 2, // Changed from 201 to 2
+    room_number: "201",
     branch_id: "colombo",
     room_type_id: "deluxe",
     price_per_night: 189,
@@ -60,45 +63,45 @@ const roomsData = [
     amenities: ["🛏️ King Bed", "🛋️ Seating Area", "📺 Smart TV", "🌐 WiFi", "🛁 Bathtub", "☕ Minibar"]
   },
   {
-    id: 301,
+    id: 3, // Changed from 301 to 3
     room_number: "301",
-    branch_id: "colombo", 
+    branch_id: "colombo",
     room_type_id: "suite",
     price_per_night: 299,
-    status: "occupied",
+    status: "available", // Changed to available for testing
     image: "../../../assets/images/rooms/suite-colombo.jpg",
-    amenities: ["🛏️ King Bed", "🛋️ Living Room", "📺 Smart TV", "🌐 WiFi", "🛁 Jacuzzi", "🍾 Minibar", "🏢 City View"]
+    amenities: ["🛏️ King Bed", "🛋️ Living Room", "📺 Smart TV", "🌐 WiFi", "🛁 Jacuzzi", "🍾 Minibar", "🏢 City View", "📅 Weekly Rates"]
   },
   {
-    id: 401,
+    id: 4, // Changed from 401 to 4
     room_number: "401",
     branch_id: "colombo",
-    room_type_id: "presidential", 
+    room_type_id: "presidential",
     price_per_night: 449,
     status: "available",
     image: "../../../assets/images/rooms/presidential-colombo.jpg",
     amenities: ["🛏️ King Bed", "🛋️ Living Room", "🍽️ Dining Area", "📺 Smart TV", "🌐 WiFi", "🛁 Jacuzzi", "🍾 Premium Minibar", "🏢 Panoramic View"]
   },
 
-  // Kandy Rooms
+  // Kandy Rooms (Using IDs 5, 6)
   {
-    id: 102,
+    id: 5,
     room_number: "102",
     branch_id: "kandy",
     room_type_id: "standard",
     price_per_night: 129,
-    status: "available", 
+    status: "available",
     image: "../../../assets/images/rooms/standard-kandy.jpg",
     amenities: ["🛏️ Queen Bed", "📺 TV", "🌐 WiFi", "☕ Tea Set", "❄️ AC", "🏔️ Mountain View"]
   },
   {
-    id: 202,
+    id: 6,
     room_number: "202",
     branch_id: "kandy",
     room_type_id: "deluxe",
     price_per_night: 169,
     status: "maintenance",
-    image: "../../../assets/images/rooms/deluxe-kandy.jpg", 
+    image: "../../../assets/images/rooms/deluxe-kandy.jpg",
     amenities: ["🛏️ King Bed", "🛋️ Balcony", "📺 Smart TV", "🌐 WiFi", "🛁 Bathtub", "🏛️ Temple View"]
   },
   {
@@ -125,7 +128,7 @@ const roomsData = [
   },
   {
     id: 203,
-    room_number: "203", 
+    room_number: "203",
     branch_id: "galle",
     room_type_id: "deluxe",
     price_per_night: 219,
@@ -136,7 +139,7 @@ const roomsData = [
   {
     id: 303,
     room_number: "303",
-    branch_id: "galle", 
+    branch_id: "galle",
     room_type_id: "suite",
     price_per_night: 329,
     status: "available",
@@ -149,7 +152,7 @@ const roomsData = [
     id: 104,
     room_number: "104",
     branch_id: "nuwara-eliya",
-    room_type_id: "standard", 
+    room_type_id: "standard",
     price_per_night: 109,
     status: "available",
     image: "../../../assets/images/rooms/standard-nuwara.jpg",
@@ -162,14 +165,14 @@ const roomsData = [
     room_type_id: "deluxe",
     price_per_night: 149,
     status: "available",
-    image: "../../../assets/images/rooms/deluxe-nuwara.jpg", 
+    image: "../../../assets/images/rooms/deluxe-nuwara.jpg",
     amenities: ["🛏️ King Bed", "🛋️ Reading Nook", "📺 Smart TV", "🌐 WiFi", "🛁 Bathtub", "🏔️ Hill View", "🍃 Tea Plantation"]
   },
 
   // Ella Rooms
   {
     id: 105,
-    room_number: "105", 
+    room_number: "105",
     branch_id: "ella",
     room_type_id: "standard",
     price_per_night: 119,
@@ -181,7 +184,7 @@ const roomsData = [
     id: 205,
     room_number: "205",
     branch_id: "ella",
-    room_type_id: "deluxe", 
+    room_type_id: "deluxe",
     price_per_night: 159,
     status: "occupied",
     image: "../../../assets/images/rooms/deluxe-ella.jpg",
@@ -201,7 +204,7 @@ const roomsData = [
   },
   {
     id: 206,
-    room_number: "206", 
+    room_number: "206",
     branch_id: "sigiriya",
     room_type_id: "deluxe",
     price_per_night: 179,
@@ -215,7 +218,7 @@ const roomsData = [
     branch_id: "sigiriya",
     room_type_id: "suite",
     price_per_night: 279,
-    status: "available", 
+    status: "available",
     image: "../../../assets/images/rooms/suite-sigiriya.jpg",
     amenities: ["🛏️ King Bed", "🛋️ Living Area", "📺 Smart TV", "🌐 WiFi", "🛁 Jacuzzi", "🏛️ Fortress View", "🦌 Safari Access"]
   }
@@ -225,12 +228,12 @@ const roomsData = [
 let filteredRooms = [...roomsData];
 let currentFilters = {
   branch: '',
-  roomType: '', 
+  roomType: '',
   price: ''
 };
 
 // Initialize page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   displayRooms(roomsData);
   setupEventListeners();
 });
@@ -241,7 +244,7 @@ function setupEventListeners() {
   document.getElementById('branchFilter').addEventListener('change', handleFilterChange);
   document.getElementById('roomTypeFilter').addEventListener('change', handleFilterChange);
   document.getElementById('priceFilter').addEventListener('change', handleFilterChange);
-  
+
   // Newsletter form
   const newsletterForm = document.querySelector('.newsletter-form');
   if (newsletterForm) {
@@ -254,26 +257,26 @@ function handleFilterChange() {
   currentFilters.branch = document.getElementById('branchFilter').value;
   currentFilters.roomType = document.getElementById('roomTypeFilter').value;
   currentFilters.price = document.getElementById('priceFilter').value;
-  
+
   filterRooms();
 }
 
 // Filter rooms function
 function filterRooms() {
   showLoading();
-  
+
   setTimeout(() => {
     filteredRooms = roomsData.filter(room => {
       // Branch filter
       if (currentFilters.branch && room.branch_id !== currentFilters.branch) {
         return false;
       }
-      
+
       // Room type filter  
       if (currentFilters.roomType && room.room_type_id !== currentFilters.roomType) {
         return false;
       }
-      
+
       // Price filter
       if (currentFilters.price) {
         const price = room.price_per_night;
@@ -292,10 +295,10 @@ function filterRooms() {
             break;
         }
       }
-      
+
       return true;
     });
-    
+
     displayRooms(filteredRooms);
   }, 500);
 }
@@ -303,7 +306,7 @@ function filterRooms() {
 // Display rooms
 function displayRooms(rooms) {
   const container = document.getElementById('roomsContainer');
-  
+
   if (rooms.length === 0) {
     container.innerHTML = `
       <div class="col-12">
@@ -316,7 +319,7 @@ function displayRooms(rooms) {
     `;
     return;
   }
-  
+
   container.innerHTML = rooms.map(room => createRoomCard(room)).join('');
 }
 
@@ -324,11 +327,11 @@ function displayRooms(rooms) {
 function createRoomCard(room) {
   const roomType = roomTypes[room.room_type_id];
   const branchName = branches[room.branch_id];
-  const statusClass = room.status === 'available' ? 'available' : 
-                     room.status === 'occupied' ? 'occupied' : 'maintenance';
-  
+  const statusClass = room.status === 'available' ? 'available' :
+    room.status === 'occupied' ? 'occupied' : 'maintenance';
+
   const isBookable = room.status === 'available';
-  
+
   return `
     <div class="col-lg-4 col-md-6">
       <div class="room-card">
@@ -388,7 +391,7 @@ function clearFilters() {
   document.getElementById('branchFilter').value = '';
   document.getElementById('roomTypeFilter').value = '';
   document.getElementById('priceFilter').value = '';
-  
+
   currentFilters = { branch: '', roomType: '', price: '' };
   displayRooms(roomsData);
 }
@@ -397,10 +400,10 @@ function clearFilters() {
 function viewRoomDetails(roomId) {
   const room = roomsData.find(r => r.id == roomId);
   if (!room) return;
-  
+
   const roomType = roomTypes[room.room_type_id];
   const branchName = branches[room.branch_id];
-  
+
   Swal.fire({
     title: roomType.type,
     html: `
@@ -448,10 +451,10 @@ function bookRoom(roomId) {
     });
     return;
   }
-  
+
   const roomType = roomTypes[room.room_type_id];
   const branchName = branches[room.branch_id];
-  
+
   Swal.fire({
     title: 'Book Room',
     html: `
@@ -480,7 +483,7 @@ function bookRoom(roomId) {
         branchName: branchName,
         price: room.price_per_night
       }));
-      
+
       // Redirect to reservation page
       window.location.href = '../reservation/reservation.html';
     }
@@ -490,15 +493,15 @@ function bookRoom(roomId) {
 // Newsletter form handler
 function handleNewsletterSubmit(e) {
   e.preventDefault();
-  
+
   const email = e.target.querySelector('input[type="email"]').value;
   const submitBtn = e.target.querySelector('button[type="submit"]');
-  
+
   // Show loading state
   const originalText = submitBtn.textContent;
   submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Subscribing...';
   submitBtn.disabled = true;
-  
+
   // Simulate subscription process
   setTimeout(() => {
     Swal.fire({
@@ -508,7 +511,7 @@ function handleNewsletterSubmit(e) {
       confirmButtonText: 'Great!',
       confirmButtonColor: '#ff9f1c'
     });
-    
+
     e.target.reset();
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
