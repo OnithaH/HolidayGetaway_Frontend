@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptionist Dashboard - Holiday Getaway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Sidebar -->
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white border-r border-gray-200"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+            <a href="#" class="flex items-center ps-2.5 mb-5 border-b pb-4">
+                <span class="self-center text-xl font-semibold whitespace-nowrap text-blue-600">Holiday Getaway</span>
+                <span class="bg-blue-100 text-blue-800 text-xs font-medium ms-2 px-2.5 py-0.5 rounded">Clerk</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white bg-blue-700 rounded-lg group">
+                        <i class="fa-solid fa-gauge w-5 h-5 transition duration-75"></i>
+                        <span class="ms-3">Room Status</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reservations/reservations.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-calendar-check w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Reservations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../checkout/checkout.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-file-invoice-dollar w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Checkout & Billing</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="pt-4 mt-4 space-y-2 border-t border-gray-200">
+                <a href="#" onclick="logout()"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-red-100 group">
+                    <i
+                        class="fa-solid fa-right-from-bracket w-5 h-5 text-gray-500 transition duration-75 group-hover:text-red-600"></i>
+                    <span class="ms-3 text-red-600">Sign Out</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 rounded-lg mt-4">
+
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Room Status Overview</h1>
+                <button onclick="location.reload()" class="text-sm text-blue-600 hover:underline">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" id="room-grid">
+                <!-- Rooms will be inserted here -->
+                <div class="col-span-full text-center py-10 text-gray-500">Loading room status...</div>
+            </div>
+
+            <div class="mt-8 flex gap-6 text-sm">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-green-500 rounded mr-2"></div> Available
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-red-500 rounded mr-2"></div> Occupied
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-gray-400 rounded mr-2"></div> Maintenance
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script>
+        function logout() {
+            localStorage.clear();
+            window.location.href = '../../signin/signin.html';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,39 +1,42 @@
-// Sign In Form submission
-document.getElementById('signinForm').addEventListener('submit', function(e) {
-  e.preventDefault();
+document.getElementById('receptionLoginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const btn = this.querySelector('button');
+    btn.disabled = true;
+    btn.innerHTML = 'Verifying...';
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-  // Here you would normally validate credentials with your backend
-  if (email && password) {
-    Swal.fire({
-      title: 'Sign In Successful!',
-      text: 'Redirecting to home page...',
-      icon: 'success',
-      confirmButtonText: 'Okay'
-    }).then(() => {
-      window.location.href = '../dashboard/receptionist-dashboard.html'; 
-    });
-  } else {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Please enter both email and password.',
-      icon: 'error',
-      confirmButtonText: 'Okay'
-    });
-  }
-});
+    try {
+        const res = await fetch('http://localhost:5000/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
 
+        if (res.ok) {
+            const payload = JSON.parse(atob(data.token.split('.')[1]));
+            const role = (payload.role || '').toLowerCase();
 
-// Forgot Password Form submission
-document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const email = document.getElementById('resetEmail').value;
-  
-  if (email) {
-    alert('Password reset link sent to your email!');
-    bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
-  }
+            if (role.includes('receptionist') || role.includes('clerk')) {
+                localStorage.setItem('staffToken', data.token);
+                localStorage.setItem('staffRole', payload.role);
+                window.location.href = '../dashboard/dashboard.html';
+            } else {
+                throw new Error("Access Denied: This portal is for Receptionists only.");
+            }
+        } else {
+            throw new Error(data.message || 'Login failed');
+        }
+    } catch (err) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: err.message,
+            confirmButtonColor: '#0d6efd'
+        });
+        btn.disabled = false;
+        btn.innerHTML = 'Login to Reception';
+    }
 });

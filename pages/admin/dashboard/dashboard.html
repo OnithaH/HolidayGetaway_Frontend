@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Holiday Getaway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Sidebar -->
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white border-r border-gray-200"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+            <a href="#" class="flex items-center ps-2.5 mb-5 border-b pb-4">
+                <span class="self-center text-xl font-semibold whitespace-nowrap text-blue-600">Holiday Getaway</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="./dashboard.html" class="flex items-center p-2 text-white bg-blue-700 rounded-lg group">
+                        <i class="fa-solid fa-gauge w-5 h-5 transition duration-75"></i>
+                        <span class="ms-3">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../rooms/rooms.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-bed w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Room Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../users/users.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-users w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/reports.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-chart-line w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Reports</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="pt-4 mt-4 space-y-2 border-t border-gray-200">
+                <a href="#" onclick="logout()"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-red-100 group">
+                    <i
+                        class="fa-solid fa-right-from-bracket w-5 h-5 text-gray-500 transition duration-75 group-hover:text-red-600"></i>
+                    <span class="ms-3 text-red-600">Sign Out</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-4">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <!-- User Stat Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs border border-gray-200">
+                    <div class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full">
+                        <i class="fa-solid fa-users text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600">Total Staff Users</p>
+                        <p class="text-lg font-semibold text-gray-700" id="total-users">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Rooms Stat Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs border border-gray-200">
+                    <div class="p-3 mr-4 text-green-500 bg-green-100 rounded-full">
+                        <i class="fa-solid fa-bed text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600">Total Rooms</p>
+                        <p class="text-lg font-semibold text-gray-700" id="total-rooms">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Active Reservations (Mock) -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs border border-gray-200">
+                    <div class="p-3 mr-4 text-purple-500 bg-purple-100 rounded-full">
+                        <i class="fa-solid fa-calendar-check text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600">System Status</p>
+                        <p class="text-lg font-semibold text-gray-700">Online</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome, Admin</h2>
+                <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <p class="text-gray-600">Use the sidebar to manage rooms, users, and view system reports.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

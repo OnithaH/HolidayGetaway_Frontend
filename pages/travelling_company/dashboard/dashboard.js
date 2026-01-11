@@ -171,15 +171,26 @@ function cancelBooking(id) {
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
-    confirmButtonText: 'Yes'
-  }).then((res) => {
-    if (res.isConfirmed) {
-      // Backend does NOT have a Cancel endpoint for TC (according to my scan)
-      // I only saw `createReservation` and `getMyReservations`.
-      // The user Requirement says "Travel Companies can block bookings...". 
-      // It doesn't explicitly mention 'Cancel', but usually they should.
-      // Since it's missing, I'll show the info message I planned.
-      Swal.fire('Notice', 'Please contact support to cancel blocked bookings.', 'info');
+    confirmButtonText: 'Yes, cancel it!'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const res = await fetch(`http://localhost:5000/api/travelCompany/reservations/${id}/cancel`, {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          Swal.fire('Cancelled!', 'The booking has been cancelled.', 'success');
+          fetchDashboardData(); // Refresh
+        } else {
+          Swal.fire('Error', data.message || 'Failed to cancel.', 'error');
+        }
+      } catch (err) {
+        Swal.fire('Error', err.message, 'error');
+      }
     }
   });
 }

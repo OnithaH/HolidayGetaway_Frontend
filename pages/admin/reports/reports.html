@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Sidebar -->
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white border-r border-gray-200"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+            <a href="#" class="flex items-center ps-2.5 mb-5 border-b pb-4">
+                <span class="self-center text-xl font-semibold whitespace-nowrap text-blue-600">Holiday Getaway</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="../dashboard/dashboard.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-gauge w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../rooms/rooms.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-bed w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Room Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../users/users.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-users w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white bg-blue-700 rounded-lg group">
+                        <i class="fa-solid fa-chart-line w-5 h-5 transition duration-75"></i>
+                        <span class="ms-3">Reports</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="pt-4 mt-4 space-y-2 border-t border-gray-200">
+                <a href="#" onclick="logout()"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-red-100 group">
+                    <i
+                        class="fa-solid fa-right-from-bracket w-5 h-5 text-gray-500 transition duration-75 group-hover:text-red-600"></i>
+                    <span class="ms-3 text-red-600">Sign Out</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 rounded-lg mt-4">
+
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">System Reports</h1>
+
+            <!-- Alerts -->
+            <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50" role="alert">
+                <span class="font-medium">Note:</span> Real-time data integration is pending backend updates. Below are
+                conceptual representations.
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Occupancy Report -->
+                <div class="p-6 bg-white border border-gray-200 rounded-lg shadow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h5 class="text-xl font-bold tracking-tight text-gray-900">In-house Occupancy</h5>
+                        <span
+                            class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded">Today</span>
+                    </div>
+                    <p class="mb-3 font-normal text-gray-700">Total Rooms: <span class="font-bold">20</span></p>
+                    <p class="mb-3 font-normal text-gray-700">Occupied: <span class="font-bold">12</span></p>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 60%"></div>
+                    </div>
+                    <a href="#"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        View Details
+                    </a>
+                </div>
+
+                <!-- Financial Report -->
+                <div class="p-6 bg-white border border-gray-200 rounded-lg shadow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h5 class="text-xl font-bold tracking-tight text-gray-900">Revenue (Estimated)</h5>
+                        <span class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded">This
+                            Month</span>
+                    </div>
+                    <p class="mb-3 font-normal text-gray-700">Room Revenue: <span class="font-bold">$12,450.00</span>
+                    </p>
+                    <p class="mb-3 font-normal text-gray-700">Service Charges: <span class="font-bold">$1,200.00</span>
+                    </p>
+                    <hr class="my-2">
+                    <p class="mb-3 text-lg font-bold text-gray-900">Total: $13,650.00</p>
+
+                    <a href="#"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        Download PDF
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- No-Show List -->
+            <div class="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow">
+                <h5 class="text-xl font-bold tracking-tight text-gray-900 mb-4">Daily No-Show Report (7:00 PM)</h5>
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Reservation ID</th>
+                                <th scope="col" class="px-6 py-3">Customer</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Billing Generated?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4">#1029</td>
+                                <td class="px-6 py-4">John Doe</td>
+                                <td class="px-6 py-4 text-red-600">No Show</td>
+                                <td class="px-6 py-4">Yes (Auto)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        function logout() {
+            localStorage.clear();
+            window.location.href = '../../signin/signin.html';
+        }
+    </script>
+</body>
+
+</html>

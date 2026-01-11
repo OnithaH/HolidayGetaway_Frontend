@@ -56,11 +56,13 @@ document.getElementById('reservationForm').addEventListener('submit', async func
   try {
     const formData = new FormData(this);
 
-    // Determine IDs (Default to 1 if not selected, though specific selection implies we need a generic "Branch" dropdown or assume one)
-    // Since the form doesn't have Branch, we'll assume Branch 1 (Colombo) or whatever default.
-    // Ideally we'd add a Branch Select to the HTML.
-    // For now, hardcode Branch 1.
-    const branchId = 1;
+    // Determine IDs
+    // We now read from the dropdown we just added.
+    const branchId = parseInt(document.getElementById('branchSelect').value);
+
+    if (!branchId) {
+      throw new Error("Please select a branch.");
+    }
 
     const roomTypeStr = formData.get('roomType');
     const roomTypeId = roomTypeMapping[roomTypeStr] || 1;
