@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No-Show Reports - Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Sidebar -->
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white border-r border-gray-200"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+            <a href="#" class="flex items-center ps-2.5 mb-5 border-b pb-4">
+                <span class="self-center text-xl font-semibold whitespace-nowrap text-purple-600">Holiday Getaway</span>
+                <span
+                    class="bg-purple-100 text-purple-800 text-xs font-medium ms-2 px-2.5 py-0.5 rounded">Manager</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="../dashboard/dashboard.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-gauge w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Dashboard Overview</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/occupancy.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-hotel w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Occupancy Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/revenue.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-sack-dollar w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Revenue Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white bg-purple-700 rounded-lg group">
+                        <i class="fa-solid fa-user-slash w-5 h-5 transition duration-75"></i>
+                        <span class="ms-3">No-Show Reports</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 rounded-lg mt-4">
+
+            <div class="bg-white p-6 rounded-lg shadow mb-6">
+                <h2 class="text-xl font-bold mb-4">No-Show & Cancellation Log</h2>
+                <div class="flex flex-wrap items-end gap-4">
+                    <div>
+                        <label for="from-date" class="block mb-2 text-sm font-medium text-gray-900">From</label>
+                        <input type="date" id="from-date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                    </div>
+                    <div>
+                        <label for="to-date" class="block mb-2 text-sm font-medium text-gray-900">To</label>
+                        <input type="date" id="to-date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                    </div>
+                    <button onclick="loadNoShowReport()"
+                        class="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5">
+                        Filter List
+                    </button>
+                    <button onclick="clearDates()"
+                        class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Reservation ID</th>
+                            <th scope="col" class="px-6 py-3">Customer Name</th>
+                            <th scope="col" class="px-6 py-3">Expected Check-in</th>
+                            <th scope="col" class="px-6 py-3">Rooms Booked</th>
+                            <th scope="col" class="px-6 py-3">Branch</th>
+                            <th scope="col" class="px-6 py-3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noshow-table-body">
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="no-show.js"></script>
+    <script>
+        function logout() {
+            localStorage.clear();
+            window.location.href = '../signin/signin.html';
+        }
+    </script>
+</body>
+
+</html>

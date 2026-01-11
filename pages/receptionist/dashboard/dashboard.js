@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAuth() {
-    const token = localStorage.getItem('token');
-    if (!token) window.location.href = '../../signin/signin.html';
+    const token = localStorage.getItem('staffToken');
+    if (!token) window.location.href = '../signin/signin.html';
 }
 
 async function loadRoomStatus() {
     const grid = document.getElementById('room-grid');
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     try {
         const response = await axios.get(`${API_URL}/clerk/rooms/status`, {

@@ -9,14 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAuth() {
-    const token = localStorage.getItem('token');
-    if (!token) window.location.href = '../../signin/signin.html';
+    const token = localStorage.getItem('staffToken');
+    if (!token) window.location.href = '../signin/signin.html';
 }
 
 async function loadReservations() {
     const tableBody = document.getElementById('reservations-table-body');
     const search = document.getElementById('table-search').value;
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     let url = `${API_URL}/clerk/reservations?limit=100`; // Fetch many
     if (search) url += `&customer=${search}`;
@@ -82,7 +82,7 @@ async function loadRoomTypes() {
         select.innerHTML = '<option value="">Select type</option>';
         types.forEach(type => {
             const option = document.createElement('option');
-            option.value = type.id;
+            option.value = type.room_type_id;
             option.textContent = `${type.type_name}`;
             select.appendChild(option);
         });
@@ -93,7 +93,7 @@ async function loadRoomTypes() {
 
 async function handleCreateReservation(e) {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     // Construct payload per Clerk API requirement
     const payload = {
@@ -127,7 +127,7 @@ async function handleCreateReservation(e) {
 async function handleCheckIn(id) {
     if (!confirm(`Are you sure you want to check in reservation #${id}? This will assign a room.`)) return;
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
     try {
         await axios.post(`${API_URL}/clerk/check-in`, { reservationId: id }, {
             headers: { 'Authorization': `Bearer ${token}` }

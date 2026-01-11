@@ -2,7 +2,7 @@ const API_URL = "http://localhost:5000/api";
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
-    loadRooms();
+    loadRooms(); // Will loads types/summary now
     loadRoomTypes();
 
     document.getElementById('add-room-form').addEventListener('submit', handleAddRoom);
@@ -10,49 +10,59 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAuth() {
-    const token = localStorage.getItem('token');
-    if (!token) window.location.href = '../../signin/signin.html';
+    const token = localStorage.getItem('staffToken');
+    if (!token) window.location.href = '../signin/signin.html';
 }
 
 async function loadRooms() {
     const tableBody = document.getElementById('rooms-table-body');
-    const token = localStorage.getItem('token');
 
+    // Switch to displaying Room Types since Admin cannot list individual rooms via Clerk API
+    // and /public/rooms returns aggregated data
     try {
-        // Attempting to use Clerk endpoint for listing rooms as Admin doesn't have a specific one
-        const response = await axios.get(`${API_URL}/clerk/rooms/status`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const response = await axios.get(`${API_URL}/public/rooms`);
+        // public controller returns json(result), where result is [ ... ]
+        // or json({data: ...})? Step 175 shows res.json({success, data: result})
+        const types = response.data.data || [];
 
-        const rooms = response.data.data;
         tableBody.innerHTML = '';
 
-        if (rooms.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center">No rooms found.</td></tr>';
+        // Update Table Headers to reflect we are showing Types/Summary
+        const thead = document.querySelector('thead tr');
+        thead.innerHTML = `
+            <th scope="col" class="px-6 py-3">Room Type</th>
+            <th scope="col" class="px-6 py-3">Base Price</th>
+            <th scope="col" class="px-6 py-3">Total Rooms</th>
+            <th scope="col" class="px-6 py-3">Availability (By Branch)</th>
+            <th scope="col" class="px-6 py-3">Action</th>
+        `;
+
+        if (types.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center">No room types found.</td></tr>';
             return;
         }
 
-        rooms.forEach(room => {
+        types.forEach(type => {
             const tr = document.createElement('tr');
             tr.className = "bg-white border-b hover:bg-gray-50";
 
-            // Status colors
-            let statusColor = 'text-gray-500';
-            if (room.status === 'Available') statusColor = 'text-green-600 font-bold';
-            if (room.status === 'Occupied') statusColor = 'text-red-600 font-bold';
-
-            // Safe access to nested properties
-            const typeName = room.roomtype ? room.roomtype.type_name : 'N/A';
-            const branchName = room.branch ? room.branch.name : `Branch ${room.branch_id}`;
+            // Format branches availability
+            let branchesHtml = '';
+            if (type.branches && type.branches.length > 0) {
+                branchesHtml = type.branches.map(b =>
+                    `<div class="text-xs text-gray-600">${b.branch_name}: ${b.available_rooms} avail</div>`
+                ).join('');
+            } else {
+                branchesHtml = '<span class="text-xs text-gray-400">No rooms configured</span>';
+            }
 
             tr.innerHTML = `
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${room.room_number || 'N/A'}</td>
-                <td class="px-6 py-4">${typeName}</td>
-                <td class="px-6 py-4">${branchName}</td>
-                 <td class="px-6 py-4 ${statusColor}">${room.status}</td>
-                <td class="px-6 py-4">$${room.price_per_night || '-'}</td>
+                <td class="px-6 py-4 font-medium text-gray-900">${type.type_name}</td>
+                <td class="px-6 py-4">$${type.base_price}</td>
+                <td class="px-6 py-4">${type.total_rooms}</td>
+                <td class="px-6 py-4">${branchesHtml}</td>
                 <td class="px-6 py-4">
-                    <button onclick="editRoom(${room.id})" class="font-medium text-blue-600 hover:underline">Edit</button>
+                     <button class="text-gray-400 cursor-not-allowed" title="Edit via API only">Edit</button>
                 </td>
             `;
             tableBody.appendChild(tr);
@@ -62,9 +72,8 @@ async function loadRooms() {
         console.error("Error loading rooms:", error);
         tableBody.innerHTML = `
             <tr>
-                <td colspan="6" class="px-6 py-4 text-center text-red-500">
-                    Failed to load rooms. <br>
-                    <span class="text-xs text-gray-400">Error: ${error.response ? error.response.status : error.message} (You may not have permission)</span>
+                <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                    Failed to load room summaries.
                 </td>
             </tr>
         `;
@@ -75,16 +84,13 @@ async function loadRoomTypes() {
     const select = document.getElementById('room_type');
     try {
         const response = await axios.get(`${API_URL}/public/rooms`);
-        // Assuming response structure based on public controller
-        // public route returns: res.status(200).json(roomTypes); or similar
-        // Let's assume it returns an array directly or {data: []}
-
-        const types = Array.isArray(response.data) ? response.data : (response.data.data || []);
+        const types = response.data.data || [];
 
         select.innerHTML = '<option value="">Select type</option>';
         types.forEach(type => {
             const option = document.createElement('option');
-            option.value = type.id;
+            option.value = type.room_type_id; // Public API maps 'id' to 'room_type_id'? 
+            // In Step 179: mapped to { room_type_id: type.id }
             option.textContent = `${type.type_name} ($${type.base_price})`;
             select.appendChild(option);
         });
@@ -95,7 +101,7 @@ async function loadRoomTypes() {
 
 async function handleAddRoom(e) {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     // Construct payload
     const payload = {
@@ -114,7 +120,7 @@ async function handleAddRoom(e) {
         });
 
         alert("Room added successfully!");
-        location.reload(); // Simple reload to refresh table
+        location.reload();
     } catch (error) {
         console.error("Error adding room:", error);
         alert(`Failed to add room: ${error.response?.data?.message || error.message}`);
@@ -123,7 +129,7 @@ async function handleAddRoom(e) {
 
 async function handleAddRoomType(e) {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     const payload = {
         type_name: document.getElementById('type_name').value,
@@ -137,7 +143,6 @@ async function handleAddRoomType(e) {
         });
 
         alert("Room Type added successfully!");
-        // Refresh types and close modal ideally, but reload is easier
         location.reload();
     } catch (error) {
         console.error("Error adding room type:", error);
@@ -146,5 +151,5 @@ async function handleAddRoomType(e) {
 }
 
 function editRoom(id) {
-    alert("Edit feature would open a modal pre-filled with room details. (Not fully implemented in this demo)");
+    alert("Edit feature not fully implemented.");
 }

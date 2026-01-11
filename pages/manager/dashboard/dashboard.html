@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - Holiday Getaway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Sidebar -->
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white border-r border-gray-200"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+            <a href="#" class="flex items-center ps-2.5 mb-5 border-b pb-4">
+                <span class="self-center text-xl font-semibold whitespace-nowrap text-purple-600">Holiday Getaway</span>
+                <span
+                    class="bg-purple-100 text-purple-800 text-xs font-medium ms-2 px-2.5 py-0.5 rounded">Manager</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white bg-purple-700 rounded-lg group">
+                        <i class="fa-solid fa-gauge w-5 h-5 transition duration-75"></i>
+                        <span class="ms-3">Dashboard Overview</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/occupancy.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-hotel w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Occupancy Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/revenue.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-sack-dollar w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Revenue Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/no-show.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-user-slash w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">No-Show Reports</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="pt-4 mt-4 space-y-2 border-t border-gray-200">
+                <a href="#" onclick="logout()"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-red-100 group">
+                    <i
+                        class="fa-solid fa-right-from-bracket w-5 h-5 text-gray-500 transition duration-75 group-hover:text-red-600"></i>
+                    <span class="ms-3 text-red-600">Sign Out</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 rounded-lg mt-4">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome Back, <span id="manager-name">Manager</span></h1>
+
+            <!-- Quick Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                <!-- Card 1: Today's Occupancy -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full">
+                        <i class="fa-solid fa-bed text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="mb-1 text-sm text-gray-500">Today's Occupancy</p>
+                        <h3 class="text-xl font-bold text-gray-900" id="stat-occupancy">Loading...</h3>
+                    </div>
+                </div>
+
+                <!-- Card 2: Today's Revenue -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-3 mr-4 text-green-500 bg-green-100 rounded-full">
+                        <i class="fa-solid fa-dollar-sign text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="mb-1 text-sm text-gray-500">Revenue (Today)</p>
+                        <h3 class="text-xl font-bold text-gray-900" id="stat-revenue">Loading...</h3>
+                    </div>
+                </div>
+
+                <!-- Card 3: No Shows -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-3 mr-4 text-red-500 bg-red-100 rounded-full">
+                        <i class="fa-solid fa-user-xmark text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="mb-1 text-sm text-gray-500">No-Shows (Today)</p>
+                        <h3 class="text-xl font-bold text-gray-900" id="stat-no-show">Loading...</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conceptual chart or quick link area could go here -->
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                <h5 class="text-lg font-bold text-gray-900 mb-2">Quick Actions</h5>
+                <p class="text-gray-500 mb-4">Generate detailed reports for analysis.</p>
+                <div class="flex gap-4">
+                    <a href="../reports/occupancy.html"
+                        class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">View Occupancy Trends</a>
+                    <a href="../reports/revenue.html"
+                        class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Financial Reports</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script>
+        function logout() {
+            localStorage.clear();
+            window.location.href = '../signin/signin.html';
+        }
+    </script>
+</body>
+
+</html>

@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAuth() {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
+    const token = localStorage.getItem('staffToken');
+    const role = localStorage.getItem('staffRole');
 
     if (!token || !role) { // || role !== 'Admin' (Loose check for now)
         window.location.href = '../signin/signin.html';
@@ -21,7 +21,7 @@ function logout() {
 }
 
 async function loadDashboardStats() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
     const headers = { 'Authorization': `Bearer ${token}` };
 
     try {
@@ -45,10 +45,18 @@ async function loadDashboardStats() {
         // Let's check clerk.routes.js -> GET /api/clerk/rooms/status exists.
         // Admin might need to use that or we assume Admin implies Manager/Clerk permissions.
 
-        // We will try the Clerk endpoint since specific admin get rooms is missing
-        const roomsRes = await axios.get(`${API_URL}/clerk/rooms/status`, { headers });
-        if (roomsRes.data && roomsRes.data.data) {
-            document.getElementById('total-rooms').innerText = roomsRes.data.data.length;
+        // Fetch Rooms Count - Using Public API for Room Types count as proxy or just show total types
+        // Since Admin cannot access Clerk Status API
+        const roomsRes = await axios.get(`${API_URL}/public/rooms`);
+        // Public API returns list of types. Each type has summary of total rooms.
+        if (roomsRes.data && Array.isArray(roomsRes.data)) {
+            const totalRooms = roomsRes.data.reduce((acc, type) => acc + (type.total_rooms || 0), 0);
+            document.getElementById('total-rooms').innerText = totalRooms;
+        } else if (roomsRes.data && roomsRes.data.data) {
+            // Handle if wrapped in data object
+            const types = roomsRes.data.data;
+            const totalRooms = types.reduce((acc, type) => acc + (type.total_rooms || 0), 0);
+            document.getElementById('total-rooms').innerText = totalRooms;
         } else {
             document.getElementById('total-rooms').innerText = "-";
         }

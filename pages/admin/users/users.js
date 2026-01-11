@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAuth() {
-    const token = localStorage.getItem('token');
-    if (!token) window.location.href = '../../signin/signin.html';
+    const token = localStorage.getItem('staffToken');
+    if (!token) window.location.href = '../signin/signin.html';
 }
 
 async function loadUsers() {
     const tableBody = document.getElementById('users-table-body');
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     try {
         const response = await axios.get(`${API_URL}/admin/users`, {
@@ -59,7 +59,7 @@ async function loadUsers() {
 
 async function handleAddUser(e) {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     const payload = {
         username: document.getElementById('username').value,

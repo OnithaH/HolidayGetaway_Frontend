@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAuth() {
-    const token = localStorage.getItem('token');
-    if (!token) window.location.href = '../../signin/signin.html';
+    const token = localStorage.getItem('staffToken');
+    if (!token) window.location.href = '../signin/signin.html';
 }
 
 async function loadActiveStays() {
     const tableBody = document.getElementById('active-stays-body');
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     // Status must be Checked_in (or Checked-in)
     // We'll try fetching 'Checked_in'
@@ -108,7 +108,7 @@ async function addCharge() {
         return;
     }
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
     try {
         await axios.post(`${API_URL}/clerk/reservations/${id}/charge`, {
             amount: amount,
@@ -136,7 +136,7 @@ async function addCharge() {
 async function processCheckout() {
     const id = document.getElementById('current-res-id').value;
     const method = document.getElementById('payment-method').value;
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('staffToken');
 
     if (!confirm(`Confirm checkout for Reservation #${id} using ${method === 'cash' ? 'Cash' : 'Card'}?`)) return;
 

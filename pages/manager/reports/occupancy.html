@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Occupancy Reports - Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Sidebar -->
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white border-r border-gray-200"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+            <a href="#" class="flex items-center ps-2.5 mb-5 border-b pb-4">
+                <span class="self-center text-xl font-semibold whitespace-nowrap text-purple-600">Holiday Getaway</span>
+                <span
+                    class="bg-purple-100 text-purple-800 text-xs font-medium ms-2 px-2.5 py-0.5 rounded">Manager</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="../dashboard/dashboard.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-gauge w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Dashboard Overview</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white bg-purple-700 rounded-lg group">
+                        <i class="fa-solid fa-hotel w-5 h-5 transition duration-75"></i>
+                        <span class="ms-3">Occupancy Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/revenue.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-sack-dollar w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">Revenue Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../reports/no-show.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                        <i
+                            class="fa-solid fa-user-slash w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"></i>
+                        <span class="ms-3">No-Show Reports</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 rounded-lg mt-4">
+
+            <div class="mb-4 border-b border-gray-200">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
+                    data-tabs-toggle="#default-tab-content" role="tablist">
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="daily-tab"
+                            data-tabs-target="#daily" type="button" role="tab" aria-controls="daily"
+                            aria-selected="false">Daily Occupancy</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button
+                            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300"
+                            id="projected-tab" data-tabs-target="#projected" type="button" role="tab"
+                            aria-controls="projected" aria-selected="false">Projected Occupancy</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="default-tab-content">
+                <!-- Daily Tab -->
+                <div class="hidden p-4 rounded-lg bg-gray-50" id="daily" role="tabpanel" aria-labelledby="daily-tab">
+                    <div class="flex items-end gap-4 mb-6">
+                        <div>
+                            <label for="daily-date" class="block mb-2 text-sm font-medium text-gray-900">Select
+                                Date</label>
+                            <input type="date" id="daily-date"
+                                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <button onclick="loadDailyOccupancy()"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                            Generate Report
+                        </button>
+                    </div>
+
+                    <div id="daily-results" class="hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
+                                <h3 class="text-gray-500 text-sm">Total Rooms</h3>
+                                <p class="text-3xl font-bold" id="daily-total">0</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+                                <h3 class="text-gray-500 text-sm">Occupied</h3>
+                                <p class="text-3xl font-bold" id="daily-occupied">0</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-gray-500">
+                                <h3 class="text-gray-500 text-sm">Available</h3>
+                                <p class="text-3xl font-bold" id="daily-available">0</p>
+                            </div>
+                        </div>
+
+                        <!-- Visualization Placeholder -->
+                        <div class="w-full bg-gray-200 rounded-full h-4 mb-4 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-4 rounded-full" id="daily-progress" style="width: 0%"></div>
+                        </div>
+                        <p class="text-center text-sm text-gray-600 mb-4">Occupancy Rate: <span id="daily-rate"
+                                class="font-bold">0%</span></p>
+
+                    </div>
+                </div>
+
+                <!-- Projected Tab -->
+                <div class="hidden p-4 rounded-lg bg-gray-50" id="projected" role="tabpanel"
+                    aria-labelledby="projected-tab">
+
+                    <div class="flex items-end gap-4 mb-6">
+                        <div>
+                            <label for="proj-from" class="block mb-2 text-sm font-medium text-gray-900">From</label>
+                            <input type="date" id="proj-from"
+                                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <div>
+                            <label for="proj-to" class="block mb-2 text-sm font-medium text-gray-900">To</label>
+                            <input type="date" id="proj-to"
+                                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <button onclick="loadProjectedOccupancy()"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                            Generate Projection
+                        </button>
+                    </div>
+
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Date</th>
+                                    <th scope="col" class="px-6 py-3">Occupied Rooms</th>
+                                    <th scope="col" class="px-6 py-3">Available Rooms</th>
+                                    <th scope="col" class="px-6 py-3">Occupancy %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projected-table-body">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-4 text-center">Select a date range to view
+                                        projection.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="occupancy.js"></script>
+</body>
+
+</html>
